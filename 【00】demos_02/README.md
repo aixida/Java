@@ -95,7 +95,20 @@ insert into city values(12,'大阪',20,6);
 - **数据库初始化：**
 
 ```mysql
+# 如果没有创建该数据库
+create database atm;
 
+use atm;
+
+create table atm(
+	aname varchar(20),
+	apassword varchar(20),
+	abalance float(10,2)
+);
+
+alter table atm add primary key(aname);
+
+insert into atm values('zhangsan','333',300),('lisi','444',400),('wangwu','555',500);
 ```
 
 # 03：JDBC连接池 + ORM框架 - 模拟
