@@ -10,12 +10,16 @@ import java.awt.event.ActionListener;
 @SuppressWarnings("all")
 public class LoginFrame extends BaseFrame {
 
-    public LoginFrame(){
+    private LoginFrame(){
+        super("登录窗口");
         this.init();
     }
-    public LoginFrame(String title){
-        super(title);
-        this.init();
+    private static LoginFrame loginFrame;
+    public synchronized static LoginFrame getLoginFrame(){
+        if (loginFrame == null){
+            loginFrame = new LoginFrame();
+        }
+        return loginFrame;
     }
 
     //添加一些属性---登录窗口上的各种组件
@@ -28,6 +32,9 @@ public class LoginFrame extends BaseFrame {
     private JPasswordField passwordField = new JPasswordField();//用来输入密码的密码框
     private JButton loginButton = new JButton("登 录");
     private JButton registButton = new JButton("注 册");
+
+    //添加一个控制注册窗口的属性
+    private RegistFrame registFrame = null;
 
     protected void setFontAndSoOn() {
         mainPanel.setLayout(null);//设置panel布局为自定义
@@ -64,12 +71,20 @@ public class LoginFrame extends BaseFrame {
     protected void addListener() {
         loginButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-
+                //获取账号 密码
+                //调用登录的方法
+                LoginFrame.this.setVisible(false);
+                AtmFrame.getAtmFrame();
             }
         });
         registButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                LoginFrame.this.setVisible(false);
+                if(registFrame == null){
+                    registFrame = RegistFrame.getRegistFrame();
+                }else{
+                    registFrame.setVisible(true);
+                }
             }
         });
     }
