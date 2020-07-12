@@ -86,13 +86,13 @@ insert into city values(11,'名古屋',50,5);
 insert into city values(12,'大阪',20,6);
 ```
 
-# 02：银行系统 - 模拟
+# 03：银行系统（JDBC） - 模拟
 
-> 知识点：JavaSE + JDBC + MySQL + MVC分层思想
+> 知识点：JavaSE + JDBC + MySQL + MVC分层思想+Swing
 
 - **功能**：登录 + 查询 + 存款  + 取款 + 转账 + 开户 + 销户
-- **UI：** Swing
-- **数据库初始化：**
+- **UI**：命令行
+- **数据库初始化**：
 
 ```mysql
 # 如果没有创建该数据库
@@ -111,7 +111,15 @@ alter table atm add primary key(aname);
 insert into atm values('zhangsan','333',300),('lisi','444',400),('wangwu','555',500);
 ```
 
-# 03：JDBC连接池 + ORM框架 - 模拟
+# 03：银行系统（JDBC+Swing） - 模拟
+
+> 知识点：JavaSE + JDBC + MySQL + MVC分层思想+Swing
+
+- **功能**：登录 + 查询 + 存款  + 取款 + 转账 + 开户 + 销户
+- **UI**：Swing
+- **数据库初始化**：同上
+
+# 04：JDBC连接池 + ORM框架 - 模拟
 
 
 
