@@ -82,7 +82,7 @@ public class LoginFrame extends BaseFrame {
                 String result = service.login(aname,apassword);
                 if ("登录成功".equals(result)){
                     LoginFrame.this.setVisible(false);
-                    AtmFrame.getAtmFrame();
+                    AtmFrame.getAtmFrame(aname);
                 }else{
                     JOptionPane.showMessageDialog(LoginFrame.this, "登录失败了哟，我的小可爱: " + result);
                     accountField.setText("");

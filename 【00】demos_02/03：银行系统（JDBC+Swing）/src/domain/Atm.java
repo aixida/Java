@@ -1,6 +1,8 @@
 package domain;
 
 public class Atm {
+    //实体对象  每一个Atm类的对象存储 Atm表格中一行记录
+    //有可能当前记录中含有null值
 
     private String aname;
     private String apassword;

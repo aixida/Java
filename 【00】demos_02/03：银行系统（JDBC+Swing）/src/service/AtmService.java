@@ -19,7 +19,9 @@ public class AtmService {
     }
 
     //查询余额
-
+    public Float inquire(String aname){
+        return dao.selectOne(aname).getAbalance();
+    }
 
     //注册新用户
 

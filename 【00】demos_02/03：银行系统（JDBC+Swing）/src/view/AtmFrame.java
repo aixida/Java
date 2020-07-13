@@ -1,6 +1,8 @@
 package view;
 
+import service.AtmService;
 import util.BaseFrame;
+import util.MySpring;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,24 +10,30 @@ import java.awt.*;
 @SuppressWarnings("all")
 public class AtmFrame extends BaseFrame {
 
-    private AtmFrame(){
+    private AtmFrame(String aname){
         super("操作窗口");
+        this.aname = aname;
         this.init();
     }
     private static AtmFrame atmFrame;
-    public synchronized static AtmFrame getAtmFrame(){
+    public synchronized static AtmFrame getAtmFrame(String aname){
         if(atmFrame == null){
-            atmFrame = new AtmFrame();
+            atmFrame = new AtmFrame(aname);
         }
         return atmFrame;
     }
+
+    //添加一个用来管理当前用户的用户名
+    private String aname;
+    //创建一个AtmService对象作为属性 支持着所有的业务 查询 存款 取款 转账
+    private AtmService service = MySpring.getBean("service.AtmService");
 
     //添加窗体上的组件
     private JPanel mainPanel = new JPanel();
     private JLabel logoLabel = new JLabel();//logo
     private JLabel titleLabel = new JLabel("这个银行是假的");
-    private JLabel balanceLabelCN = new JLabel("账户余额:￥" + 1000);
-    private JLabel balanceLabelEN = new JLabel("Account Balance:￥" + 1000);
+    private JLabel balanceLabelCN = new JLabel();
+    private JLabel balanceLabelEN = new JLabel();
     private JLabel selectServerLabelCN = new JLabel("您好!请选择所需服务");
     private JLabel selectServerLabelEN = new JLabel("Please Select Service");
     private JButton messageButton = new JButton("个人信息");
@@ -44,9 +52,11 @@ public class AtmFrame extends BaseFrame {
         balanceLabelCN.setBounds(250,200,300,40);
         balanceLabelCN.setFont(new Font("微软雅黑",Font.BOLD,24));
         balanceLabelCN.setHorizontalAlignment(JTextField.CENTER);
-        balanceLabelEN.setBounds(250,240,300,40);
+        balanceLabelCN.setText("账户余额:￥" + service.inquire(aname));
+        balanceLabelEN.setBounds(240,240,320,40);
         balanceLabelEN.setFont(new Font("微软雅黑",Font.BOLD,24));
         balanceLabelEN.setHorizontalAlignment(JTextField.CENTER);
+        balanceLabelEN.setText("Account Balance:￥" + service.inquire(aname));
 
         selectServerLabelCN.setBounds(250,370,300,40);
         selectServerLabelCN.setFont(new Font("微软雅黑",Font.BOLD,16));
