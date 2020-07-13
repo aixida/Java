@@ -24,9 +24,17 @@ public class AtmService {
     }
 
     //注册新用户
-
+    public int regist(String aname, String apassword, Float abalance){
+        return dao.insert(new Atm(aname,apassword,abalance));
+    }
 
     //判断账号是否存在
-
+    public boolean isExit(String aname){
+        if(dao.selectOne(aname) != null){
+            return true;//账号存在
+        }else {
+            return false;
+        }
+    }
 
 }

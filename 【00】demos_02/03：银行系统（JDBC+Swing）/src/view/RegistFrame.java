@@ -1,11 +1,14 @@
 package view;
 
+import service.AtmService;
 import util.BaseFrame;
+import util.MySpring;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.zip.DeflaterOutputStream;
 
 @SuppressWarnings("all")
 public class RegistFrame extends BaseFrame {
@@ -21,6 +24,11 @@ public class RegistFrame extends BaseFrame {
         }
         return registFrame;
     }
+
+    private AtmService service = MySpring.getBean("service.AtmService");
+
+    //添加一个控制登录页面的属性
+    private LoginFrame loginFrame = LoginFrame.getLoginFrame();
 
     //添加一些组件的属性
     private JPanel mainPanel = new JPanel();
@@ -82,29 +90,51 @@ public class RegistFrame extends BaseFrame {
         registButton.addActionListener(new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 //获取 名字 密码 余额
+                String aname = accountField.getText();
+                String apassword = passwordField.getText();
+                String abalance = balanceField.getText();
                 //调用新增方法
-                JOptionPane.showMessageDialog(RegistFrame.this,"注册成功,请登录系统");
-//                RegistFrame.this.setVisible(false);
-//                AtmFrame.getAtmFrame();
+                if(service.isExit(aname)){//账号已存在
+                    JOptionPane.showMessageDialog(RegistFrame.this,"用户名已存在");
+                    RegistFrame.this.reset();
+                }else {
+                    try{
+                        service.regist(aname, apassword, new Float(abalance));
+                        JOptionPane.showMessageDialog(RegistFrame.this,"注册成功,请登录系统");
+                        RegistFrame.this.back();
+                    }catch (NumberFormatException nfe){
+                        JOptionPane.showMessageDialog(RegistFrame.this, "我滴个乖乖，钱都不会输入吗？？？");
+                        RegistFrame.this.reset();
+                    }
+                }
             }
         });
         resetButton.addActionListener(new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                accountField.setText("");
-                passwordField.setText("");
-                balanceField.setText("");
+                RegistFrame.this.reset();
             }
         });
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                accountField.setText("");
-                passwordField.setText("");
-                balanceField.setText("");
-                RegistFrame.this.setVisible(false);//当前注册窗口隐藏
-                LoginFrame.getLoginFrame().setVisible(true);
+                RegistFrame.this.back();
             }
         });
     }
+
+    //设计一个自定义方法 设置所有输入框清空
+    private void reset(){
+        accountField.setText("");
+        passwordField.setText("");
+        balanceField.setText("");
+    }
+
+    //设计一个自定义方法 设置返回登录页面
+    private void back(){
+        RegistFrame.this.reset();
+        this.setVisible(false);
+        loginFrame.setVisible(true);
+    }
+
     protected void setFrameSelf() {
         this.setBounds(430,200,500,360);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
