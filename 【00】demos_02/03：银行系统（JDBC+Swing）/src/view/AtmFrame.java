@@ -134,6 +134,34 @@ public class AtmFrame extends BaseFrame {
             }
         });
 
+        //取款按钮
+        withdrawalButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    String value = JOptionPane.showInputDialog(AtmFrame.this, "你要拿走好多钱嘛？");
+                    if (value != null && !"".equals(value)){
+                        Float withdrawMoney = Float.parseFloat(value);
+                        if (withdrawMoney <= 0){
+                            throw new NumberFormatException();
+                        }
+                        int count = service.withdraw(aname, withdrawMoney);
+                        if (count == 1){
+                            JOptionPane.showMessageDialog(AtmFrame.this, "成功！");
+                            balanceLabelCN.setText("账户余额:￥" + service.inquire(aname));
+                            balanceLabelEN.setText("Account Balance:￥" + service.inquire(aname));
+                        } else if (count == -1){
+                            JOptionPane.showMessageDialog(AtmFrame.this, "你个穷屌丝，你没得这么多钱！");
+                        } else {
+                            JOptionPane.showMessageDialog(AtmFrame.this, "失败了哟~~~");
+                        }
+                    }
+                }catch (NumberFormatException nfe){
+                    JOptionPane.showMessageDialog(AtmFrame.this, "我滴个乖乖，钱都不会输入吗？？？");
+                }
+            }
+        });
+
     }
     protected void setFrameSelf() {
         this.setBounds(300,200,800,500);

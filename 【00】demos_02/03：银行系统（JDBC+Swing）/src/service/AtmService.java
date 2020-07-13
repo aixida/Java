@@ -45,7 +45,15 @@ public class AtmService {
     }
 
     //取款
-
+    public int withdraw(String aname, Float withdrawMoney){
+        Atm atm = dao.selectOne(aname);
+        if (atm.getAbalance() >= withdrawMoney){
+            atm.setAbalance(atm.getAbalance() - withdrawMoney);
+            return dao.update(atm);//1成功 0失败
+        } else{
+            return -1;//余额不足
+        }
+    }
 
     //转账
 
