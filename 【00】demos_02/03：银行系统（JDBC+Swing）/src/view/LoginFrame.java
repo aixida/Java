@@ -85,13 +85,13 @@ public class LoginFrame extends BaseFrame {
                     AtmFrame.getAtmFrame(aname);
                 }else{
                     JOptionPane.showMessageDialog(LoginFrame.this, "登录失败了哟，我的小可爱: " + result);
-                    accountField.setText("");
-                    passwordField.setText("");
+                    LoginFrame.this.reset();
                 }
             }
         });
         registButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                LoginFrame.this.reset();
                 LoginFrame.this.setVisible(false);
                 if(registFrame == null){
                     registFrame = RegistFrame.getRegistFrame();
@@ -101,6 +101,13 @@ public class LoginFrame extends BaseFrame {
             }
         });
     }
+
+    //设计一个自定义方法 设置所有输入框清空
+    private void reset(){
+        accountField.setText("");
+        passwordField.setText("");
+    }
+
     protected void setFrameSelf() {
         this.setBounds(400,200,500,300);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
