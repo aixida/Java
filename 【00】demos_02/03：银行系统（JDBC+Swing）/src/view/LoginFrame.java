@@ -1,6 +1,8 @@
 package view;
 
+import service.AtmService;
 import util.BaseFrame;
+import util.MySpring;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +23,8 @@ public class LoginFrame extends BaseFrame {
         }
         return loginFrame;
     }
+
+    private AtmService service = MySpring.getBean("service.AtmService");
 
     //添加一些属性---登录窗口上的各种组件
     private JPanel mainPanel = new JPanel();
@@ -72,9 +76,18 @@ public class LoginFrame extends BaseFrame {
         loginButton.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 //获取账号 密码
+                String aname = accountField.getText();
+                String apassword = new String(passwordField.getPassword());
                 //调用登录的方法
-                LoginFrame.this.setVisible(false);
-                AtmFrame.getAtmFrame();
+                String result = service.login(aname,apassword);
+                if ("登录成功".equals(result)){
+                    LoginFrame.this.setVisible(false);
+                    AtmFrame.getAtmFrame();
+                }else{
+                    JOptionPane.showMessageDialog(LoginFrame.this, "登录失败了哟，我的小可爱: " + result);
+                    accountField.setText("");
+                    passwordField.setText("");
+                }
             }
         });
         registButton.addActionListener(new ActionListener() {
