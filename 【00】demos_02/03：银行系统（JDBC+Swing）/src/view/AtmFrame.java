@@ -192,7 +192,18 @@ public class AtmFrame extends BaseFrame {
                 } else{
                     JOptionPane.showMessageDialog(AtmFrame.this, "蠢货！查无此人，转尼玛个屁屁");
                 }
+            }
+        });
 
+        //退出按钮
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int value = JOptionPane.showConfirmDialog(AtmFrame.this, "嗯~ ？");
+                //0是 1否 2取消
+                if (value == 0){
+                    System.exit(0);
+                }
             }
         });
 
