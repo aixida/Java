@@ -6,6 +6,8 @@ import util.MySpring;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 @SuppressWarnings("all")
 public class AtmFrame extends BaseFrame {
@@ -38,7 +40,7 @@ public class AtmFrame extends BaseFrame {
     private JLabel selectServerLabelEN = new JLabel("Please Select Service");
     private JButton messageButton = new JButton("个人信息");
     private JButton exitButton = new JButton("退出");
-    private JButton inquireButton = new JButton("存款");
+    private JButton depositButton = new JButton("存款");
     private JButton withdrawalButton = new JButton("取款");
     private JButton transferButton = new JButton("转账");
 
@@ -75,10 +77,10 @@ public class AtmFrame extends BaseFrame {
         exitButton.setBackground(Color.lightGray);
         exitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        inquireButton.setBounds(670,150,120,40);
-        inquireButton.setFont(new Font("微软雅黑",Font.BOLD,14));
-        inquireButton.setBackground(Color.lightGray);
-        inquireButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        depositButton.setBounds(670,150,120,40);
+        depositButton.setFont(new Font("微软雅黑",Font.BOLD,14));
+        depositButton.setBackground(Color.lightGray);
+        depositButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         withdrawalButton.setBounds(670,270,120,40);
         withdrawalButton.setFont(new Font("微软雅黑",Font.BOLD,14));
@@ -99,12 +101,38 @@ public class AtmFrame extends BaseFrame {
         mainPanel.add(selectServerLabelEN);
         mainPanel.add(messageButton);
         mainPanel.add(exitButton);
-        mainPanel.add(inquireButton);
+        mainPanel.add(depositButton);
         mainPanel.add(withdrawalButton);
         mainPanel.add(transferButton);
         this.add(mainPanel);
     }
     protected void addListener() {
+
+        //存款按钮
+        depositButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    String value = JOptionPane.showInputDialog(AtmFrame.this, "你要存好多钱嘛？");
+                    if (value != null && !"".equals(value)){
+                        Float depositMoney = Float.parseFloat(value);
+                        if (depositMoney <= 0){
+                            throw new NumberFormatException();
+                        }
+                        int count = service.deposit(aname, depositMoney);
+                        if (count == 1){
+                            JOptionPane.showMessageDialog(AtmFrame.this, "成功！");
+                            balanceLabelCN.setText("账户余额:￥" + service.inquire(aname));
+                            balanceLabelEN.setText("Account Balance:￥" + service.inquire(aname));
+                        } else {
+                            JOptionPane.showMessageDialog(AtmFrame.this, "失败了哟~~~");
+                        }
+                    }
+                }catch (NumberFormatException nfe){
+                    JOptionPane.showMessageDialog(AtmFrame.this, "我滴个乖乖，钱都不会输入吗？？？");
+                }
+            }
+        });
 
     }
     protected void setFrameSelf() {

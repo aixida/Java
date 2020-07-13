@@ -37,4 +37,20 @@ public class AtmService {
         }
     }
 
+    //存款
+    public int deposit(String aname, Float depositMoney){
+        Atm atm = dao.selectOne(aname);
+        atm.setAbalance(atm.getAbalance() + depositMoney);
+        return dao.update(atm);
+    }
+
+    //取款
+
+
+    //转账
+
+
+    //销户
+
+
 }

@@ -99,9 +99,15 @@ public class RegistFrame extends BaseFrame {
                     RegistFrame.this.reset();
                 }else {
                     try{
-                        service.regist(aname, apassword, new Float(abalance));
-                        JOptionPane.showMessageDialog(RegistFrame.this,"注册成功,请登录系统");
-                        RegistFrame.this.back();
+                        int count = service.regist(aname, apassword, new Float(abalance));
+                        if (count == 1){
+                            JOptionPane.showMessageDialog(RegistFrame.this,"注册成功,请登录系统");
+                            RegistFrame.this.back();
+                        } else {
+                            JOptionPane.showMessageDialog(RegistFrame.this, "注册失败！骚年请再来一遍吧");
+                            RegistFrame.this.reset();
+                        }
+
                     }catch (NumberFormatException nfe){
                         JOptionPane.showMessageDialog(RegistFrame.this, "我滴个乖乖，钱都不会输入吗？？？");
                         RegistFrame.this.reset();
