@@ -162,6 +162,40 @@ public class AtmFrame extends BaseFrame {
             }
         });
 
+        //转账按钮
+        transferButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String transferName = JOptionPane.showInputDialog(AtmFrame.this, "你要把钱给谁嘛？");
+                if (transferName != null && service.isExit(transferName)){
+                    try{
+                        String value = JOptionPane.showInputDialog(AtmFrame.this, "你要给别人好多钱嘛？");
+                        if (value != null && !"".equals(value)){
+                            Float transferMoney = Float.parseFloat(value);
+                            if (transferMoney <= 0){
+                                throw new NumberFormatException();
+                            }
+                            int count = service.transfer(aname, transferName, transferMoney);
+                            if (count == 2){
+                                JOptionPane.showMessageDialog(AtmFrame.this, "成功！");
+                                balanceLabelCN.setText("账户余额:￥" + service.inquire(aname));
+                                balanceLabelEN.setText("Account Balance:￥" + service.inquire(aname));
+                            } else if (count == -1){
+                                JOptionPane.showMessageDialog(AtmFrame.this, "你个穷屌丝，你没得这么多钱！");
+                            } else {
+                                JOptionPane.showMessageDialog(AtmFrame.this, "失败了哟~~~");
+                            }
+                        }
+                    }catch (NumberFormatException nfe){
+                        JOptionPane.showMessageDialog(AtmFrame.this, "我滴个乖乖，钱都不会输入吗？？？");
+                    }
+                } else{
+                    JOptionPane.showMessageDialog(AtmFrame.this, "蠢货！查无此人，转尼玛个屁屁");
+                }
+
+            }
+        });
+
     }
     protected void setFrameSelf() {
         this.setBounds(300,200,800,500);

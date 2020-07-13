@@ -56,7 +56,17 @@ public class AtmService {
     }
 
     //转账
-
+    public int transfer(String aname, String transferName, Float transferMoney){
+        Atm outAtm = dao.selectOne(aname);
+        Atm inAtm = dao.selectOne(transferName);
+        if (outAtm.getAbalance() >= transferMoney){
+            outAtm.setAbalance(outAtm.getAbalance() - transferMoney);
+            inAtm.setAbalance(inAtm.getAbalance() + transferMoney);
+            return dao.update(inAtm) + dao.update(outAtm);//2成功
+        } else{
+            return -1;//余额不足
+        }
+    }
 
     //销户
 
