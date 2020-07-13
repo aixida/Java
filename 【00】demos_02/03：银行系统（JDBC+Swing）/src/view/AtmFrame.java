@@ -38,7 +38,7 @@ public class AtmFrame extends BaseFrame {
     private JLabel balanceLabelEN = new JLabel();
     private JLabel selectServerLabelCN = new JLabel("您好!请选择所需服务");
     private JLabel selectServerLabelEN = new JLabel("Please Select Service");
-    private JButton messageButton = new JButton("个人信息");
+    private JButton deleteButton = new JButton("销户");
     private JButton exitButton = new JButton("退出");
     private JButton depositButton = new JButton("存款");
     private JButton withdrawalButton = new JButton("取款");
@@ -67,10 +67,10 @@ public class AtmFrame extends BaseFrame {
         selectServerLabelEN.setFont(new Font("微软雅黑",Font.BOLD,16));
         selectServerLabelEN.setHorizontalAlignment(JTextField.CENTER);
 
-        messageButton.setBounds(10,150,120,40);
-        messageButton.setFont(new Font("微软雅黑",Font.BOLD,14));
-        messageButton.setBackground(Color.lightGray);
-        messageButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        deleteButton.setBounds(10,150,120,40);
+        deleteButton.setFont(new Font("微软雅黑",Font.BOLD,14));
+        deleteButton.setBackground(Color.lightGray);
+        deleteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         exitButton.setBounds(10,390,120,40);
         exitButton.setFont(new Font("微软雅黑",Font.BOLD,14));
@@ -99,7 +99,7 @@ public class AtmFrame extends BaseFrame {
         mainPanel.add(balanceLabelEN);
         mainPanel.add(selectServerLabelCN);
         mainPanel.add(selectServerLabelEN);
-        mainPanel.add(messageButton);
+        mainPanel.add(deleteButton);
         mainPanel.add(exitButton);
         mainPanel.add(depositButton);
         mainPanel.add(withdrawalButton);
@@ -203,6 +203,23 @@ public class AtmFrame extends BaseFrame {
                 //0是 1否 2取消
                 if (value == 0){
                     System.exit(0);
+                }
+            }
+        });
+
+        //销户按钮
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int value = JOptionPane.showConfirmDialog(AtmFrame.this, "我的天，你要删除自己呀？");
+                //0是 1否 2取消
+                if (value == 0){
+                    if (service.deleteAccount(aname) == 1){
+                        JOptionPane.showMessageDialog(AtmFrame.this, "再会无期，拜拜了您");
+                        System.exit(0);
+                    } else{
+                        JOptionPane.showMessageDialog(AtmFrame.this, "噢！宝贝，销户失败！");
+                    }
                 }
             }
         });

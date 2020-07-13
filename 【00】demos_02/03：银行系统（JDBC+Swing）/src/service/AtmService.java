@@ -69,6 +69,8 @@ public class AtmService {
     }
 
     //销户
-
+    public int deleteAccount(String aname){
+        return dao.delete(aname);
+    }
 
 }

@@ -126,6 +126,36 @@ public class AtmDao {
         return count;
     }
 
-    //删除
+    //删除一条记录
+    public int delete(String aname){
+        int count = 0;//数据库更改的行数 == 1
+        Connection conn = null;
+        PreparedStatement pstat = null;
+        String sql = "DELETE FROM ATM WHERE ANAME = ?";
+        try {
+            Class.forName(className);
+            conn = DriverManager.getConnection(url,user,password);
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, aname);
+            count = pstat.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally{
+            try {
+                if(pstat != null) {
+                    pstat.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }try {
+                if(conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return count;
+    }
 
 }
