@@ -86,9 +86,9 @@ insert into city values(11,'名古屋',50,5);
 insert into city values(12,'大阪',20,6);
 ```
 
-# 03：银行系统（JDBC） - 模拟
+# 02：银行系统（JDBC） - 模拟
 
-> 知识点：JavaSE + JDBC + MySQL + MVC分层思想+Swing
+> 知识点：JavaSE + JDBC + MySQL + MVC分层思想
 
 - **功能**：登录 + 查询 + 存款  + 取款 + 转账 + 开户 + 销户
 - **UI**：命令行
@@ -113,7 +113,7 @@ insert into atm values('zhangsan','333',300),('lisi','444',400),('wangwu','555',
 
 # 03：银行系统（JDBC+Swing） - 模拟
 
-> 知识点：JavaSE + JDBC + MySQL + MVC分层思想+Swing
+> 知识点：JavaSE + JDBC + MySQL + MVC分层思想 + Swing
 
 - **功能**：登录 + 查询 + 存款  + 取款 + 转账 + 开户 + 销户
 - **UI**：Swing
