@@ -121,5 +121,19 @@ insert into atm values('zhangsan','333',300),('lisi','444',400),('wangwu','555',
 
 # 04：JDBC连接池 + ORM框架 - 模拟
 
+> 知识点：JavaSE + JDBC + MySQL + MVC分层思想
 
+纯粹的 JDBC 有两个缺点：
 
+1. JDBC 六部曲中，Connection 这个地方很慢
+2. Dao（数据持久化）中是纯粹的 JDBC+SQL，代码冗余
+
+- **需要使用一个数据库**：
+
+```mysql
+# 如果没有创建该数据库
+create database study;
+
+use study;
+
+```

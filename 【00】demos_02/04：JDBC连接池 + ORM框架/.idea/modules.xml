@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/【00】demos_02.iml" filepath="$PROJECT_DIR$/.idea/【00】demos_02.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04：JDBC连接池 + ORM框架.iml" filepath="$PROJECT_DIR$/04：JDBC连接池 + ORM框架.iml" />
     </modules>
   </component>
 </project>
