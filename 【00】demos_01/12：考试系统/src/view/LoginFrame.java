@@ -2,6 +2,7 @@ package view;
 
 import service.UserService;
 import util.BaseFrame;
+import util.MySpring;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +24,7 @@ public class LoginFrame extends BaseFrame {
         return loginFrame;
     }
 
-    private UserService service = new UserService();
+    private UserService service = MySpring.getBean("service.UserService");
 
     //创建一个面板
     private JPanel mainPanel = new JPanel();
