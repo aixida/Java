@@ -19,10 +19,12 @@ public class AtmService {
         }
         return "用户名或密码错误";
     }
+
     //查询余额
     public float cha(String aname){
         return dao.selectOne(aname).getAbalance();
     }
+
     //存款
     public void cun(String aname, float cunMoney){
         //找寻原始的数据  atm = selectOne
@@ -32,6 +34,7 @@ public class AtmService {
         //最终的数据交给 update
         dao.update(atm);
     }
+
     //取款
     public void qu(String aname, float quMoney){
         Atm atm = dao.selectOne(aname);
@@ -42,6 +45,7 @@ public class AtmService {
             System.out.println("对不起,余额不足");
         }
     }
+
     //转账
     public void zhuan(String outName, String inName, float zhuanMoney){
 //        this.qu(outName,zhuanMoney);
@@ -49,18 +53,33 @@ public class AtmService {
         Atm outAtm = dao.selectOne(outName);
         Atm inAtm = dao.selectOne(inName);
         if(outAtm.getAbalance() >= zhuanMoney){
-            outAtm.setAbalance(outAtm.getAbalance() - zhuanMoney);
-            inAtm.setAbalance(inAtm.getAbalance() + zhuanMoney);
-            dao.update(outAtm);
-            dao.update(inAtm);
+            if (inAtm != null){
+                outAtm.setAbalance(outAtm.getAbalance() - zhuanMoney);
+                inAtm.setAbalance(inAtm.getAbalance() + zhuanMoney);
+                dao.update(outAtm);
+                dao.update(inAtm);
+            }else{
+                System.out.println("对不起,您输入的转入账户不存在");
+            }
         }else{
             System.out.println("对不起,余额不足");
         }
     }
+
     //开户
     public void kai(String aname, String apassword, float abalance){
         dao.insert(new Atm(aname,apassword,abalance));
     }
+
+    //用户名是否已存在
+    public int isExit(String name){
+        if(dao.selectOne(name) == null){
+            return 1;
+        }else{
+            return 0;//用户名已存在
+        }
+    }
+
     //销户
     public void xiao(String aname){
         Atm atm = dao.selectOne(aname);
