@@ -1,9 +1,9 @@
 package test;
 
-import view.ExamFrame;
+import view.LoginFrame;
 
 public class TestMain {
     public static void main(String[] args) {
-        ExamFrame.getExamFrame();
+        LoginFrame.getLoginFrame();
     }
 }

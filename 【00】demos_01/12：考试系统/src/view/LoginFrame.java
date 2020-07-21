@@ -1,5 +1,6 @@
 package view;
 
+import service.UserService;
 import util.BaseFrame;
 
 import javax.swing.*;
@@ -21,6 +22,8 @@ public class LoginFrame extends BaseFrame {
         }
         return loginFrame;
     }
+
+    private UserService service = new UserService();
 
     //创建一个面板
     private JPanel mainPanel = new JPanel();
@@ -92,8 +95,17 @@ public class LoginFrame extends BaseFrame {
                 String account = accountField.getText();
                 String password = new String(passwordField.getPassword());
                 //2.调用Service层的登录方法
-
+                String result = service.login(account,password);
                 //3.判定最终的结果
+                if (result.equals("登录成功")){
+                    ExamFrame.getExamFrame();
+                }else{
+                    //弹出一个警告框 告诉登录失败啦
+                    JOptionPane.showMessageDialog(LoginFrame.this,result);
+                    //设置文本框和密码框的值为空
+                    accountField.setText("");
+                    passwordField.setText("");
+                }
             }
         };
         loginButton.addActionListener(listener);//观察者模式
