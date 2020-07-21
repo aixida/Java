@@ -99,6 +99,7 @@ public class LoginFrame extends BaseFrame {
                 String result = service.login(account,password);
                 //3.判定最终的结果
                 if (result.equals("登录成功")){
+                    LoginFrame.this.setVisible(false);//将登录窗口隐藏
                     ExamFrame.getExamFrame();
                 }else{
                     //弹出一个警告框 告诉登录失败啦
