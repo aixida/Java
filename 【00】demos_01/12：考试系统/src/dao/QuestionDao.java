@@ -17,7 +17,7 @@ public class QuestionDao {
         HashSet<Question> paper = new HashSet<>();
         //题库
         ArrayList<Question> questionBank = new ArrayList<>(QuestionFileReader.getQuestion());
-        while(paper.size() != 5){
+        while(paper.size() != count){
             int index = new Random().nextInt(questionBank.size());//[0, 13)
             paper.add(questionBank.get(index));
         }
