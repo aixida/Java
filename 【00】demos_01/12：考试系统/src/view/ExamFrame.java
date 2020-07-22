@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-@SuppressWarnings("all")
+
 public class ExamFrame extends BaseFrame {
 
     private ExamFrame(){
@@ -40,7 +40,7 @@ public class ExamFrame extends BaseFrame {
     private int unanswerCount = totalCount;//未答
 
     //记录倒计时事件, 分钟为单位
-    private int time = 1;
+    private int time = 61;
     //内部类 - 线程对象, 处理事件倒计时
     private TimeControlThread timeControlThread = new TimeControlThread();
 
@@ -265,6 +265,29 @@ public class ExamFrame extends BaseFrame {
             }
         });
 
+        //submit按钮
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //0.显示确认框
+                //是0 否1 取消2
+                int value = JOptionPane.showConfirmDialog(ExamFrame.this, "确认提交？");
+                if(value == 0){
+                    //1.倒计时停止
+                    timeControlThread.stopTimeThread();
+                    //2.所有按钮失效
+                    setOptionButtonEnabled(false);
+                    nextButton.setEnabled(false);
+                    prevButton.setEnabled(false);
+                    //3.选项按钮颜色清楚
+                    clearOptionButtonColor();
+                    //4.最终成绩的计算，并展示
+                    float score = gradePaper();
+                    examArea.setText("伙计, 你的得分是: " + score);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -338,6 +361,10 @@ public class ExamFrame extends BaseFrame {
 
         private boolean flag = true;//此时正常执行线程处理
 
+        public void stopTimeThread(){
+            this.flag = false;
+        }
+
         @Override
         public void run() {
             //time转化为   小时:分钟:秒
@@ -394,6 +421,18 @@ public class ExamFrame extends BaseFrame {
 
             }
         }
+    }
+
+    //计算最终成绩
+    private float gradePaper(){
+        float score = 100;
+        float aScore = score / paper.size();
+        for(int i = 0; i < paper.size(); i++){
+            if (!paper.get(i).getAnswer().equals(answers[i])){
+                score -= aScore;
+            }
+        }
+        return score;
     }
 
 }
