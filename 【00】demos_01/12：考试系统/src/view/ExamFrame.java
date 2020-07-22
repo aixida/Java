@@ -39,6 +39,10 @@ public class ExamFrame extends BaseFrame {
     private int answerCount = 0;//已答
     private int unanswerCount = totalCount;//未答
 
+    //记录倒计时事件, 分钟为单位
+    private int time = 1;
+    //内部类 - 线程对象, 处理事件倒计时
+    private TimeControlThread timeControlThread = new TimeControlThread();
 
     //添加三个panel 区域的分割
     private JPanel mainPanel = new JPanel();//负责答题主页面展示
@@ -229,8 +233,8 @@ public class ExamFrame extends BaseFrame {
                     ExamFrame.this.nowNumField.setText(nowNumber + 1 + "");
                 }
                 //修改已答题 未答题
-                ExamFrame.this.answerCountField.setText(answerCount + 1 + "");
-                ExamFrame.this.unanswerCountField.setText(unanswerCount - 1 + "");
+                ExamFrame.this.answerCountField.setText(++answerCount + "");
+                ExamFrame.this.unanswerCountField.setText(--unanswerCount + "");
             }
         });
 
@@ -269,6 +273,7 @@ public class ExamFrame extends BaseFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);//不想让窗体拖拽大小
         this.setVisible(true);//最终展示整个窗体
+        timeControlThread.start();//启动线程, 倒计时开始
     }
 
     //展示一道题目
@@ -325,6 +330,69 @@ public class ExamFrame extends BaseFrame {
             case "D":
                 dButton.setBackground(Color.GREEN);
                 break;
+        }
+    }
+
+    //内部类：处理时间倒计时问题
+    private class TimeControlThread extends Thread{
+
+        private boolean flag = true;//此时正常执行线程处理
+
+        @Override
+        public void run() {
+            //time转化为   小时:分钟:秒
+            int hour = time / 60;
+            int minute = time % 60;
+            int second = 0;
+            while(flag){
+                //处理时分秒的显示
+                StringBuilder builder = new StringBuilder();
+                if(hour>=0 && hour<10){
+                    builder.append("0");
+                }
+                builder.append(hour);
+                builder.append(":");
+                if(minute>=0 && minute<10){
+                    builder.append("0");
+                }
+                builder.append(minute);
+                builder.append(":");
+                if(second>=0 && second<10){
+                    builder.append("0");
+                }
+                builder.append(second);
+                //展示
+                realTimeLabel.setText(builder.toString());
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //改变时间
+                if(second > 0){
+                    second--;
+                }else{
+                    if(minute > 0){
+                        second = 59;
+                        minute--;
+                    }else{
+                        if(hour > 0){
+                            second = 59;
+                            minute = 59;
+                            hour--;
+                        }else{
+                            //考试结束
+                            realTimeLabel.setForeground(Color.RED);
+                            setOptionButtonEnabled(false);
+                            nextButton.setEnabled(false);
+                            prevButton.setEnabled(false);
+                            JOptionPane.showMessageDialog(ExamFrame.this, "考试结束了，宝贝");
+                            break;
+                        }
+                    }
+                }
+
+            }
         }
     }
 
