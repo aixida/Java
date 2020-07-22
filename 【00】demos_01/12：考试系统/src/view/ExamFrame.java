@@ -7,6 +7,8 @@ import util.MySpring;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 @SuppressWarnings("all")
@@ -28,7 +30,7 @@ public class ExamFrame extends BaseFrame {
     private QuestionService service = MySpring.getBean("service.QuestionService");
     //试卷
     private ArrayList<Question> paper = service.getPaper(5);
-    //答案
+    //答题卡
     private String[] answers = new String[paper.size()];
 
     //控制窗体右侧的数值显示
@@ -133,11 +135,17 @@ public class ExamFrame extends BaseFrame {
         realTimeLabel.setForeground(Color.BLUE);
 
         aButton.setBounds(40,10,120,30);
+        aButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         bButton.setBounds(190,10,120,30);
+        bButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         cButton.setBounds(340,10,120,30);
+        cButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         dButton.setBounds(490,10,120,30);
+        dButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         prevButton.setBounds(40,50,100,30);
+        prevButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         nextButton.setBounds(510,50,100,30);
+        nextButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         submitButton.setBounds(276,50,100,30);
         submitButton.setForeground(Color.RED);
         submitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -179,6 +187,80 @@ public class ExamFrame extends BaseFrame {
     @Override
     protected void addListener() {
 
+        //4个选项按钮
+        ActionListener option = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //清楚全部选项按钮的颜色
+                ExamFrame.this.clearOptionButtonColor();
+                //处理点击的按钮
+                JButton button = (JButton) e.getSource();
+                button.setBackground(Color.GREEN);
+                //填写答题卡
+                answers[nowNumber] = button.getText();
+            }
+        };
+        aButton.addActionListener(option);
+        bButton.addActionListener(option);
+        cButton.addActionListener(option);
+        dButton.addActionListener(option);
+
+        //next按钮
+        nextButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(nowNumber == 0){
+                    prevButton.setEnabled(true);
+                }
+                //清楚全部选项按钮的颜色
+                ExamFrame.this.clearOptionButtonColor();
+                //题号增加
+                nowNumber++;
+                //主界面与按钮界面变化
+                if(nowNumber == totalCount){//答完
+                    examArea.setText("全部题目已经回答完毕\n请点击下方红色提交按钮");
+                    //next按钮失效
+                    nextButton.setEnabled(false);
+                    //全部选项按钮失效
+                    ExamFrame.this.setOptionButtonEnabled(false);
+                }else{
+                    ExamFrame.this.showQuestion();
+                    //修改右侧题号
+                    ExamFrame.this.nowNumField.setText(nowNumber + 1 + "");
+                }
+                //修改已答题 未答题
+                ExamFrame.this.answerCountField.setText(answerCount + 1 + "");
+                ExamFrame.this.unanswerCountField.setText(unanswerCount - 1 + "");
+            }
+        });
+
+        //prev按钮
+        prevButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(nowNumber == totalCount){
+                    ExamFrame.this.setOptionButtonEnabled(true);
+                    nextButton.setEnabled(true);
+                }
+                //清除全部选项按钮的颜色
+                ExamFrame.this.clearOptionButtonColor();
+                //题号减少
+                nowNumber--;
+                //按钮界面变化
+                if(nowNumber == 0){
+                    prevButton.setEnabled(false);
+                }
+                //显示题目
+                ExamFrame.this.showQuestion();
+                //修改右侧题号 已答题 未答题
+                nowNumField.setText(nowNumber + 1 + "");
+                answerCountField.setText(--answerCount + "");
+                unanswerCountField.setText(++unanswerCount + "");
+                //还原之前的选择
+                ExamFrame.this.restoreButton();
+            }
+        });
+
     }
 
     @Override
@@ -206,6 +288,44 @@ public class ExamFrame extends BaseFrame {
         ImageIcon imageIcon = new ImageIcon(path);
         imageIcon.setImage(imageIcon.getImage().getScaledInstance(280,230,Image.SCALE_DEFAULT));
         return imageIcon;
+    }
+
+    //清楚全部选项按钮的颜色
+    private void clearOptionButtonColor(){
+        aButton.setBackground(null);
+        bButton.setBackground(null);
+        cButton.setBackground(null);
+        dButton.setBackground(null);
+    }
+
+    //控制全部选项按钮是否可用
+    private void setOptionButtonEnabled(boolean key){
+        aButton.setEnabled(key);
+        bButton.setEnabled(key);
+        cButton.setEnabled(key);
+        dButton.setEnabled(key);
+    }
+
+    //还原上一题的选项
+    private void restoreButton(){
+        String answer = answers[nowNumber];
+        if(answer == null){
+            return;
+        }
+        switch (answer){
+            case "A":
+                aButton.setBackground(Color.GREEN);
+                break;
+            case "B":
+                bButton.setBackground(Color.GREEN);
+                break;
+            case "C":
+                cButton.setBackground(Color.GREEN);
+                break;
+            case "D":
+                dButton.setBackground(Color.GREEN);
+                break;
+        }
     }
 
 }
