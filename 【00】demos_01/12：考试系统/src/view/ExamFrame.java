@@ -1,9 +1,13 @@
 package view;
 
+import domain.Question;
+import service.QuestionService;
 import util.BaseFrame;
+import util.MySpring;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 @SuppressWarnings("all")
 public class ExamFrame extends BaseFrame {
@@ -20,6 +24,20 @@ public class ExamFrame extends BaseFrame {
         return examFrame;
     }
 
+    //service
+    private QuestionService service = MySpring.getBean("service.QuestionService");
+    //试卷
+    private ArrayList<Question> paper = service.getPaper(5);
+    //答案
+    private String[] answers = new String[paper.size()];
+
+    //控制窗体右侧的数值显示
+    private int nowNumber = 0;//当前题号
+    private int totalCount = paper.size();//题目总数
+    private int answerCount = 0;//已答
+    private int unanswerCount = totalCount;//未答
+
+
     //添加三个panel 区域的分割
     private JPanel mainPanel = new JPanel();//负责答题主页面展示
     private JPanel messagePanel = new JPanel();//负责右侧信息展示
@@ -33,12 +51,12 @@ public class ExamFrame extends BaseFrame {
     private JLabel totalCountLabel = new JLabel("题目总数：");//提示题目的总数
     private JLabel answerCountLabel = new JLabel("已答题数：");//提示已经答过的题目数量
     private JLabel unanswerCountLabel = new JLabel("未答题数：");//提示未答题数量
-    private JTextField nowNumField = new JTextField("0");//展示题号
-    private JTextField totalCountField = new JTextField("0");//展示总数
-    private JTextField answerCountField = new JTextField("0");//展示已答数
-    private JTextField unanswerCountField = new JTextField("0");//展示未答数
+    private JTextField nowNumField = new JTextField();//展示题号
+    private JTextField totalCountField = new JTextField();//展示总数
+    private JTextField answerCountField = new JTextField();//展示已答数
+    private JTextField unanswerCountField = new JTextField();//展示未答数
     private JLabel timeLabel = new JLabel("剩余答题时间");//提示剩余时间
-    private JLabel realTimeLabel = new JLabel("00:00:00");//倒计时真实时间
+    private JLabel realTimeLabel = new JLabel();//倒计时真实时间
     //添加下方按钮的组件
     private JButton aButton = new JButton("A");//a按钮
     private JButton bButton = new JButton("B");//b按钮
@@ -69,6 +87,7 @@ public class ExamFrame extends BaseFrame {
 
         examArea.setFont(new Font("黑体",Font.BOLD,34));
         examArea.setEnabled(false);//文本域中的文字不能编辑
+        this.showQuestion();//展示第一道题
 
         pictureLabel.setBounds(10,10,280,230);
         pictureLabel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
@@ -122,6 +141,13 @@ public class ExamFrame extends BaseFrame {
         submitButton.setBounds(276,50,100,30);
         submitButton.setForeground(Color.RED);
         submitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        //设置控制窗体右侧的数值
+        nowNumField.setText(nowNumber + 1 + "");
+        totalCountField.setText(totalCount + "");
+        answerCountField.setText(answerCount + "");
+        unanswerCountField.setText(unanswerCount + "");
+
     }
 
     @Override
@@ -161,6 +187,25 @@ public class ExamFrame extends BaseFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);//不想让窗体拖拽大小
         this.setVisible(true);//最终展示整个窗体
+    }
+
+    //展示一道题目
+    private void showQuestion(){
+        Question question = paper.get(nowNumber);//三个属性：题干、答案、图片（可能有）
+        String picture = question.getPicture();
+        if (picture != null){//题目中有图片信息
+            pictureLabel.setIcon(this.drawPicture("src\\img\\" + picture));
+        } else{
+            pictureLabel.setIcon(null);
+        }
+        examArea.setText((nowNumber+1) + "." + question.getTitle().replace("<br>","\n   "));
+    }
+
+    //画图
+    private ImageIcon drawPicture(String path){
+        ImageIcon imageIcon = new ImageIcon(path);
+        imageIcon.setImage(imageIcon.getImage().getScaledInstance(280,230,Image.SCALE_DEFAULT));
+        return imageIcon;
     }
 
 }
