@@ -31,7 +31,7 @@ public class ExamFrame extends BaseFrame {
     //试卷
     private ArrayList<Question> paper = service.getPaper(5);
     //答题卡
-    private String[] answers = new String[paper.size()];
+    private String[] answers = new String[paper.size() + 1];
 
     //控制窗体右侧的数值显示
     private int nowNumber = 0;//当前题号
@@ -235,6 +235,8 @@ public class ExamFrame extends BaseFrame {
                 //修改已答题 未答题
                 ExamFrame.this.answerCountField.setText(++answerCount + "");
                 ExamFrame.this.unanswerCountField.setText(--unanswerCount + "");
+                //还原之前的选择
+                ExamFrame.this.restoreButton();
             }
         });
 
@@ -287,7 +289,6 @@ public class ExamFrame extends BaseFrame {
                 }
             }
         });
-
     }
 
     @Override
