@@ -23,7 +23,11 @@ public class QuestionFileReader {
             String value = br.readLine();
             while (value != null){
                 String[] questionValue = value.split("#");
-                questionBox.add(new Question(questionValue[0],questionValue[1]));
+                if(questionValue.length == 2){//题干、答案
+                    questionBox.add(new Question(questionValue[0],questionValue[1]));
+                }else if (questionValue.length == 3){//题干、答案、图片
+                    questionBox.add(new Question(questionValue[0],questionValue[1],questionValue[2]));
+                }
                 value = br.readLine();
             }
         } catch (Exception e) {

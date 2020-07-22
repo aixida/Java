@@ -1,11 +1,10 @@
 package domain;
 
-import java.util.Objects;
-
 public class Question {
 
     private String title;//题干：题目+选项
     private String answer;//答案
+    private String picture;//图片路径
 
     public Question() {
     }
@@ -13,6 +12,12 @@ public class Question {
     public Question(String title, String answer) {
         this.title = title;
         this.answer = answer;
+    }
+
+    public Question(String title, String answer, String picture) {
+        this.title = title;
+        this.answer = answer;
+        this.picture = picture;
     }
 
     //想要将Question对象存入HashSet集合内 让set集合帮我们去掉重复元素
@@ -49,6 +54,14 @@ public class Question {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
 }

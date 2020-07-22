@@ -8,3 +8,6 @@
 未编译之前的源文件后缀名?<br>   A. .obj<br>   B. .exe<br>   C. .class<br>   D. .java#D
 下面哪个写法声明数组正确?<br>   A.int[] a = new int[10];<br>   B.float f = new float[10];<br>   C.char d[] = new char('d');<br>   D.byte[10] b = new byte[];#A
 下面哪个选项是key-value形式?<br>   A.ArrayList<br>   B.HashMap<br>   C.LinkedList<br>   D.Vector#B
+右图是以下哪个语言的Logo?<br>   A.C<br>   B.Java<br>   C.PHP<br>   D.VB#B#java.jpg
+右图是以下哪个数据库的Logo?<br>   A.MySQL<br>   B.Oracle<br>   C.SqlServer<br>   D.DB2#A#mysql.jpg
+右图是以下哪个服务器的Logo?<br>   A.JBoss<br>   B.Oracle<br>   C.Jetty<br>   D.Tomcat#D#tomcat.jpg
