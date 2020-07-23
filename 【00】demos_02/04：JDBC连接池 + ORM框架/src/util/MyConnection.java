@@ -13,10 +13,10 @@ public class MyConnection {
         this.index = index;
     }
 
-    private static String driver = "com.mysql.cj.jdbc.Driver";
-    private static String url = "jdbc:mysql://localhost:3306/study?serverTimezone=CST";
-    private static String user = "root";
-    private static String password = "root";
+    private static String driver = DBConfig.getConfig("driver");
+    private static String url = DBConfig.getConfig("url");
+    private static String user = DBConfig.getConfig("user");
+    private static String password = DBConfig.getConfig("password");;
 
     //只加载驱动一次
     static {
@@ -47,7 +47,5 @@ public class MyConnection {
     public void setIndex(int index) {
         this.index = index;
     }
-
-
 
 }
