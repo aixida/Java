@@ -65,11 +65,11 @@ public class ConnectionPool {
         if (connectionBitMap[index] == NULL_VALUE){//空置
             myConnection = new MyConnection(index);
             connectionList[index] = myConnection;
+            total++;
         } else if(connectionBitMap[index] == FREE_VALUE){//有connection但是处于释放状态
             myConnection = connectionList[index];
         }
         connectionBitMap[index] = BUSY_VALUE;
-        total++;
         return myConnection;
     }
 
