@@ -1,8 +1,8 @@
 package test;
 
 import util.ConnectionPool;
-import util.MyConnection;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -10,7 +10,7 @@ public class TestMain {
     public static void main(String[] args) {
         try {
             //1.获取连接
-            MyConnection conn = ConnectionPool.getMyConnection();
+            Connection conn = ConnectionPool.getConnection();
             System.out.println(conn);
             //2.创建状态参数
             PreparedStatement pstat = conn.prepareStatement("select * from student");

@@ -1,5 +1,7 @@
 package util;
 
+import java.sql.Connection;
+
 public class ConnectionPool {
 
     private static final int BUSY_VALUE = 1;
@@ -7,7 +9,7 @@ public class ConnectionPool {
     private static final int NULL_VALUE = -1;
 
     //连接池
-    private static MyConnection[] connectionList = new MyConnection[DBConfig.getIntegerValue("minPoolSize","1")];
+    private static Connection[] connectionList = new Connection[DBConfig.getIntegerValue("minPoolSize","1")];
     //连接池对应状态   占用1/释放0/空置-1
     private static byte[] connectionBitMap = new byte[DBConfig.getIntegerValue("minPoolSize","1")];
     //连接池存量
@@ -22,7 +24,7 @@ public class ConnectionPool {
     }
 
     //连接池中获取connection
-    public static synchronized MyConnection getMyConnection(){
+    public static synchronized Connection getConnection(){
         int freeIndex = getFreeIndex();
         if(freeIndex > -1){
             return distrute(freeIndex);
@@ -58,26 +60,26 @@ public class ConnectionPool {
     }
 
     //分配connection
-    private static MyConnection distrute(int index){
+    private static Connection distrute(int index){
         if (connectionBitMap[index] == BUSY_VALUE){//占用中
             return null;
         }
-        MyConnection myConnection = null;
+        Connection connection = null;
         if (connectionBitMap[index] == NULL_VALUE){//空置
-            myConnection = new MyConnection(index);
-            connectionList[index] = myConnection;
+            connection = new MyConnection(index);
+            connectionList[index] = connection;
             total++;
         } else if(connectionBitMap[index] == FREE_VALUE){//有connection但是处于释放状态
-            myConnection = connectionList[index];
+            connection = connectionList[index];
         }
         connectionBitMap[index] = BUSY_VALUE;
-        return myConnection;
+        return connection;
     }
 
     //扩容
     private static int grow(){
         //容量增倍
-        MyConnection[] newConnectionList = new MyConnection[connectionList.length * 2];
+        Connection[] newConnectionList = new Connection[connectionList.length * 2];
         byte[] newConnectionBitMap = new byte[connectionBitMap.length * 2];
         //复制并初始化
         for (int i = 0; i < connectionList.length; i++){
