@@ -136,4 +136,16 @@ create database study;
 
 use study;
 
+create table student(
+    id int(4),
+    name varchar(20),
+    sex varchar(10),
+    birth int,
+    ctime date
+);
+
+insert into student values(1,'ahri','female',1998,'2020-7-23');
+insert into student values(2,'lux','female',1997,'2020-7-23');
+insert into student values(3,'garen','male',1996,'2020-7-23');
+insert into student values(4,'akali','female',2000,'2020-7-23');
 ```
