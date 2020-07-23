@@ -15,8 +15,9 @@ public class ConnectionPool {
 
     //连接池初始化 每一个connection的状态空置
     static {
-        for(byte c: connectionBitMap){
-            c = NULL_VALUE;
+        //注意: 增强for循环只适合查询，无法修改引用值！！！
+        for(int i = 0; i < connectionBitMap.length; i++){
+            connectionBitMap[i] = NULL_VALUE;
         }
     }
 
