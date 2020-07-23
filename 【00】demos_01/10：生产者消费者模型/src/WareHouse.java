@@ -16,7 +16,12 @@ public class WareHouse {
         if(list.size() < 20){
             list.add("X");
         }else{
-            return;
+            try {
+                notifyAll();//唤醒其余线程
+                wait();//访问仓库的线程进入等待
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -25,7 +30,12 @@ public class WareHouse {
         if(list.size() > 0){
             list.remove(0);
         }else{
-            return;
+            try {
+                notifyAll();//唤醒其余线程
+                wait();//访问仓库的线程进入等待
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
