@@ -12,7 +12,7 @@ public class WareHouse {
     private ArrayList<String> list = new ArrayList<>();
 
     //向集合中添加元素
-    public void add(){
+    public synchronized void add(){
         if(list.size() < 20){
             list.add("X");
         }else{
@@ -21,7 +21,7 @@ public class WareHouse {
     }
 
     //向集合中取元素
-    public void get(){
+    public synchronized void get(){
         if(list.size() > 0){
             list.remove(0);
         }else{
