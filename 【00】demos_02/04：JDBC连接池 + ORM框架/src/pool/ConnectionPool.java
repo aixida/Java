@@ -17,19 +17,34 @@ import java.sql.Connection;
  */
 public class ConnectionPool {
 
+    //单例模式（双重检测模型）
+    private ConnectionPool(){}
+    private static volatile ConnectionPool connectionPool;//修饰符volatile, 防止指令重排
+    public static ConnectionPool getInstance(){
+        if (connectionPool == null){
+            synchronized (ConnectionPool.class){
+                if (connectionPool == null){
+                    connectionPool = new ConnectionPool();//创建对象内存中有3个指令（分配空间、摆放东西、空间创建好后, 传给地址引用）
+                }
+            }
+
+        }
+        return connectionPool;
+    }
+
     private static final int BUSY_VALUE = 1;
     private static final int FREE_VALUE = 0;
     private static final int NULL_VALUE = -1;
 
     //连接池
-    private static Connection[] connectionList = new Connection[DBConfig.getIntegerValue("minPoolSize","5")];
+    private Connection[] connectionList = new Connection[DBConfig.getIntegerValue("minPoolSize","5")];
     //连接池对应状态   占用1/释放0/空置-1
-    private static byte[] connectionBitMap = new byte[DBConfig.getIntegerValue("minPoolSize","5")];
+    private byte[] connectionBitMap = new byte[DBConfig.getIntegerValue("minPoolSize","5")];
     //连接池存量
-    private static int total = 0;
+    private int total = 0;
 
     //连接池初始化 每一个connection的状态空置
-    static {
+    {
         //注意: 增强for循环只适合查询，无法修改引用值！！！
         for(int i = 0; i < connectionBitMap.length; i++){
             connectionBitMap[i] = NULL_VALUE;
@@ -37,7 +52,7 @@ public class ConnectionPool {
     }
 
     //连接池中获取connection
-    public static synchronized Connection getConnection(){
+    public synchronized Connection getConnection(){
         int freeIndex = getFreeIndex();
         if(freeIndex > -1){
             return distrute(freeIndex);
@@ -53,7 +68,7 @@ public class ConnectionPool {
     }
 
     //负责在连接池中寻找已经释放的connection
-    private static int getFreeIndex(){
+    private int getFreeIndex(){
         for (int i = 0; i < connectionBitMap.length; i++){
             if(connectionBitMap[i] == FREE_VALUE){
                 return i;
@@ -63,7 +78,7 @@ public class ConnectionPool {
     }
 
     //负责在连接池中寻找空置的connection
-    private static int getNullIndex(){
+    private int getNullIndex(){
         for (int i = 0; i < connectionBitMap.length; i++){
             if(connectionBitMap[i] == NULL_VALUE){
                 return i;
@@ -73,7 +88,7 @@ public class ConnectionPool {
     }
 
     //分配connection
-    private static Connection distrute(int index){
+    private Connection distrute(int index){
         if (connectionBitMap[index] == BUSY_VALUE){//占用中
             return null;
         }
@@ -90,7 +105,7 @@ public class ConnectionPool {
     }
 
     //扩容
-    private static int grow(){
+    private int grow(){
         //容量增倍
         Connection[] newConnectionList = new Connection[connectionList.length * 2];
         byte[] newConnectionBitMap = new byte[connectionBitMap.length * 2];
@@ -109,7 +124,7 @@ public class ConnectionPool {
     }
 
     //释放connection
-    public static synchronized void freeConnection(MyConnection myConnection){
+    public synchronized void freeConnection(MyConnection myConnection){
         connectionBitMap[myConnection.getIndex()] = FREE_VALUE;
     }
 

@@ -16,7 +16,7 @@ public class TestPool {
             long t1 = System.currentTimeMillis();
 
             //1.获取连接
-            Connection conn = ConnectionPool.getConnection();
+            Connection conn = ConnectionPool.getInstance().getConnection();
 
             long t2 = System.currentTimeMillis();
 
@@ -43,7 +43,7 @@ public class TestPool {
             long tt1 = System.currentTimeMillis();
 
             //1.获取连接
-            Connection conn2 = ConnectionPool.getConnection();
+            Connection conn2 = ConnectionPool.getInstance().getConnection();
 
             long tt2 = System.currentTimeMillis();
 

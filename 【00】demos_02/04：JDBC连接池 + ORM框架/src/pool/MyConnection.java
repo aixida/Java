@@ -59,7 +59,7 @@ public class MyConnection extends AbstractConnection{
 
     @Override
     public void close() throws SQLException {
-        ConnectionPool.freeConnection(this);
+        ConnectionPool.getInstance().freeConnection(this);
     }
 
 }
