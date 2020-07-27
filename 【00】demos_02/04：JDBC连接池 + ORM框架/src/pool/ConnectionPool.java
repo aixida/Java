@@ -51,20 +51,33 @@ public class ConnectionPool {
         }
     }
 
-    //连接池中获取connection
+    //连接池中获取connection, 有等待机制
     public synchronized Connection getConnection(){
-        int freeIndex = getFreeIndex();
-        if(freeIndex > -1){
-            return distrute(freeIndex);
-        }
-        if(total < DBConfig.getIntegerValue("maxPoolSize")){//允许扩容
-            int nullIndex = getNullIndex();
-            if(nullIndex == -1){//需要扩容
-                nullIndex = grow();
+        Connection result = null;
+        int count = 0;
+        while (result == null && count < DBConfig.getIntegerValue("waitTime") * 10) {
+            int freeIndex = getFreeIndex();
+            if (freeIndex > -1) {
+                result = distrute(freeIndex);
             }
-            return distrute(nullIndex);
+            if (total < DBConfig.getIntegerValue("maxPoolSize")) {//允许扩容
+                int nullIndex = getNullIndex();
+                if (nullIndex == -1) {//需要扩容
+                    nullIndex = grow();
+                }
+                result = distrute(nullIndex);
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            count++;
         }
-        return null;//连接池繁忙，没空理你
+        if (result == null){//等待5秒之后还是无法获取连接
+            throw new ConnectionPoolBusyException("系统繁忙, 没空理你哦！");
+        }
+        return result;
     }
 
     //负责在连接池中寻找已经释放的connection
