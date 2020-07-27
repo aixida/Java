@@ -1,4 +1,4 @@
-package util;
+package pool;
 
 import java.sql.*;
 
@@ -26,6 +26,7 @@ public class MyConnection extends AbstractConnection{
     }
 
     //每次调用构造方法，块都会执行一遍（每次new出一个连接）
+    //DriverManager.getConnection()是有异常的, 无法直接给属性赋值, 所以使用块
     {
         try {
             connection = DriverManager.getConnection(url, user, password);

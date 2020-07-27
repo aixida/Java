@@ -1,7 +1,20 @@
-package util;
+package pool;
 
 import java.sql.Connection;
 
+/**
+ * 1.mysql、数据库名字、账号、密码等不能修改 （使用配置文件与IO）
+ *
+ * 2.连接池只需要一个   （单例模式或者静态）
+ *
+ * 3.连接池并发执行, 出现线程安全问题  （线程安全锁）
+ *
+ * 4.连接池容量不够，未达到上限  （动态扩容）
+ *
+ * 5.连接池无法扩容, 并且连接用完了   （等待机制）
+ *
+ * 6.连接池对于用户的使用方式不一样了   （静态代理模式）
+ */
 public class ConnectionPool {
 
     private static final int BUSY_VALUE = 1;
@@ -9,9 +22,9 @@ public class ConnectionPool {
     private static final int NULL_VALUE = -1;
 
     //连接池
-    private static Connection[] connectionList = new Connection[DBConfig.getIntegerValue("minPoolSize","1")];
+    private static Connection[] connectionList = new Connection[DBConfig.getIntegerValue("minPoolSize","5")];
     //连接池对应状态   占用1/释放0/空置-1
-    private static byte[] connectionBitMap = new byte[DBConfig.getIntegerValue("minPoolSize","1")];
+    private static byte[] connectionBitMap = new byte[DBConfig.getIntegerValue("minPoolSize","5")];
     //连接池存量
     private static int total = 0;
 
