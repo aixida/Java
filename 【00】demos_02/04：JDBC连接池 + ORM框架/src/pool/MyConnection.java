@@ -11,10 +11,10 @@ public class MyConnection extends AbstractConnection{
         this.index = index;
     }
 
-    private static String driver = DBConfig.getConfig("driver");
-    private static String url = DBConfig.getConfig("url");
-    private static String user = DBConfig.getConfig("user");
-    private static String password = DBConfig.getConfig("password");;
+    private static String driver = DBConfig.getStringValue("driver");
+    private static String url = DBConfig.getStringValue("url");
+    private static String user = DBConfig.getStringValue("user");
+    private static String password = DBConfig.getStringValue("password");
 
     //只加载驱动一次
     static {

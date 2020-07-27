@@ -37,9 +37,9 @@ public class ConnectionPool {
     private static final int NULL_VALUE = -1;
 
     //连接池
-    private Connection[] connectionList = new Connection[DBConfig.getIntegerValue("minPoolSize","5")];
+    private Connection[] connectionList = new Connection[DBConfig.getIntegerValue("minPoolSize")];
     //连接池对应状态   占用1/释放0/空置-1
-    private byte[] connectionBitMap = new byte[DBConfig.getIntegerValue("minPoolSize","5")];
+    private byte[] connectionBitMap = new byte[DBConfig.getIntegerValue("minPoolSize")];
     //连接池存量
     private int total = 0;
 
@@ -57,7 +57,7 @@ public class ConnectionPool {
         if(freeIndex > -1){
             return distrute(freeIndex);
         }
-        if(total < DBConfig.getIntegerValue("maxPoolSize","10")){//允许扩容
+        if(total < DBConfig.getIntegerValue("maxPoolSize")){//允许扩容
             int nullIndex = getNullIndex();
             if(nullIndex == -1){//需要扩容
                 nullIndex = grow();
