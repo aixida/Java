@@ -58,6 +58,12 @@ public class StudentDao {
         return sqlSession.update(sql,map);
     }
 
+    //单条查询
+    public Map<String ,Object> selectOne(int id){
+        String sql = "select * from student where id = #{id}";
+        return sqlSession.selectOne(sql,id,Map.class);
+    }
+
     //============================ 方案一[模拟MyBatis] - end ============================
 
     //以下为方案一[模拟SpringJDBC]

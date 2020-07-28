@@ -3,6 +3,7 @@ package orm;
 import domain.Student;
 import pool.ConnectionPool;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -80,6 +81,56 @@ public class SqlSessionFactory {
     public int insert(String sql) {
         return this.update(sql, null);
     }
+
+    //单条查询
+    // 返回值: domain层对象
+    // 参数: SQL语句  需要返回的对象类型  ？对应的值
+    public <T>T selectOne(String sql,  Object obj, Class resultType){
+        T result = null;
+        Connection conn = null;
+        PreparedStatement pstat = null;
+        ResultSet rs = null;
+        try {
+            SQLAndKey sqlAndKey = handler.parseSQL(sql);
+            conn = ConnectionPool.getInstance().getConnection();
+            pstat = conn.prepareStatement(sqlAndKey.getSql());
+            if (obj != null){
+                handler.handleParameter(pstat,obj,sqlAndKey.getKeyList());//负责将SQL与 ? 拼接完整
+            }
+            rs = pstat.executeQuery();
+            if(rs.next()){
+                result = (T)handler.handleResult(rs, resultType);//给对象赋值
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }  finally {
+            try {
+                if (rs != null){
+                    rs.close();
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            try {
+                if (pstat != null){
+                    pstat.close();
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            try {
+                if (conn != null){
+                    conn.close();
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    //多条查询
+
 
     //============================ 方案一[模拟MyBatis] - end ============================
 
@@ -166,6 +217,13 @@ public class SqlSessionFactory {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
+            try {
+                if (rs != null){
+                    rs.close();
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             try {
                 if (pstat != null){
                     pstat.close();

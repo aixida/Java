@@ -1,11 +1,17 @@
 package orm;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //方案二[模拟MyBatis]
 public class Handler {
@@ -70,6 +76,67 @@ public class Handler {
                 }
             }
         }
+    }
+
+    //===================================================================================
+
+    //结果集的值转化为domain对象
+    Object handleResult(ResultSet rs, Class resultType) throws SQLException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException {
+        Object result = null;
+        //返回值是基本数据类型
+        if(resultType == int.class || resultType == Integer.class){
+           result = rs.getInt(1);
+        }else if(resultType == float.class || resultType == Float.class){
+            result = rs.getFloat(1);
+        }else if(resultType == double.class || resultType == Double.class){
+            result = rs.getDouble(1);
+        }else if(resultType == String.class){
+            result = rs.getString(1);
+        }else{
+            //1.map
+            if (resultType == Map.class){
+                Map map = new HashMap<String, Object>();
+                ResultSetMetaData rsmd = rs.getMetaData();
+                for (int i = 1; i <= rsmd.getColumnCount(); i++){
+                    //获取列名
+                    String key = rsmd.getColumnName(i);
+                    //获取值
+                    Object value = rs.getObject(key);
+
+                    map.put(key, value);
+                }
+                result = map;
+            }else{
+                //2.domain
+                Object obj = null;
+                obj = resultType.getDeclaredConstructor().newInstance();
+                ResultSetMetaData rsmd = rs.getMetaData();
+                for (int i = 1; i <= rsmd.getColumnCount(); i++){
+                    //获取列名
+                    String columnName = rsmd.getColumnName(i);
+                    //反射寻找列名对应的domain的属性
+                    Field field = resultType.getDeclaredField(lineToHump(columnName));
+                    Class fieldType = field.getType();
+                    field.setAccessible(true);
+                    field.set(obj,rs.getObject(columnName,fieldType));
+                }
+                result = obj;
+            }
+        }
+        return result;
+    }
+
+    //数据库中的列名与Java中属性名的转化
+    private String lineToHump(String str){
+        str = str.toLowerCase();
+        Pattern linePattern = Pattern.compile("_\\w");
+        Matcher matcher = linePattern.matcher(str);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()){
+            matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
     }
 
 }

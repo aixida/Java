@@ -39,8 +39,8 @@ public class StudentService {
         return dao.insert(map);
     }
 
-    public Student selectOne(int id){
-        return dao.selectOne1(id);
+    public Map<String, Object> selectOne(int id){
+        return dao.selectOne(id);
     }
     public List<Student> selectList(){
         return dao.selectList1();
