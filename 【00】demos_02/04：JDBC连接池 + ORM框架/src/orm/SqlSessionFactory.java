@@ -90,7 +90,11 @@ public class SqlSessionFactory {
     // 返回值: domain层对象
     // 参数: SQL语句  需要返回的对象类型  ？对应的值
     public <T> T selectOne(String sql,  Object obj, Class resultType){
-        return (T)this.selectList(sql, obj, resultType).get(0);
+        List<T> results = (List<T>) this.selectList(sql, obj, resultType);
+        if (results.size() == 0){
+            return null;
+        }
+        return results.get(0);
     }
 
     //多条查询
