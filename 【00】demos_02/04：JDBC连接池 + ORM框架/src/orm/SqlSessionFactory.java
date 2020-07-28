@@ -1,9 +1,13 @@
 package orm;
 
-import domain.Student;
+import orm.annotation.Delete;
+import orm.annotation.Insert;
+import orm.annotation.Select;
+import orm.annotation.Update;
 import pool.ConnectionPool;
 
-import java.lang.reflect.InvocationTargetException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -243,5 +247,67 @@ public class SqlSessionFactory {
         }
         return list;
     }
+
+
+    //============================ ============================ ============================
+
+    //SqlSession为Dao创建动态代理
+    public <T> T getMapper(Class c){
+        //Java提供了一个现成的类帮我们管理
+        //  第一个参数：类加载器（为了生成代理对象，要通过反射去加载）
+        //  第二个参数：Class类型的数组，这个数组中传入需要生成代理的类，即告诉我要给谁代理
+        //  第三个参数：方法，即告诉我要代理你干什么事
+        //      MethodProxy是一个接口，得实现它
+        return (T) Proxy.newProxyInstance(c.getClassLoader(), new Class[]{c}, new MethodProxy());
+    }
+
+    //内部类
+    private class MethodProxy implements InvocationHandler {
+
+        @Override
+        //参数：代理对象，被代理方法，被代理方法的参数
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            if (Object.class.equals(method.getDeclaringClass())){
+                return method.invoke(this,args);//dao层是正常类，不是接口，不需要代理干活
+            }
+            Annotation an = method.getAnnotations()[0];
+            Class type = an.annotationType();
+            Method m = type.getDeclaredMethod("value");
+            String sql = (String) m.invoke(an);
+            //参数: 1.基本类型 2.map 3.domain 4.无
+            Object param = args==null?null:args[0];
+            if (type == Insert.class) {
+                return SqlSessionFactory.this.insert(sql, param);
+            } else if (type == Delete.class) {
+                return SqlSessionFactory.this.delete(sql, param);
+            }
+            else if (type == Update.class) {
+                return SqlSessionFactory.this.update(sql, param);
+            }
+            else if (type == Select.class) {
+                //单条查询还是多条查询？？？
+                //根据method反射, 通过返回值判断, 单: domaim 多: List<domain>
+                Class methodReturnTypeClass = method.getReturnType();
+                if (methodReturnTypeClass == List.class){//多条查询
+                    //解析集合的泛型
+                    //返回值的具体类型, 比如(java.util.List<domain.Student>)
+                    //Class是无法操作泛型的, 返回值使用 Type 接口来接收, 需要将 Type 还原成可以操作泛型的类型
+                    Type returnType = method.getGenericReturnType();
+                    ParameterizedType realReturnType = (ParameterizedType)returnType;
+                    Type[] patternTypes = realReturnType.getActualTypeArguments();//获取泛型类
+                    Type patternType = patternTypes[0];//当前集合中只有一个泛型
+                    return SqlSessionFactory.this.selectList(sql, param, (Class)patternType);
+                }else {
+                    //单条查询
+                    return SqlSessionFactory.this.selectOne(sql, param, methodReturnTypeClass);
+                }
+            } else {
+                System.out.println("无此注解！");
+            }
+            return null;
+        }
+
+    }
+
 
 }
