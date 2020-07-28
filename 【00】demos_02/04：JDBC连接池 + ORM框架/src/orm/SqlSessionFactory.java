@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SqlSessionFactory {
 
@@ -136,8 +138,13 @@ public class SqlSessionFactory {
     }
 
     //单条查询
-    public <T>T selectOne1(String sql, RowMapper mapper, Object ...values){
-        T obj = null;
+    public <T> T selectOne1(String sql, RowMapper mapper, Object ...values){
+        return (T)selectList1(sql, mapper, values).get(0);
+    }
+
+    //多条查询
+    public <T> List<T> selectList1(String sql, RowMapper mapper, Object ...values){
+        List<T> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstat = null;
         ResultSet rs = null;
@@ -148,14 +155,13 @@ public class SqlSessionFactory {
                 pstat.setObject(i+1, values[i]);
             }
             rs = pstat.executeQuery();
-
             //处理结果集 rs再返回之前需要关闭, 所以需要把rs中的数据取出来
             //解决方案1: domain类型, 采用反射
             //解决方案2: map集合
             //解决方案2: domain类型, 读取SQL语句中涉及的数据库
             //解决方案4: 策略模式, 流程相同而执行策略不同  （采取该方案）
-            if (rs.next()){
-                obj = (T)mapper.mapperRow(rs);
+            while (rs.next()){
+                list.add((T)mapper.mapperRow(rs));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -175,7 +181,7 @@ public class SqlSessionFactory {
                 throwables.printStackTrace();
             }
         }
-        return obj;
+        return list;
     }
 
 }

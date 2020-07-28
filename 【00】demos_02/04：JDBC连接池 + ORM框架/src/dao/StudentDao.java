@@ -6,6 +6,7 @@ import orm.SqlSessionFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 public class StudentDao {
@@ -94,7 +95,7 @@ public class StudentDao {
         return sqlSession.update1(sql,map.get("name"),map.get("sex"),map.get("birth"),map.get("ctime"),map.get("id"));
     }
 
-    //单挑查询
+    //单条查询
     public Student selectOne1(int id){
         String sql = "select * from student where id = ?";
         return sqlSession.selectOne1(sql, new RowMapper() {//策略模式
@@ -113,6 +114,27 @@ public class StudentDao {
                 return student;
             }
         }, id);
+    }
+
+    //多条查询
+    public List<Student> selectList1(){
+        String sql = "select * from student";
+        return sqlSession.selectList1(sql, new RowMapper() {//策略模式
+            @Override
+            public Object mapperRow(ResultSet rs) {
+                Student student = new Student();
+                try {
+                    student.setId(rs.getInt("id"));
+                    student.setName(rs.getString("name"));
+                    student.setSex(rs.getString("sex"));
+                    student.setBirth(rs.getInt("birth"));
+                    student.setCtime(rs.getDate("ctime"));
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                return student;
+            }
+        });
     }
 
 }

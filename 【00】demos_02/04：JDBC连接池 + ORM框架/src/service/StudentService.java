@@ -3,6 +3,7 @@ package service;
 import dao.StudentDao;
 import domain.Student;
 
+import java.util.List;
 import java.util.Map;
 
 public class StudentService {
@@ -38,8 +39,11 @@ public class StudentService {
         return dao.insert(map);
     }
 
-    public Student selectOne1(int id){
+    public Student selectOne(int id){
         return dao.selectOne1(id);
+    }
+    public List<Student> selectList(){
+        return dao.selectList1();
     }
 
 }
