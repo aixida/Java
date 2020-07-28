@@ -1,9 +1,11 @@
 package orm;
 
+import domain.Student;
 import pool.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SqlSessionFactory {
@@ -131,6 +133,49 @@ public class SqlSessionFactory {
     }
     public int delete1(String sql){
         return this.update1(sql, null);
+    }
+
+    //单条查询
+    public <T>T selectOne1(String sql, RowMapper mapper, Object ...values){
+        T obj = null;
+        Connection conn = null;
+        PreparedStatement pstat = null;
+        ResultSet rs = null;
+        try {
+            conn = ConnectionPool.getInstance().getConnection();
+            pstat = conn.prepareStatement(sql);
+            for(int i = 0; i < values.length; i++){
+                pstat.setObject(i+1, values[i]);
+            }
+            rs = pstat.executeQuery();
+
+            //处理结果集 rs再返回之前需要关闭, 所以需要把rs中的数据取出来
+            //解决方案1: domain类型, 采用反射
+            //解决方案2: map集合
+            //解决方案2: domain类型, 读取SQL语句中涉及的数据库
+            //解决方案4: 策略模式, 流程相同而执行策略不同  （采取该方案）
+            if (rs.next()){
+                obj = (T)mapper.mapperRow(rs);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            try {
+                if (pstat != null){
+                    pstat.close();
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            try {
+                if (conn != null){
+                    conn.close();
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return obj;
     }
 
 }

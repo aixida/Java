@@ -1,8 +1,11 @@
 package dao;
 
 import domain.Student;
+import orm.RowMapper;
 import orm.SqlSessionFactory;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 public class StudentDao {
@@ -89,6 +92,27 @@ public class StudentDao {
     public int update1(Map map) {
         String sql = "update student set name=?,sex=?,birth=?,ctime=? where id=?;";
         return sqlSession.update1(sql,map.get("name"),map.get("sex"),map.get("birth"),map.get("ctime"),map.get("id"));
+    }
+
+    //单挑查询
+    public Student selectOne1(int id){
+        String sql = "select * from student where id = ?";
+        return sqlSession.selectOne1(sql, new RowMapper() {//策略模式
+            @Override
+            public Object mapperRow(ResultSet rs) {
+                Student student = new Student();
+                try {
+                    student.setId(rs.getInt("id"));
+                    student.setName(rs.getString("name"));
+                    student.setSex(rs.getString("sex"));
+                    student.setBirth(rs.getInt("birth"));
+                    student.setCtime(rs.getDate("ctime"));
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                return student;
+            }
+        }, id);
     }
 
 }

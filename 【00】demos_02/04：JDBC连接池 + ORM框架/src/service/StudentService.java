@@ -38,4 +38,8 @@ public class StudentService {
         return dao.insert(map);
     }
 
+    public Student selectOne1(int id){
+        return dao.selectOne1(id);
+    }
+
 }

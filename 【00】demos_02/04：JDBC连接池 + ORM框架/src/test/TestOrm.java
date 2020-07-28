@@ -35,6 +35,11 @@ public class TestOrm {
 
         //删除
 //        System.out.println(service.delete(6));
+
+        //单条查询
+        Student student = service.selectOne1(1);
+        System.out.println(student.getId() + " - " + student.getName() + " - " + student.getSex() + " - " + student.getBirth() + " - " + student.getCtime());
+
     }
 
 }
