@@ -85,8 +85,13 @@ public class SqlSessionFactory {
     //单条查询
     // 返回值: domain层对象
     // 参数: SQL语句  需要返回的对象类型  ？对应的值
-    public <T>T selectOne(String sql,  Object obj, Class resultType){
-        T result = null;
+    public <T> T selectOne(String sql,  Object obj, Class resultType){
+        return (T)this.selectList(sql, obj, resultType).get(0);
+    }
+
+    //多条查询
+    public <T> List<T> selectList(String sql,  Object obj, Class resultType){
+        List<T> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement pstat = null;
         ResultSet rs = null;
@@ -98,8 +103,8 @@ public class SqlSessionFactory {
                 handler.handleParameter(pstat,obj,sqlAndKey.getKeyList());//负责将SQL与 ? 拼接完整
             }
             rs = pstat.executeQuery();
-            if(rs.next()){
-                result = (T)handler.handleResult(rs, resultType);//给对象赋值
+            while (rs.next()){
+                list.add((T)handler.handleResult(rs, resultType));//给对象赋值
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,11 +131,8 @@ public class SqlSessionFactory {
                 throwables.printStackTrace();
             }
         }
-        return result;
+        return list;
     }
-
-    //多条查询
-
 
     //============================ 方案一[模拟MyBatis] - end ============================
 

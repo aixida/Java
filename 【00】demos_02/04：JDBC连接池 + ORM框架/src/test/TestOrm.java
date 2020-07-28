@@ -41,13 +41,13 @@ public class TestOrm {
         //单条查询
 //        Student student = service.selectOne(3);
 //        System.out.println(student.getId() + " - " + student.getName() + " - " + student.getSex() + " - " + student.getBirth() + " - " + student.getCtime());
-        Map map = service.selectOne(4);
-        System.out.println(map.get("id") + " - " + map.get("name")+ " - " + map.get("sex") + " - " + map.get("birth") + " - " + map.get("ctime"));
+//        Map map = service.selectOne(4);
+//        System.out.println(map.get("id") + " - " + map.get("name")+ " - " + map.get("sex") + " - " + map.get("birth") + " - " + map.get("ctime"));
 
-//        List<Student> list = service.selectList();
-//        for (int i = 0; i < list.size(); i++){
-//            System.out.println(list.get(i).getId() + " - " + list.get(i).getName() + " - " + list.get(i).getSex() + " - " + list.get(i).getBirth() + " - " + list.get(i).getCtime());
-//        }
+        List<Student> list = service.selectList();
+        for (int i = 0; i < list.size(); i++){
+            System.out.println(list.get(i).getId() + " - " + list.get(i).getName() + " - " + list.get(i).getSex() + " - " + list.get(i).getBirth() + " - " + list.get(i).getCtime());
+        }
 
     }
 

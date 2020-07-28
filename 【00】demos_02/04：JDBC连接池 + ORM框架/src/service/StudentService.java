@@ -43,7 +43,7 @@ public class StudentService {
         return dao.selectOne(id);
     }
     public List<Student> selectList(){
-        return dao.selectList1();
+        return dao.selectList();
     }
 
 }

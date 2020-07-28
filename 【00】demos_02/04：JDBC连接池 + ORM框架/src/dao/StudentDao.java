@@ -4,6 +4,7 @@ import domain.Student;
 import orm.RowMapper;
 import orm.SqlSessionFactory;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -62,6 +63,12 @@ public class StudentDao {
     public Map<String ,Object> selectOne(int id){
         String sql = "select * from student where id = #{id}";
         return sqlSession.selectOne(sql,id,Map.class);
+    }
+
+    //多条查询
+    public List<Student> selectList(){
+        String sql = "select * from student";
+        return sqlSession.selectList(sql,null, Student.class);
     }
 
     //============================ 方案一[模拟MyBatis] - end ============================
