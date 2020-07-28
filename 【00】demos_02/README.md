@@ -149,3 +149,7 @@ insert into student values(2,'lux','female',1997,'2020-7-23');
 insert into student values(3,'garen','male',1996,'2020-7-23');
 insert into student values(4,'akali','female',2000,'2020-7-23');
 ```
+
+# 04：银行系统（Swing+JDBC连接池+ORM框架）
+
+将 **04：JDBC连接池 + ORM框架 - 模拟** 放在 **03：银行系统（JDBC+Swing） - 模拟** 测试一下
