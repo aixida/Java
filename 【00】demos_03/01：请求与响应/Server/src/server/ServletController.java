@@ -18,7 +18,7 @@ import java.util.Properties;
 //      让Controller类的对象变成单例模式
 public class ServletController {
 
-    //缓存: 存储配置文件web.properties中的信息（请求名字=真实的Controller的全类名）
+    //缓存: 存储配置文件web.properties中的信息（请求名字=真实的Controller的类全名）
     private static HashMap<String,String> controllerNameMap = new HashMap<>();
     //生命周期托管: 存储被管理的所有的Controller类对象
     private static HashMap<String,HttpServlet> controllerObjectMap = new HashMap<>();
@@ -44,7 +44,7 @@ public class ServletController {
     //找--控制层(controller或者action或者servlet)--干活
     public static void findController(HttpServletRequest request,HttpServletResponse response) {
         //获取request对象中的请求名字
-        String content = request.getContnet();
+        String content = request.getContent();
         try {
             //先看缓存
             HttpServlet controllerObj = controllerObjectMap.get(content);

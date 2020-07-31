@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 public class HttpServletRequest {
 
-    private String contnet;
+    private String content;
     private HashMap<String,String> paramsMap;
 
     public HttpServletRequest(){}
-    public HttpServletRequest(String contnet, HashMap<String, String> paramsMap) {
-        this.contnet = contnet;
+    public HttpServletRequest(String content, HashMap<String, String> paramsMap) {
+        this.content = content;
         this.paramsMap = paramsMap;
     }
 
@@ -17,12 +17,12 @@ public class HttpServletRequest {
         return this.paramsMap.get(key);
     }
 
-    public String getContnet() {
-        return contnet;
+    public String getContent() {
+        return content;
     }
 
-    public void setContnet(String contnet) {
-        this.contnet = contnet;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public void setParamsMap(HashMap<String, String> paramsMap) {
