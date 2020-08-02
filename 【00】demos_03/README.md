@@ -34,3 +34,29 @@
 	3. **若是动态资源：** 调用ServletController，参考web.properties配置文件，找到路径对应的controller类（->service->dao->...），将要返回的资源存放在HttpServletResponse中，然后将HttpServletResponse中的内容返回给浏览器
 	4. **若是静态资源：** 就直接将文件中的内容返回给浏览器
 
+# 02：银行系统（Tomcat+Servlet） - 模拟
+
+>  知识点：JavaSE + JDBC + MySQL + MVC分层思想 + Tomcat + Servlet
+
+- **功能**：登录 + 查询 + 存款  + 取款 + 转账 + 开户 + 销户
+- **UI**：浏览器
+- **Web容器**：Tomcat 9.0.37
+- **数据库初始化**：
+
+```mysql
+# 如果没有创建该数据库
+create database atm;
+
+use atm;
+
+create table atm(
+	aname varchar(20),
+	apassword varchar(20),
+	abalance float(10,2)
+);
+
+alter table atm add primary key(aname);
+
+insert into atm values('zhangsan','333',300),('lisi','444',400),('wangwu','555',500);
+```
+
