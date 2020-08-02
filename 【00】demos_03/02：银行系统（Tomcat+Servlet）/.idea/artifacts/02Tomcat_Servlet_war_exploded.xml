@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="02：银行系统（Tomcat+Servlet）:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/02Tomcat_Servlet_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="02：银行系统（Tomcat+Servlet）/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="02：银行系统（Tomcat+Servlet）" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="mysql-connector-java-8.0.20" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
