@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class DoDepositController extends HttpServlet {
+public class DoWithdrawController extends HttpServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -18,12 +18,12 @@ public class DoDepositController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         String aname = request.getParameter("aname");
-        String depositBalance = request.getParameter("depoistBalance");
-        System.out.println("接收到了名字和存款金额:" + aname + "--" + depositBalance);
+        String withdrawBalance = request.getParameter("withdrawBalance");
+        System.out.println("接收到了名字和取款金额:" + aname + "--" + withdrawBalance);
 
         //调用业务层的方法负责存钱
         AtmService service = MySpring.getBean("service.AtmService");
-        service.deposit(aname, Float.parseFloat(depositBalance));
+        service.withdraw(aname, Float.parseFloat(withdrawBalance));
 
         PrintWriter out = response.getWriter();
         out.write("<html>");

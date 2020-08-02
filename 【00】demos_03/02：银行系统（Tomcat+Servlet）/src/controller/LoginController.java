@@ -39,9 +39,10 @@ public class LoginController extends HttpServlet {
             out.write("****************************<br>");
             out.write("请输入操作选项<br>");
             out.write("<a href=\"query?aname=" + aname + "\">查询</a><br>");
-            out.write("<a href=\"deposit?aname=" + aname + "" + "\">存款</a><br>");
-            out.write("<a href=\"\">取款</a><br>");
-            out.write("<a href=\"\">转账</a><br>");
+            out.write("<a href=\"deposit?aname=" + aname + "\">存款</a><br>");
+            out.write("<a href=\"withdraw?aname=" + aname + "\">取款</a><br>");
+            out.write("<a href=\"transfer?aname=" + aname + "\">转账</a><br>");
+            out.write("<a href=\"delete?aname=" + aname + "\">销户</a><br>");
         }else{
             out.write("对不起," + result);
         }
