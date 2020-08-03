@@ -1,5 +1,9 @@
 package controller;
 
+import service.AtmService;
+import util.MySpring;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,27 +13,23 @@ import java.io.PrintWriter;
 
 public class WithdrawController extends HttpServlet {
 
-    public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
         String aname = request.getParameter("aname");
+        String withdrawBalance = request.getParameter("withdrawBalance");
+        System.out.println("接收到了名字和取款金额:" + aname + "--" + withdrawBalance);
 
-        PrintWriter out = response.getWriter();
-        out.write("<html>");
-        out.write(" <head>");
-        out.write("     <meta charset=\"UTF-8\">");
-        out.write(" </head>");
-        out.write(" <body>");
-        out.write("     <form action=\"doWithdraw\" method=\"post\">");
-        out.write("         请输入取款金额:<input type=\"text\" name=\"withdrawBalance\" value=\"\"><br>");
-        out.write("         <input type=\"submit\" value=\"确定\">");
-        out.write("         <input type=\"hidden\" name=\"aname\" value=\"" + aname + "\">");
-        out.write("     </form>");
-        out.write(" </body>");
-        out.write("</html>");
-        out.flush();
+        //调用业务层的方法负责存钱
+        AtmService service = MySpring.getBean("service.AtmService");
+        service.withdraw(aname, Float.parseFloat(withdrawBalance));
+
+        //欢迎界面
+        RequestDispatcher rd = request.getRequestDispatcher("welcome.jsp");//告知转发路径
+        rd.forward(request, response);//转发给服务器
+
     }
 
 }

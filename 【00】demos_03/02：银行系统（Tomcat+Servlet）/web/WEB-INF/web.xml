@@ -44,15 +44,6 @@
         <url-pattern>/deposit</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>doDeposit</servlet-name>
-        <servlet-class>controller.DoDepositController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>doDeposit</servlet-name>
-        <url-pattern>/doDeposit</url-pattern>
-    </servlet-mapping>
-
     <!-- 取款 -->
     <servlet>
         <servlet-name>withdraw</servlet-name>
@@ -61,15 +52,6 @@
     <servlet-mapping>
         <servlet-name>withdraw</servlet-name>
         <url-pattern>/withdraw</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>doWithdraw</servlet-name>
-        <servlet-class>controller.DoWithdrawController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>doWithdraw</servlet-name>
-        <url-pattern>/doWithdraw</url-pattern>
     </servlet-mapping>
 
     <!-- 转账 -->
@@ -82,15 +64,6 @@
         <url-pattern>/transfer</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>doTransfer</servlet-name>
-        <servlet-class>controller.DoTransferController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>doTransfer</servlet-name>
-        <url-pattern>/doTransfer</url-pattern>
-    </servlet-mapping>
-
     <!-- 销户 -->
     <servlet>
         <servlet-name>delete</servlet-name>
@@ -99,15 +72,6 @@
     <servlet-mapping>
         <servlet-name>delete</servlet-name>
         <url-pattern>/delete</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>doDelete</servlet-name>
-        <servlet-class>controller.DoDeleteController</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>doDelete</servlet-name>
-        <url-pattern>/doDelete</url-pattern>
     </servlet-mapping>
 
 </web-app>
