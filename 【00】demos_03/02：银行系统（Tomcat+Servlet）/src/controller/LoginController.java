@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -29,6 +30,10 @@ public class LoginController extends HttpServlet {
 
         //3.根据业务方法的执行结果  给予响应
         if (result.equals("登录成功")) {
+            //Session
+            HttpSession session = request.getSession();
+            session.setAttribute("aname", aname);
+            //转发
             RequestDispatcher rd = request.getRequestDispatcher("welcome.jsp");//告知转发路径
             rd.forward(request, response);//转发给服务器
         } else {

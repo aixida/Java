@@ -19,7 +19,7 @@ public class QueryController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        String aname = request.getParameter("aname");
+        String aname = (String) request.getSession().getAttribute("aname");
         Float abalance = service.inquire(aname);
         //System.out.println(aname + "账号的余额为:" + abalance);
 

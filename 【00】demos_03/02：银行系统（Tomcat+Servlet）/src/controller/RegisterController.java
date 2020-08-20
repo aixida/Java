@@ -23,7 +23,7 @@ public class RegisterController extends HttpServlet {
 
         AtmService service = MySpring.getBean("service.AtmService");
         service.regist(aname,apassword,Float.parseFloat(abalance));
-        System.out.println("新注册账号: " + aname + "---" + apassword + "---" + abalance);
+        //System.out.println("新注册账号: " + aname + "---" + apassword + "---" + abalance);
 
         PrintWriter out = response.getWriter();
         out.write("<html>");

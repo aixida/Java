@@ -18,9 +18,9 @@ public class WithdrawController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        String aname = request.getParameter("aname");
+        String aname = (String) request.getSession().getAttribute("aname");
         String withdrawBalance = request.getParameter("withdrawBalance");
-        System.out.println("接收到了名字和取款金额:" + aname + "--" + withdrawBalance);
+        //System.out.println("接收到了名字和取款金额:" + aname + "--" + withdrawBalance);
 
         //调用业务层的方法负责存钱
         AtmService service = MySpring.getBean("service.AtmService");

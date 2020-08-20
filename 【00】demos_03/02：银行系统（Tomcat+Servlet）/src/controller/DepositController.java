@@ -18,7 +18,7 @@ public class DepositController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        String aname = request.getParameter("aname");
+        String aname = (String) request.getSession().getAttribute("aname");
         String depositBalance = request.getParameter("depositBalance");
         //System.out.println("接收到了名字和存款金额:" + aname + "--" + depositBalance);
 

@@ -18,7 +18,7 @@ public class DeleteController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        String aname = request.getParameter("aname");
+        String aname = (String) request.getSession().getAttribute("aname");
 
         AtmService service = MySpring.getBean("service.AtmService");
         service.deleteAccount(aname);

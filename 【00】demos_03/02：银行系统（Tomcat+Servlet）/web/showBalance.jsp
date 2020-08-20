@@ -13,7 +13,7 @@
 </head>
 <body>
     <%
-        String aname = request.getParameter("aname");
+        String aname = (String) session.getAttribute("aname");
         Float abalance = (Float)request.getAttribute("abalance");
     %>
     尊敬的 <%=aname%> 用户,您的可用余额为: <%=abalance%><br>
