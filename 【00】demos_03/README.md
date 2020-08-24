@@ -1,9 +1,11 @@
 # 环境
 
 - 编程语言：Java 14.0.1
-- IDE：intelliJ IDEA 2020.1.2
+- IDE：intelliJ IDEA 2020.1
 - 数据库：MySQL 8.0（用户名与密码都是`root`，ip及端口是`localhost:3306`）
 - JDBC：mysql-connector-java-8.0.20.jar
+
+- Web容器：Tomcat 9.0.37
 
 # 01：请求与响应 - 模拟
 
@@ -40,7 +42,6 @@
 
 - **功能**：登录 + 查询 + 存款  + 取款 + 转账 + 开户 + 销户
 - **UI**：浏览器
-- **Web容器**：Tomcat 9.0.37
 - **数据库初始化**：
 
 ```mysql
@@ -60,3 +61,65 @@ alter table atm add primary key(aname);
 insert into atm values('zhangsan','333',300),('lisi','444',400),('wangwu','555',500);
 ```
 
+# 03：购物系统（Servlet+JSP） - 模拟
+
+> 知识点：JavaSE + JDBC + MySQL + MVC分层思想 + Tomcat + Servlet + JSP
+
+- **功能**：登录 + 注册+ 购物 + 购物车 + 结算
+- **UI**：浏览器
+- **数据库初始化**：
+  - 创建三张表格：用户表格、商品种类表格、商品表格
+  - 商品表格与商品种类表格是多对一的关系
+
+```mysql
+# 如果没有创建该数据库
+create database shopping;
+
+use shopping;
+
+# 用户表格
+create table user(
+	uname varchar(20),
+	upassword varchar(20),
+    ubalance float(10,2)
+);
+
+alter table user add primary key(uname);
+
+insert into user values('zhangsan','333',3000);
+insert into user values('lisi','444',4000);
+
+# 商品种类表格
+create table kind(
+	kid int(4),
+	kname varchar(20)
+);
+
+alter table kind add primary key(kid);
+
+insert into kind values(1,'食品');
+insert into kind values(2,'书籍');
+insert into kind values(3,'服饰');
+
+# 商品表格
+create table commodity(
+	cid int(6),
+	cname varchar(20),
+	cprice float(10,2),
+    ccount int(6),
+	kid int(4)
+);
+
+alter table commodity add primary key(cid);
+alter table commodity add constraint fk_commodity_kind foreign key (kid) references kind(kid);
+
+insert into commodity values(1,'费列罗巧克力',10,100,1);
+insert into commodity values(2,'安慕希酸奶',8,100,1);
+insert into commodity values(3,'百草味草莓干',20,100,1);
+insert into commodity values(4,'Head First Java',78,100,2);
+insert into commodity values(5,'Java核心技术',87,100,2);
+insert into commodity values(6,'算法导论',96,100,2);
+insert into commodity values(7,'程序员格子衫',200,100,3);
+insert into commodity values(8,'程序员双肩包',150,100,3);
+insert into commodity values(9,'程序员假发',300,100,3);
+```
