@@ -10,6 +10,12 @@
     </style>
     <script type="text/javascript">
         window.onload = function(){
+
+            var logoutButton = document.getElementById("logout");
+            logoutButton.onclick = function () {
+                window.location.href = "logout";
+            }
+
             var buttonElements = document.getElementsByClassName("button");//数组 两个按钮对象
             for (var i = 0; i < buttonElements.length; i++) {//每一次循环找到一个按钮对象
                 buttonElements[i].onclick = function () {
@@ -31,6 +37,13 @@
     </script>
 </head>
 <body>
+
+    <%
+        String uname = (String) session.getAttribute("uname");
+    %>
+    登录用户: <%=uname%>,&nbsp;&nbsp;&nbsp;&nbsp;<button id="logout" type="button" >账号退出</button>
+    <hr><br>
+
     <form id="form" action="saveCommodity" method="post">
         <input id="hidden" type="hidden" name="flag" value="">
         <table border="1" align="center" width="60%" height="60%">

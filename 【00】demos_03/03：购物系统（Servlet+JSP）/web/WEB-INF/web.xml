@@ -68,4 +68,14 @@
         <url-pattern>/calculatePrice</url-pattern>
     </servlet-mapping>
 
+    <!--登出-->
+    <servlet>
+        <servlet-name>logout</servlet-name>
+        <servlet-class>controller.LogoutController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
 </web-app>

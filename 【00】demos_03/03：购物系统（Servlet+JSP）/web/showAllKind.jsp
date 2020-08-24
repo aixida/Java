@@ -5,6 +5,12 @@
 <head>
     <script type="text/javascript">
         window.onload = function(){
+
+            var logoutButton = document.getElementById("logout");
+            logoutButton.onclick = function () {
+                window.location.href = "logout";
+            }
+
             var kindSelect = document.getElementById("kindSelect");
             kindSelect.onchange = function(){
                 if (this.value == -1) {
@@ -18,7 +24,13 @@
 </head>
 <body>
 
-    假的购物系统有商品种类如下，请下拉选择<br>
+    <%
+        String uname = (String) session.getAttribute("uname");
+    %>
+    登录用户: <%=uname%>,&nbsp;&nbsp;&nbsp;&nbsp;<button id="logout" type="button" >账号退出</button>
+    <hr><br>
+
+假的购物系统有商品种类如下，请下拉选择<br>
     <select id="kindSelect" name="kid">
         <option value="-1">==请选择==</option>
         <%

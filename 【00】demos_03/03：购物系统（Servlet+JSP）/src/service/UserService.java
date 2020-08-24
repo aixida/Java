@@ -26,4 +26,9 @@ public class UserService {
         return dao.insert(new User(uname, upassword, ubalance));
     }
 
+    //查询用户余额
+    public float selectBalance(String uname){
+        return dao.selectOne(uname).getUbalance();
+    }
+
 }

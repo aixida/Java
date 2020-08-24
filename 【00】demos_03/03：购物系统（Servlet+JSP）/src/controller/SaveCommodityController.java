@@ -41,7 +41,7 @@ public class SaveCommodityController extends HttpServlet {
                     count = shoppingCar.get(commodity) + 1;
                 }
                 shoppingCar.put(commodity, count);
-                service.updateCommodityCount(Integer.parseInt(cid), service.selectOne(Integer.parseInt(cid)).getCcount()-1);
+                service.updateCommodityCount(Integer.parseInt(cid), service.selectOne(Integer.parseInt(cid)).getCcount() - 1);
             }
         }
         //4.根据传递过来的flag 进行判断

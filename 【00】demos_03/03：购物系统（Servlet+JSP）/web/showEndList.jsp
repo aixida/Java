@@ -1,5 +1,4 @@
 <%@ page import="domain.Commodity" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="java.util.Iterator" %>
@@ -11,8 +10,24 @@
             text-align : center;
         }
     </style>
+    <script type="text/javascript">
+        window.onload = function(){
+            var logoutButton = document.getElementById("logout");
+            logoutButton.onclick = function () {
+                window.location.href = "logout";
+            }
+        }
+    </script>
 </head>
 <body>
+
+    <%
+        String uname = (String) session.getAttribute("uname");
+        String result = (String) request.getAttribute("result");
+    %>
+    登录用户: <%=uname%>,&nbsp;&nbsp;&nbsp;&nbsp;<button id="logout" type="button" >账号退出</button>
+    <hr><br>
+
     <table border="1" align="center" width="60%" height=""60%>
         <tr>
             <th>商品名称</th><th>商品单价</th><th>商品数量</th>
@@ -33,7 +48,7 @@
             }
         %>
         <tr>
-            <td colspan="3">总计: <%=sumPrice%></td>
+            <td colspan="3">总计: <%=sumPrice%>  <%=result%></td>
         </tr>
     </table>
 

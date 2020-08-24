@@ -1,6 +1,8 @@
 package controller;
 
 import domain.Commodity;
+import service.UserService;
+import util.MySpring;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +16,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class CalculatePriceController extends HttpServlet {
+
+    private UserService service = MySpring.getBean("service.UserService");
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //获取购物车对象
@@ -31,7 +35,15 @@ public class CalculatePriceController extends HttpServlet {
         }
         //将计算好的价钱存起来
         request.setAttribute("sumPrice", sumPrice);
-        //转发做最后列表展示
+        //判断用户余额是否充足
+        float balance = service.selectBalance((String) request.getSession().getAttribute("uname"));
+        String result = "";
+        if (balance >= sumPrice) {
+            result = "您的余额充足";
+        } else {
+            result = "您的余额不足";
+        }
+        request.setAttribute("result", result);
         request.getRequestDispatcher("showEndList.jsp").forward(request,response);
     }
 

@@ -24,7 +24,8 @@ public class LoginController extends HttpServlet {
         String result = service.login(uname, upassword);
         //4.根据结果转发
         if(result.equals("登录成功")){
-            request.getRequestDispatcher("welcome.jsp").forward(request,response);
+            request.getSession().setAttribute("uname", uname);
+            request.getRequestDispatcher("welcome.jsp").forward(request, response);
         }else{
             request.setAttribute("result", result);
             request.getRequestDispatcher("index.jsp").forward(request, response);
