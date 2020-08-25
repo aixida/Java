@@ -63,7 +63,7 @@ insert into atm values('zhangsan','333',300),('lisi','444',400),('wangwu','555',
 
 # 03：购物系统（Servlet+JSP） - 模拟
 
-> 知识点：JavaSE + JDBC + MySQL + MVC分层思想 + Tomcat + Servlet + JSP
+> 知识点：JavaSE + JDBC + MySQL + MVC分层思想 + Tomcat + Servlet + JSP + EL + JSTL
 
 - **功能**：登录 + 注册+ 购物 + 购物车 + 结算
 - **UI**：浏览器
