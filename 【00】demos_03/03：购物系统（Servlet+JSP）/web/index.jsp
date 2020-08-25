@@ -12,13 +12,7 @@
 </head>
 <body>
 
-    <%
-        //如果登录失败
-        String result = (String) request.getAttribute("result");
-        if (result != null) {
-            out.write(result + "<br><br>");
-        }
-    %>
+    ${requestScope.result}
 
     <form action="login" method="post">
       账号: <input type="text" name="uname" value=""><br>

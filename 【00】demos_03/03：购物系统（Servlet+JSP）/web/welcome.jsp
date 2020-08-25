@@ -12,10 +12,7 @@
 </head>
 <body>
 
-    <%
-        String uname = (String) session.getAttribute("uname");
-    %>
-    登录用户: <%=uname%>,&nbsp;&nbsp;&nbsp;&nbsp;<button id="logout" type="button" >账号退出</button>
+    登录用户: ${sessionScope.uname},&nbsp;&nbsp;&nbsp;&nbsp;<button id="logout" type="button" >账号退出</button>
     <hr><br>
 
     欢迎进入假的购物系统，想买东西么？<br>

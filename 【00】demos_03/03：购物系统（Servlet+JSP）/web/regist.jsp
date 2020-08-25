@@ -13,13 +13,7 @@
 </head>
 <body>
 
-    <%
-        //如果注册失败
-        String result = (String) request.getAttribute("result");
-        if (result != null) {
-            out.write(result + "<br><br>");
-        }
-    %>
+    ${requestScope.result}
 
     <form action="register" method="post">
         账号: <input type="text" name="uname" value=""><br>

@@ -1,5 +1,4 @@
-<%@ page import="domain.Commodity" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -38,10 +37,7 @@
 </head>
 <body>
 
-    <%
-        String uname = (String) session.getAttribute("uname");
-    %>
-    登录用户: <%=uname%>,&nbsp;&nbsp;&nbsp;&nbsp;<button id="logout" type="button" >账号退出</button>
+    登录用户: ${sessionScope.uname},&nbsp;&nbsp;&nbsp;&nbsp;<button id="logout" type="button" >账号退出</button>
     <hr><br>
 
     <form id="form" action="saveCommodity" method="post">
@@ -50,17 +46,16 @@
             <tr>
                 <th></th><th>商品名称</th><th>商品单价</th><th>商品存量</th>
             </tr>
-            <%
-                ArrayList<Commodity> commodityList = (ArrayList<Commodity>) request.getAttribute("commodityList");
-                for(Commodity commodity:commodityList){
-                    out.write("<tr>");
-                    out.write("<td><input type=\"checkbox\" name=\"cid\" value=\"" + commodity.getCid() + "\"></td>");
-                    out.write("<td>" + commodity.getCname() + "</td>");
-                    out.write("<td>" + commodity.getCprice() + "</td>");
-                    out.write("<td>" + commodity.getCcount() + "</td>");
-                    out.write("</tr>");
-                }
-            %>
+            <c:forEach var="commodity" items="${requestScope.commodityList}">
+                <tr>
+                    <td>
+                        <input type="checkbox" name="cid" value="${commodity.cid}">
+                    </td>
+                    <td>${commodity.cname}</td>
+                    <td>${commodity.cprice}</td>
+                    <td>${commodity.ccount}</td>
+                </tr>
+            </c:forEach>
             <tr>
                 <td colspan="4">
                     <!--
