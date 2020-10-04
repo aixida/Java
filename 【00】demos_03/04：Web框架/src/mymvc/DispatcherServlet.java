@@ -73,7 +73,19 @@ public class DispatcherServlet extends HttpServlet {
             Method method = obj.getClass().getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
 
             //5.执行方法
-            method.invoke(obj, request, response);
+            Object methodResult = method.invoke(obj, request, response);
+            if (methodResult != null && !"".equals(methodResult) && !"null".equals(methodResult)) {
+                String result = (String) methodResult;
+                String[] vv = result.split(":");
+                //处理请求转发
+                if (vv.length == 1) {
+                    request.getRequestDispatcher(result).forward(request, response);
+                }
+                //处理请求重定向
+                if (vv[0].equals("redirect")) {
+                    response.sendRedirect(vv[1]);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
