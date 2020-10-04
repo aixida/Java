@@ -21,7 +21,10 @@ import java.util.Properties;
  */
 public class DispatcherServlet extends HttpServlet {
 
-    //缓存机制，提高性能
+    //生命周期托管，单例模式（请求名 -- 对象）
+    private HashMap<String, Object> objectMap = new HashMap<>();
+
+    //缓存机制，提高性能（请求名 -- 类全名）
     private HashMap<String, String> realNameMap = new HashMap<>();
 
     //获取全部类全名（参考自己写的 properties 配置文件）
@@ -57,13 +60,17 @@ public class DispatcherServlet extends HttpServlet {
                 throw new ControllerNotFoundException("404: 请求对应的Controller没有找到");
             }
 
-            //3.反射寻找类的对象
-            Class c = Class.forName(realControllerName);
-            Object obj = c.getConstructor().newInstance();
+            //3.寻找类的对象
+            Object obj = objectMap.get(uri);
+            if (obj == null) {
+                Class c = Class.forName(realControllerName);//延迟加载
+                obj = c.getConstructor().newInstance();
+                objectMap.put(uri, obj);
+            }
 
             //4.反射寻找类的方法
             String methodName = request.getParameter("method");
-            Method method = c.getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
+            Method method = obj.getClass().getDeclaredMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
 
             //5.执行方法
             method.invoke(obj, request, response);
