@@ -4,13 +4,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.*;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * 仿照 Tomcat 对 *.jsp 请求进行统一的编译处理，我规定 *.do 请求为 controller 请求。
@@ -137,20 +135,47 @@ public class DispatcherServlet extends HttpServlet {
 
             //6.执行方法
             Object methodResult = method.invoke(obj, paramValues);
+            String viewName = (String) methodResult;//methodResult instanceof String 若直接返回路径资源名
+            if (methodResult instanceof ModelAndView) {
+                ModelAndView mv = (ModelAndView) methodResult;
 
-            //7.处理转发与重定向
+                //7.解析ModelAndView
+                HashMap<String, Object> mvMap = mv.getAttributeMap();
+                Iterator<String> it = mvMap.keySet().iterator();
+                while (it.hasNext()) {
+                    String key = it.next();
+                    Object value = mvMap.get(key);
+                    request.setAttribute(key, value);
+                }
+
+                //8.解析session注解
+                SessionAttributes sa = obj.getClass().getAnnotation(SessionAttributes.class);
+                if (sa != null) {
+                    String[] sessionAttrNames = sa.value();
+                    if (sessionAttrNames.length != 0) {
+                        HttpSession session = request.getSession();
+                        for (String sessionAttriName:sessionAttrNames) {
+                            session.setAttribute(sessionAttriName, mvMap.get(sessionAttriName));
+                        }
+                    }
+                }
+
+                viewName = mv.getViewName();
+            }
+
+            //9.处理转发与重定向
             if (methodResult != null && !"".equals(methodResult) && !"null".equals(methodResult)) {
-                String result = (String) methodResult;
-                String[] vv = result.split(":");
+                String[] vn = viewName.split(":");
                 //处理请求转发
-                if (vv.length == 1) {
-                    request.getRequestDispatcher(result).forward(request, response);
+                if (vn.length == 1) {
+                    request.getRequestDispatcher(viewName).forward(request, response);
                 }
                 //处理请求重定向
-                if (vv[0].equals("redirect")) {
-                    response.sendRedirect(vv[1]);
+                if (vn[0].equals("redirect")) {
+                    response.sendRedirect(vn[1]);
                 }
             }
+
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {

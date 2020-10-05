@@ -1,9 +1,8 @@
 package controller;
 
 import domain.Person;
-import mymvc.Param;
-
-import java.util.HashMap;
+import mymvc.ModelAndView;
+import mymvc.SessionAttributes;
 
 /**
  *  1.没有继承关系 降低类和类之间的耦合关系
@@ -12,16 +11,23 @@ import java.util.HashMap;
  *  4.有了最终的转发或重定向 只使用一个简单的String作为返回值
  *  5.减少了方法的参数使用 request response
  *  6.方法的异常没有啦
+ *  7.创建一个容器 ModelAndView 实现存值
  */
+
+@SessionAttributes("person")
 public class AtmController {
 
-    //参数前注解值 == 请求携带的参数
-//    public String login(@Param("name") String name, @Param("pass") String password) {
-//    public String login(Person person) {
-    public String login(HashMap<String, String> person) {
-        System.out.println("LoginController执行啦");
-//        System.out.println("接收到参数：" + name + " - " + password);
-        System.out.println(person);
+    //参数前注解值 == 请求携带的参数（如果有）
+    public ModelAndView login(Person person) {
+
+        //想要带走数据
+        //还需要框架帮忙进行请求转发、重定向
+
+        ModelAndView mv = new ModelAndView();
+        mv.setAttribute("person", person);
+        mv.setViewName("redirect:welcome.jsp");
+
+        return mv;
 
         //处理转发与重定向
         //1.直接给予响应 response.getWriter().write("")
@@ -30,11 +36,6 @@ public class AtmController {
         //  直接返回 “资源名”
         //3.请求重定向 => 交给框架
         //  返回 “redirect:资源名”
-        return "redirect:welcome.jsp";
-    }
-
-    public void query(){
-        System.out.println("QueryController执行啦");
     }
 
 }
