@@ -5,9 +5,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.*;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -29,9 +31,8 @@ public class DispatcherServlet extends HttpServlet {
     //缓存机制，提高性能（请求名 -- 类全名）
     private Map<String, String> realNameMap = new HashMap<>();
 
-    //获取全部类全名（参考自己写的 properties 配置文件）
-    @Override
-    public void init() throws ServletException {
+    //扫描配置文件 加载类名字
+    private void loadProperties() {
         try {
             Properties pro = new Properties();
             InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("ApplicationContext.properties");
@@ -45,7 +46,53 @@ public class DispatcherServlet extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    //扫描注解 加载类名字
+    private void scanAnnotation() {
+        String scanPackage = realNameMap.get("scanPackage");
+        if (scanPackage != null) {
+            String[] packageNames = scanPackage.split(",");
+            for (String packageName:packageNames) {
+                //获取包路径
+                URL url = Thread.currentThread().getContextClassLoader().getResource(packageName.replace(".", "/"));
+                if (url == null) {
+                    System.out.println(packageName + "包不存在");
+                    continue;
+                }
+                //操作真实文件
+                String packagePath = url.getPath();//包全名
+                File packageFile = new File(packagePath);
+                //遍历包中所有class类
+                File[] files = packageFile.listFiles();
+                for (File file:files) {
+                    String fileName = file.getName();//AtmController.class
+                    fileName = fileName.substring(0, fileName.lastIndexOf("."));
+                    String className = packageName + "." + fileName;//类全名
+                    //反射
+                    try {
+                        Class c = Class.forName(className);
+                        RequestMapper mapper = (RequestMapper) c.getAnnotation(RequestMapper.class);
+                        if (mapper != null) {
+                            //类名.do?method=方法名
+                            realNameMap.put(mapper.value(), className);
+                        } else {
+                            //方法名.do
+                            //...（注解写在方法上，需要扫描类中全部方法）
+                        }
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
+
+    //获取全部类全名
+    @Override
+    public void init() throws ServletException {
+        this.loadProperties();
+        this.scanAnnotation();
     }
 
     //负责处理所有的.do请求, 并进行分发
@@ -135,7 +182,7 @@ public class DispatcherServlet extends HttpServlet {
 
             //6.执行方法
             Object methodResult = method.invoke(obj, paramValues);
-            String viewName = (String) methodResult;//methodResult instanceof String 若直接返回路径资源名
+            String viewName;
             if (methodResult instanceof ModelAndView) {
                 ModelAndView mv = (ModelAndView) methodResult;
 
@@ -161,6 +208,8 @@ public class DispatcherServlet extends HttpServlet {
                 }
 
                 viewName = mv.getViewName();
+            } else {
+                viewName = (String) methodResult;//methodResult instanceof String 若直接返回路径资源名
             }
 
             //9.处理转发与重定向

@@ -2,6 +2,7 @@ package controller;
 
 import domain.Person;
 import mymvc.ModelAndView;
+import mymvc.RequestMapper;
 import mymvc.SessionAttributes;
 
 /**
@@ -14,6 +15,7 @@ import mymvc.SessionAttributes;
  *  7.创建一个容器 ModelAndView 实现存值
  */
 
+@RequestMapper("AtmController.do")
 @SessionAttributes("person")
 public class AtmController {
 
