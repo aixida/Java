@@ -128,6 +128,8 @@ insert into atm values('zhangsan','333',300),('lisi','444',400),('wangwu','555',
 1. JDBC 六部曲中，Connection 这个地方很慢
 2. Dao（数据持久化）中是纯粹的 JDBC+SQL，代码冗余
 
+模拟MyBatis与SpringJDBC
+
 - **需要使用一个数据库**：
 
 ```mysql

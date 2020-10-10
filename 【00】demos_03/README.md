@@ -4,8 +4,8 @@
 - IDE：intelliJ IDEA 2020.1
 - 数据库：MySQL 8.0（用户名与密码都是`root`，ip及端口是`localhost:3306`）
 - JDBC：mysql-connector-java-8.0.20.jar
-
 - Web容器：Tomcat 9.0.37
+- JSTL：jstl-1.2.jar 与 taglibs-standard-jstlel-1.2.5.jar
 
 # 01：请求与响应 - 模拟
 
@@ -123,3 +123,14 @@ insert into commodity values(7,'程序员格子衫',200,100,3);
 insert into commodity values(8,'程序员双肩包',150,100,3);
 insert into commodity values(9,'程序员假发',300,100,3);
 ```
+
+# 04：Web框架 - 模拟
+
+> 知识点：JavaSE  + MVC分层思想 + Tomcat + Servlet
+
+纯粹的 Servlet 有两个缺点：
+
+1. 一个controller请求对应一个Servlet类
+2. 一个controller请求，xml配置文件需要写8行
+
+模拟SpringMVC
