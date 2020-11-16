@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 输出目标: 控制台 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 日志输出的格式 -->
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 日志级别 -->
+    <logger name="chapters.configuration" level="INFO"/>
+
+    <!-- 引用到当前输出的级别 -->
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+
+</configuration>
