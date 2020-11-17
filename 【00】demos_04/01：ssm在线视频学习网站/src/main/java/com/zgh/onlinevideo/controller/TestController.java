@@ -14,13 +14,6 @@ public class TestController {
 
     @RequestMapping("/test")
     public String test() {
-
-        CourseType courseType = new CourseType();
-        courseType.setFlag(3);
-        courseType.setName("MySQL");
-
-        courseTypeService.insertCourseType(courseType);
-
         return "test";
     }
 

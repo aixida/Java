@@ -28,9 +28,9 @@
     <!-- 静态资源处理 springmvc不处理静态资源请求 -->
 <!--    <mvc:default-servlet-handler/>-->
     <!-- 该类请求mapping 直接映射到路径location下 -->
-    <mvc:resources mapping="/imgs/**" location="/static/imgs/"></mvc:resources>
-    <mvc:resources mapping="/css/**" location="/static/css/"></mvc:resources>
-    <mvc:resources mapping="/fonts/**" location="/static/fonts/"></mvc:resources>
-    <mvc:resources mapping="/js/**" location="/static/js/"></mvc:resources>
+    <mvc:resources mapping="/static/imgs/**" location="/static/imgs/"></mvc:resources>
+    <mvc:resources mapping="/static/css/**" location="/static/css/"></mvc:resources>
+    <mvc:resources mapping="/static/fonts/**" location="/static/fonts/"></mvc:resources>
+    <mvc:resources mapping="/static/js/**" location="/static/js/"></mvc:resources>
 
 </beans>
