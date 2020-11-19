@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 @Controller
@@ -16,11 +17,16 @@ public class UserController {
     UserService userService;
 
     @RequestMapping(value = "/regist", method = RequestMethod.POST)
-    public String regist(User user) {
+    public String regist(User user, String vcode, HttpSession session) {
+
+        String session_vcode = (String) session.getAttribute("session_vcode");
+
+        System.out.println(session_vcode);
 
         user.setCreateTime(new Date());
 
         int code = userService.regist(user);
+
         return "test";
     }
 

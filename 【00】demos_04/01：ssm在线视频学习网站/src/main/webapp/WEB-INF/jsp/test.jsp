@@ -19,7 +19,7 @@
 
     <div class="container">
 
-        <a class="navbar-brand" href="#">渡一视频</a>
+        <a class="navbar-brand" href="#">我的视频</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -35,7 +35,6 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">会员</a>
-                </li>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">直播</a>
@@ -64,7 +63,7 @@
         <div class="modal-content">
             <form>
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">登录</h5>
+                    <h5 class="modal-title" id="loginModalLabel">登录</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -74,9 +73,9 @@
 
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
-                            <label for="validationServer01">邮箱</label>
+                            <label for="validationEmail2">邮箱</label>
                             <!-- is-valid is-invalid-->
-                            <input type="text" class="form-control " id="validationServer01" required>
+                            <input type="text" class="form-control " id="validationEmail2" required>
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
@@ -85,8 +84,8 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
-                            <label for="validationServer03">密码</label>
-                            <input type="password" class="form-control " id="validationServer03" required>
+                            <label for="validationPassword2">密码</label>
+                            <input type="password" class="form-control " id="validationPassword2" required>
                             <div class="invalid-feedback">
                                 Please provide a valid city.
                             </div>
@@ -130,9 +129,9 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" action="\regist">
+            <form method="post" action="/regist">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">注册</h5>
+                    <h5 class="modal-title" id="registerModalLabel">注册</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -142,11 +141,11 @@
 
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
-                            <label for="validationServer01">邮箱</label>
+                            <label for="validationEmail">邮箱</label>
                             <!-- is-valid is-invalid-->
                             <input type="text"  name="email" placeholder="请输入邮箱"
                                    pattern="[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?"
-                                   class="form-control" id="validationServer01" required>
+                                   class="form-control" id="validationEmail" required>
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
@@ -155,11 +154,11 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
-                            <label for="validationServer01">手机</label>
+                            <label for="validationNumber">手机</label>
                             <!-- is-valid is-invalid-->
                             <input type="text" name="number" placeholder="请输入手机号"
                                    pattern="1[345678]\d{9}"
-                                   class="form-control " id="validationServer01" required>
+                                   class="form-control " id="validationNumber" required>
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
@@ -168,10 +167,10 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
-                            <label for="validationServer03">密码</label>
+                            <label for="validationPassword">密码</label>
                             <input type="password" name="password" placeholder="包含数字和字母且在6-20位之间"
                                    pattern="^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,20}$"
-                                   class="form-control " id="validationServer03"
+                                   class="form-control " id="validationPassword"
                                    required>
                             <div class="invalid-feedback">
                                 Please provide a valid city.
@@ -182,16 +181,16 @@
                     </div>
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
-                            <label for="validationServer01">验证码</label>
+                            <label for="validationVcode">验证码</label>
                             <!-- is-valid is-invalid-->
                             <div class="row">
                                 <div class="col-md-7">
-                                    <input type="text" name="vcode" class="form-control" id="validationServer01" required>
+                                    <input type="text" name="vcode" class="form-control" id="validationVcode" required>
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
-                                <div class="col-md-5"><img src="vcode.png"></img></div>
+                                <div class="col-md-5"><img src="/vcode" onclick="changeVcode(this)"/></div>
                             </div>
                         </div>
                     </div>
@@ -217,13 +216,18 @@
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+<script src="/static/js/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
 <script src="/static/js/bootstrap.min.js"
         crossorigin="anonymous"></script>
+<script type="application/javascript">
+
+    function changeVcode(imgNode) {
+        imgNode.src = "/vcode?ram=" + new Date().getTime();
+    }
+
+</script>
 </body>
 </html>
