@@ -8,4 +8,6 @@ public interface UserService {
 
     int regist(User user);
 
+    User existEmail(String email);
+
 }

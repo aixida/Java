@@ -1,16 +1,20 @@
 package com.zgh.onlinevideo.controller;
 
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
+import com.zgh.onlinevideo.dto.ResponseResult;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -18,6 +22,22 @@ import java.io.IOException;
 @Controller
 @SessionAttributes({"session_vcode"})
 public class VcodeController {
+
+    @RequestMapping("/checkVcode")
+    @ResponseBody
+    public ResponseResult checkVcode(String vcode, HttpSession session) {
+
+        ResponseResult result = new ResponseResult(1, "ok");
+
+        String session_vcode = (String) session.getAttribute("session_vcode");
+
+        if (StrUtil.isEmpty(session_vcode) || StrUtil.isEmpty(vcode) || !session_vcode.equals(vcode)) {
+            result.setRcode(-1);
+            result.setMessage("validationCode error");
+        }
+
+        return result;
+    }
 
     char[] vcodeSequence = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 

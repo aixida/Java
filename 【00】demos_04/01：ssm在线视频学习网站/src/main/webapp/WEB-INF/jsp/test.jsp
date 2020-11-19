@@ -129,7 +129,8 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" action="/regist">
+            <form method="post" action="/regist" 
+                  onsubmit="return registSubmit()">
                 <div class="modal-header">
                     <h5 class="modal-title" id="registerModalLabel">注册</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -144,10 +145,11 @@
                             <label for="validationEmail">邮箱</label>
                             <!-- is-valid is-invalid-->
                             <input type="text"  name="email" placeholder="请输入邮箱"
+                                   onblur="checkEmail(this)"
                                    pattern="[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?"
                                    class="form-control" id="validationEmail" required>
-                            <div class="valid-feedback">
-                                Looks good!
+                            <div id="feedbackEmail" class="valid-feedback">
+
                             </div>
                         </div>
 
@@ -160,7 +162,7 @@
                                    pattern="1[345678]\d{9}"
                                    class="form-control " id="validationNumber" required>
                             <div class="valid-feedback">
-                                Looks good!
+
                             </div>
                         </div>
 
@@ -173,7 +175,7 @@
                                    class="form-control " id="validationPassword"
                                    required>
                             <div class="invalid-feedback">
-                                Please provide a valid city.
+
                             </div>
                         </div>
 
@@ -186,8 +188,8 @@
                             <div class="row">
                                 <div class="col-md-7">
                                     <input type="text" name="vcode" class="form-control" id="validationVcode" required>
-                                    <div class="valid-feedback">
-                                        Looks good!
+                                    <div id="feedbackVcode" class="valid-feedback">
+
                                     </div>
                                 </div>
                                 <div class="col-md-5"><img src="/vcode" onclick="changeVcode(this)"/></div>
@@ -223,6 +225,58 @@
 <script src="/static/js/bootstrap.min.js"
         crossorigin="anonymous"></script>
 <script type="application/javascript">
+
+    function registSubmit() {
+        var vcodeFlag = checkVcode();
+
+        if (!vcodeFlag) {
+            $("#validationVcode").removeClass("is-valid").addClass("is-invalid");
+            $("#feedbackVcode").text("validationCode error");
+            $("#feedbackVcode").removeClass("valid-feedback").addClass("invalid-feedback");
+            return false;
+        }
+
+        // 提交注册
+        return true;
+    }
+
+    function checkVcode() {
+        var vcode = $("#validationVcode").val();
+        var flag = false;
+        $.ajax({
+            url: "checkVcode?vcode=" + vcode,
+            success: function (result) {
+                if (result.rcode == 1) {
+                    flag = true;
+                } else {
+                    flag = false;
+                }
+            },
+            // ajax请求变为同步
+            // 异步会导致registSubmit()调用此方法还没接收到返回值就执行完后面的代码了 以免vcodeFlag = undefined
+            async: false
+        });
+        return flag;
+    }
+
+    function checkEmail(emailNode) {
+        var email = emailNode.value;
+        $.ajax({
+            url: "/checkEmail?email=" + email,
+            success: function (result) {
+                if (result.rcode == 1) {
+                    // regist success
+                    $("#validationEmail").removeClass("is-invalid").addClass("is-valid");
+                    $("#feedbackEmail").removeClass("invalid-feedback").addClass("valid-feedback");
+                } else {
+                    // regist fail
+                    $("#validationEmail").removeClass("is-valid").addClass("is-invalid");
+                    $("#feedbackEmail").removeClass("valid-feedback").addClass("invalid-feedback");
+                }
+                $("#feedbackEmail").text(result.message);
+            }
+        });
+    }
 
     function changeVcode(imgNode) {
         imgNode.src = "/vcode?ram=" + new Date().getTime();
