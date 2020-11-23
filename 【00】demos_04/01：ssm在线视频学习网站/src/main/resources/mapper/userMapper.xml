@@ -36,16 +36,16 @@
         <include refid="allColumns" />
         FROM user u WHERE 1 = 1
         <if test="name != null and name != ''">
-            AND u.name LIKE CONCAT('%', #{name}, '%')
+            AND u.name = #{name}
         </if>
         <if test="password != null and password != ''">
-            AND u.password LIKE CONCAT('%', #{password}, '%')
+            AND u.password= #{password}
         </if>
         <if test="number != null and number != ''">
-            AND u.number LIKE CONCAT('%', #{number}, '%')
+            AND u.number = #{number}
         </if>
         <if test="email != null and email != ''">
-            AND u.email LIKE CONCAT('%', #{email}, '%')
+            AND u.email = #{email}
         </if>
         <if test="vipFlag != null">
             AND u.vip_flag = #{vipFlag}

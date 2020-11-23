@@ -16,7 +16,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(User user) {
-        return null;
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put("email", user.getEmail());
+        map.put("password", user.getPassword());
+
+        return userDao.findUserByCondition(map);
     }
 
     @Override

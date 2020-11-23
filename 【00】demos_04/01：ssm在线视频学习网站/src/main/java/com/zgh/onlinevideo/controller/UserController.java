@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 
@@ -20,6 +22,52 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseResult checkLogin(User user) {
+
+        ResponseResult responseResult = new ResponseResult(1, "ok");
+
+        User dbUser = userService.login(user);
+
+        if (StrUtil.isEmpty(user.getEmail()) || StrUtil.isEmpty(user.getPassword()) || dbUser == null) {
+            responseResult.setRcode(-1);
+            responseResult.setMessage("login fail");
+        }
+
+        return responseResult;
+
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String login(User user, String autoLogin, HttpServletRequest request, HttpServletResponse response) {
+
+        HttpSession session = request.getSession();
+
+        if (StrUtil.isEmpty(user.getEmail()) || StrUtil.isEmpty(user.getPassword())) {
+            // TODO 跳转到错误界面
+            throw new UserException("参数错误");
+        }
+
+        User dbUser = userService.login(user);
+        if (dbUser != null) {
+            session.setAttribute("login_user", user);
+        }
+
+
+        return "redirect:/";
+
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+
+        session.removeAttribute("login_user");
+
+        return "redirect:/";
+
+    }
 
     @RequestMapping(value = "/regist", method = RequestMethod.POST)
     public String regist(User user, String vcode, HttpSession session) {
@@ -52,7 +100,7 @@ public class UserController {
         // 注册成功 直接登录
         session.setAttribute("login_user", user);
 
-        return "redirect:/index.jsp";
+        return "redirect:/";
     }
 
     @RequestMapping("checkEmail")

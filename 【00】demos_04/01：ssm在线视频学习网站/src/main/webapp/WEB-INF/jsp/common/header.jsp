@@ -1,7 +1,7 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>在线视频学习</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -43,8 +43,28 @@
                 </li>
 
             </ul>
-            <a href="#" data-toggle="modal" data-target="#loginModal" data-whatever="@fat" class="mr-1">登录</a> /
-            <a href="#" data-toggle="modal" data-target="#registModal" data-whatever="@mdo" class="ml-1 mr-3">注册</a>
+
+            <c:choose>
+                <%-- 已经登录的用户 显示用户名 --%>
+                <c:when test="${ !empty login_user}">
+                    <li class="nav-item dropdown float-right mr-2"
+                        style="list-style-type:none;">
+                        <a class="nav-link dropdown-toggle text-primary" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ${login_user.email}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/logout">退出</a>
+                        </div>
+                    </li>
+                </c:when>
+                <%-- 登录 注册 --%>
+                <c:otherwise>
+                    <a href="#" data-toggle="modal" data-target="#loginModal" data-whatever="@fat" class="mr-1">登录</a> /
+                    <a href="#" data-toggle="modal" data-target="#registModal" data-whatever="@mdo" class="ml-1 mr-3">注册</a>
+                </c:otherwise>
+            </c:choose>
+
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="搜索视频" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">搜索</button>
@@ -60,7 +80,7 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="/login" method="post">
+            <form action="/login" method="post" onsubmit="return loginSubmit()">
                 <div class="modal-header">
                     <h5 class="modal-title" id="loginModalLabel">登录</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -74,7 +94,7 @@
                         <div class="col-md-12 mb-3">
                             <label for="validationLoginEmail">邮箱</label>
                             <!-- is-valid is-invalid-->
-                            <input type="text" class="form-control " id="validationLoginEmail" required>
+                            <input name="email" type="text" class="form-control " id="validationLoginEmail" required>
                             <div class="valid-feedback">
 
                             </div>
@@ -84,7 +104,7 @@
                     <div class="form-row">
                         <div class="col-md-12 mb-3">
                             <label for="validationLoginPassword">密码</label>
-                            <input type="password" class="form-control " id="validationLoginPassword" required>
+                            <input name="password" type="password" class="form-control " id="validationLoginPassword" required>
                             <div id="loginFeedback" class="invalid-feedback">
 
                             </div>
@@ -128,7 +148,7 @@
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" action="/regist" 
+            <form method="post" action="/regist"
                   onsubmit="return registSubmit()">
                 <div class="modal-header">
                     <h5 class="modal-title" id="registerModalLabel">注册</h5>
@@ -225,6 +245,29 @@
         crossorigin="anonymous"></script>
 <script type="application/javascript">
 
+    function loginSubmit() {
+        var flag = false;
+
+        $.ajax({
+            url: "/checkLogin",
+            method: "POST",
+            data: {email: $("#validationLoginEmail").val(), password: $("#validationLoginPassword").val()},
+            async: false,
+            success: function (result) {
+                if (result.rcode == 1) {
+                    flag = true;
+                } else {
+                    flag = false;
+                    $("#validationLoginEmail").removeClass("is-valid").addClass("is-invalid");
+                    $("#validationLoginPassword").removeClass("is-valid").addClass("is-invalid");
+                    $("#loginFeedback").removeClass("valid-feedback").addClass("invalid-feedback").text(result.message);
+                }
+            }
+        });
+
+        return flag;
+    }
+
     function registSubmit() {
         var vcodeFlag = checkVcode();
 
@@ -243,7 +286,7 @@
         var vcode = $("#validationVcode").val();
         var flag = false;
         $.ajax({
-            url: "checkVcode?vcode=" + vcode,
+            url: "/checkVcode?vcode=" + vcode,
             success: function (result) {
                 if (result.rcode == 1) {
                     flag = true;
