@@ -22,6 +22,8 @@ public class VideoExceptionResolver implements HandlerExceptionResolver {
 
         if (e instanceof UserException) {
             mv.addObject("message", e.getMessage());
+        } else {
+            mv.addObject("message", e);
         }
 
         return mv;

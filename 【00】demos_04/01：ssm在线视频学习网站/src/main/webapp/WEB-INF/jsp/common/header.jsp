@@ -114,7 +114,7 @@
                     </div>
                     <div class="form-group">
                         <div class="form-check">
-                            <input class="form-check-input " type="checkbox" value="" id="invalidCheck3">
+                            <input class="form-check-input" name="autoLogin" type="checkbox" value="1" id="invalidCheck3">
                             <label class="form-check-label">
                                 自动登录
                             </label>

@@ -33,4 +33,12 @@
     <mvc:resources mapping="/static/fonts/**" location="/static/fonts/"></mvc:resources>
     <mvc:resources mapping="/static/js/**" location="/static/js/"></mvc:resources>
 
+    <mvc:interceptors>
+        <!-- 自动登录拦截器 -->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.zgh.onlinevideo.interceptor.AutoLoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 </beans>
