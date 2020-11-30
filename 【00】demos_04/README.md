@@ -9,9 +9,7 @@
 
 # 01：ssm在线视频学习网站 - 模拟
 
-
-
-- **数据库：**
+### 一、数据库
 
 1. 课程类型 course_type
 
@@ -138,3 +136,52 @@ DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_bin;
 ```
 
+### 二、前端页面
+
+**1、头页面**
+
+- 注册
+
+  > 正则、验证码、ajax验证
+
+- 登录
+
+  > ajax验证、自动登录、忘记密码
+
+- 自动登录
+
+  > 使用token记录自动登录状态，保存用户登录状态48小时（2天）；关闭浏览器，下次打开浏览器，如果没有超过时间，仍然是登录状态
+  >
+  > token不能保存在session中，因为浏览器关闭session结束了；正常实现（Redis）或者保存在全局的数据 application
+  
+    浏览器（cookie）
+    token = xxxxxxxxxxxxxxxxxxxxxxxxx (登录凭证，48小时失效)
+  
+    服务器（）
+    1 登录成功，返回token给浏览器保存，自动登录凭证。
+    2 token生成：时间、用户、IP、浏览器信息、（MD5）
+  
+    用户打开浏览器
+    1 token发送到服务器
+    2 服务器根据token获取对应的值，
+    3 验证token是否有效：时间、用户、IP、浏览器信息、（MD5）
+
+- 恢复用户登录
+
+  > 拦截器，判断token是否有效（时间、用户、IP、浏览器信息）+ 时间是否超时
+  >
+  > 如果有效，直接session放入user，变成已登录
+  >
+  > 如果失效，什么都不做
+
+- 忘记密码（email找回密码）
+
+  1. 跳转找回密码页面
+  2. 填写用户email、验证码，点击发送邮件（修改密码链接）
+     - 实际路径：http://www.duyi.com?m=xxxxxxxxxxx&u=email&t=xxx
+     - 路径混淆：http://www.duyi.com?token=xxxxxxxxxxx，token=（m=xxxxxxxxxxx&u=email）base64混淆
+  3. 打开邮箱，访问链接
+  4. 服务器接处理URL（修改密码链接），
+     - 验证URL是否合法（时间是否超时，是否是服务器生成，是否有篡改）
+     - 跳转修改密码页面
+     - 输入密码，提交密码修改用户密码
