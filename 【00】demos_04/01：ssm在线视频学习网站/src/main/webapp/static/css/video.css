@@ -1,0 +1,22 @@
+/*card选项卡选中状态样式*/
+.select-shadow:hover {
+    -webkit-box-shadow: 2px 2px 8px 1px rgba(20, 20, 20, 0.15);
+    -moz-box-shadow: 2px 2px 8px 1px rgba(20, 20, 20, 0.15);
+    box-shadow: 2px 2px 8px 1px rgba(20, 20, 20, 0.15);
+    cursor: pointer;
+    color: red;
+}
+
+/*底部背景样式*/
+.video-footer {
+    background-color: #f3f5f7;
+    box-shadow:0px 0px 1px 1px #ccc;
+}
+
+/*底部文字样式*/
+.video-footer a {
+    margin: 0 10px;
+    font-size: 14px;
+    color: #99a1a6;
+    text-decoration: none;
+}

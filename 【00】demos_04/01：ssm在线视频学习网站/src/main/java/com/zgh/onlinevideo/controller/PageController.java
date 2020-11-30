@@ -12,4 +12,22 @@ public class PageController {
         return "index";
     }
 
+    // 工具
+    @RequestMapping("/tools")
+    public String toolsPage() {
+        return "tools";
+    }
+
+    // vip
+    @RequestMapping("/vip")
+    public String vipPage() {
+        return "vip";
+    }
+
+    // 课程列表
+    @RequestMapping("/course_list")
+    public String courseListPage() {
+        return "course_list";
+    }
+
 }
