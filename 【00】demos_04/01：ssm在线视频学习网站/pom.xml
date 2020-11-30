@@ -24,6 +24,21 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- 发送邮件 -->
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4.7</version>
+    </dependency>
+
+    <!-- spring整合发送邮件 -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>5.2.6.RELEASE</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- spring整合单元测试 -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -142,6 +157,12 @@
       <groupId>cn.hutool</groupId>
       <artifactId>hutool-all</artifactId>
       <version>5.3.10</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context-support</artifactId>
+      <version>5.2.6.RELEASE</version>
+      <scope>compile</scope>
     </dependency>
 
   </dependencies>
