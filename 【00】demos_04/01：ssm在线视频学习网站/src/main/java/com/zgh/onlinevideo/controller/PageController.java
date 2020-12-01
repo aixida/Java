@@ -30,4 +30,9 @@ public class PageController {
         return "course_list";
     }
 
+    @RequestMapping("/course_video")
+    public String courseVideoPage() {
+        return "course_video";
+    }
+
 }
