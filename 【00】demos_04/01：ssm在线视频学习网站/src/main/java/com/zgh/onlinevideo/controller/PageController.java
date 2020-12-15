@@ -37,7 +37,8 @@ public class PageController {
 
         // 最新
         // 设置分页 第几页，显示N个
-        PageInfo<CourseTopic> newsetTopicList = courseTopicService.getIndexNewestTopic(4);
+        PageHelper.startPage(1, 4);
+        PageInfo<CourseTopic> newsetTopicList = courseTopicService.getIndexNewestTopic();
 
         // type=3
         // 设置分页 第几页，显示N个
@@ -75,22 +76,37 @@ public class PageController {
     // 课程列表
     @RequestMapping("/course_list")
     public String courseListPage(Model model) {
-        model.addAttribute("focusIndex", 2);
+        model.addAttribute("focusIndex", 2); //头页面聚焦
+        model.addAttribute("courseTypeId", 0);//全部课程 无论类型
 
-        PageHelper.startPage(1, 16);
-        PageInfo<CourseTopic> newsetTopicList = courseTopicService.getIndexNewestTopic(16);
+        PageHelper.startPage(1, 4);
+        PageInfo<CourseTopic> newsetTopicList = courseTopicService.getIndexNewestTopic();
         model.addAttribute("topicList", newsetTopicList);
+
         return "course_list";
     }
 
     // 课程列表 显示某一分类
     @RequestMapping("/course_list/type/{courseTypeId}")
-    public String courseListPage(@PathVariable Integer courseTypeId, Model model) {
+    public String courseListPage(@PathVariable Integer courseTypeId, Integer pageNum, Model model) {
 
-        PageHelper.startPage(1, 6);
-        PageInfo<CourseTopic> courseTopicList = courseTopicService.getIndexCourseTopic(courseTypeId);
+        model.addAttribute("courseTypeId", courseTypeId);//课程某一分类
 
-        model.addAttribute("courseTopicList", courseTopicList);
+        if (pageNum == null || pageNum <= 1) {
+            pageNum = 1;
+        }
+
+        PageHelper.startPage(pageNum, 4);
+        PageInfo<CourseTopic> courseTopicList = null;
+        if (courseTypeId == 0) {
+            // 最新专题
+            courseTopicList = courseTopicService.getIndexNewestTopic();
+        } else {
+            // 对应类型专题
+            courseTopicList = courseTopicService.getIndexCourseTopic(courseTypeId);
+        }
+
+        model.addAttribute("topicList", courseTopicList);
 
         return "course_list";
     }

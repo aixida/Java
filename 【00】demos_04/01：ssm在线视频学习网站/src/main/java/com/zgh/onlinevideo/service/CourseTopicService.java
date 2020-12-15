@@ -9,5 +9,5 @@ public interface CourseTopicService {
     PageInfo<CourseTopic> getIndexCourseTopic(int typeId);
 
     // 最新的那些课程主题
-    PageInfo<CourseTopic> getIndexNewestTopic(int limit);
+    PageInfo<CourseTopic> getIndexNewestTopic();
 }

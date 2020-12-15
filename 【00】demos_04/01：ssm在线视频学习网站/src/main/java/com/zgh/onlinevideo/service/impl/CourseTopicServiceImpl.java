@@ -1,7 +1,6 @@
 package com.zgh.onlinevideo.service.impl;
 
 
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zgh.onlinevideo.dao.CourseTopicDao;
 import com.zgh.onlinevideo.domain.CourseTopic;
@@ -30,15 +29,14 @@ public class CourseTopicServiceImpl implements CourseTopicService {
 
         List<CourseTopic> list = courseTopicDao.findCourseTopicByCondition(map);
 
-        PageInfo<CourseTopic> pageInfo = new PageInfo<>(list);
+        PageInfo<CourseTopic> pageInfo = new PageInfo<>(list, 4);
 
         return pageInfo;
     }
 
     @Override
-    public PageInfo<CourseTopic> getIndexNewestTopic(int limit) {
+    public PageInfo<CourseTopic> getIndexNewestTopic() {
         // TODO 1
-        PageHelper.startPage(1, limit);
 
         HashMap<String, Object> map = new HashMap<>();
         // 排序 ==1 倒序 desc
@@ -49,7 +47,7 @@ public class CourseTopicServiceImpl implements CourseTopicService {
 
         // TODO 2
         // TODO 3 MYBATIS 配置文件拦截器
-        PageInfo<CourseTopic> pageInfo = new PageInfo<>(list);
+        PageInfo<CourseTopic> pageInfo = new PageInfo<>(list, 4);
 
         return pageInfo;
 

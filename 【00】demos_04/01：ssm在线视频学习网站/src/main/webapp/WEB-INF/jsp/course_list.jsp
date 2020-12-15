@@ -71,14 +71,20 @@
     <%-- 分页--%>
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            <li class="page-item ${topicList.hasPreviousPage? "" :"disabled"} ">
+                <a class="page-link" href="/course_list/type/${courseTypeId}?pageNum=${topicList.prePage}">上一页</a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
+            <%--            //导航条上的第一页--%>
+            <%--            private int navigateFirstPage;--%>
+            <%--            //导航条上的最后一页--%>
+            <%--            private int navigateLastPage;--%>
+            <c:forEach var="i" begin="${topicList.navigateFirstPage}" end="${topicList.navigateLastPage}">
+                <li class="page-item ${topicList.pageNum == i ? "active" : "" } ">
+                    <a class="page-link" href="/course_list/type/${courseTypeId}?pageNum=${i}">${i}</a>
+                </li>
+            </c:forEach>
+            <li class="page-item ${topicList.hasNextPage? "" :"disabled"} ">
+                <a class="page-link" href="/course_list/type/${courseTypeId}?pageNum=${topicList.nextPage}">下一页</a>
             </li>
         </ul>
     </nav>
