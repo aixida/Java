@@ -15,20 +15,20 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item ${focusIndex == 1 ? "active" : ""} ">
                     <a class="nav-link" href="/">首页 <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item ${focusIndex == 2 ? "active" : ""} ">
                     <a class="nav-link" href="/course_list">课程</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item ${focusIndex == 3 ? "active" : ""} ">
                     <a class="nav-link" href="/vip">会员</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item ${focusIndex == 4 ? "active" : ""} ">
                     <%--跳转到b站--%>
                     <a class="nav-link" href="https://www.bilibili.com/">直播</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item ${focusIndex == 5 ? "active" : ""} ">
                     <a class="nav-link" href="/tools">工具</a>
                 </li>
 

@@ -27,6 +27,9 @@ public class PageController {
     @RequestMapping("/")
     public String indexPage(Model model) {
 
+        // 设置头页面的导航条当前焦点位置
+        model.addAttribute("focusIndex", 1);
+
         // 获取首页数据
 
         // banner
@@ -50,19 +53,30 @@ public class PageController {
 
     // 工具
     @RequestMapping("/tools")
-    public String toolsPage() {
+    public String toolsPage(Model model) {
+        model.addAttribute("focusIndex", 5);
         return "tools";
     }
 
     // vip
     @RequestMapping("/vip")
-    public String vipPage() {
+    public String vipPage(Model model) {
+        model.addAttribute("focusIndex", 3);
         return "vip";
+    }
+
+    // 直播
+    @RequestMapping("/live")
+    public String livePage(Model model) {
+        model.addAttribute("focusIndex", 4);
+        return "redirect:https://www.bilibili.com/";
     }
 
     // 课程列表
     @RequestMapping("/course_list")
     public String courseListPage(Model model) {
+        model.addAttribute("focusIndex", 2);
+
         PageHelper.startPage(1, 6);
         PageInfo<CourseTopic> newsetTopicList = courseTopicService.getIndexNewestTopic(6);
         model.addAttribute("topicList", newsetTopicList);
