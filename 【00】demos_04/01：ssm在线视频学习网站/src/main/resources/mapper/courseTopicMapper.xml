@@ -70,6 +70,9 @@
         <if test="coursewareUrl != null and coursewareUrl != ''">
             AND ct.courseware_url LIKE CONCAT('%', #{coursewareUrl}, '%')
         </if>
+        <if test="order == 1">
+            order by ct.create_time desc
+        </if>
     </select>
     
     <!-- 根据主键查询数据 -->

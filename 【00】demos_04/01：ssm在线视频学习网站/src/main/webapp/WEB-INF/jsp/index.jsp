@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -51,64 +52,39 @@
         </a>
     </div>
     <br>
+
     <%--最新课程类型--%>
     <div class="border border-top-0 border-left-0 border-right-0  border-secondary">
-        <a href="#" class="float-right">更多 ></a>
+        <a href="/course_list" class="float-right">更多 ></a>
         <h4 class="text-center">最新课程</h4>
     </div>
 
     <div class="row row-cols-1 row-cols-md-4 mt-2">
-        <div class="col mb-3">
-            <a href="#" target="_blank">
-                <div class="card select-shadow">
-                    <img src="/static/imgs/card-item.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">Springboot</p>
-                        <p class="card-text">1000人学习</p>
-                        <span class="badge badge-pill badge-success ">免费</span>
+        <c:forEach items="${newsetTopicList.list}" var="topic">
+            <div class="col mb-3">
+                <a href="#" target="_blank">
+                    <div class="card select-shadow">
+                        <img src="${topic.coverUrl}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <p class="card-text">${topic.title}</p>
+                            <p class="card-text">${topic.views}人学习</p>
+                            <c:choose>
+                                <c:when test="${topic.vipFlag == 1}">
+                                    <span class="badge badge-pill badge-success ">免费</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="badge badge-pill badge-danger ">会员</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
-        <div class="col mb-3">
-            <a href="#" target="_blank">
-                <div class="card select-shadow">
-                    <img src="/static/imgs/card-item.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">Springboot</p>
-                        <p class="card-text">1000人学习</p>
-                        <span class="badge badge-pill badge-success ">免费</span>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col mb-3">
-            <a href="#" target="_blank">
-                <div class="card select-shadow">
-                    <img src="/static/imgs/card-item.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">Springboot</p>
-                        <p class="card-text">1000人学习</p>
-                        <span class="badge badge-pill badge-success ">免费</span>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col mb-3">
-            <a href="#" target="_blank">
-                <div class="card select-shadow">
-                    <img src="/static/imgs/card-item.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">Springboot</p>
-                        <p class="card-text">1000人学习</p>
-                        <span class="badge badge-pill badge-success ">免费</span>
-                    </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
+        </c:forEach>
     </div>
 
     <br>
+
     <%--最新常用框架类型--%>
     <div class="border border-top-0 border-left-0  border-right-0  border-secondary">
         <a href="#" class="float-right">更多 ></a>
@@ -116,54 +92,27 @@
     </div>
 
     <div class="row row-cols-1 row-cols-md-4 mt-2">
-        <div class="col mb-3">
-            <a href="#" target="_blank">
-                <div class="card select-shadow">
-                    <img src="/static/imgs/card-item.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">Springboot</p>
-                        <p class="card-text">1000人学习</p>
-                        <span class="badge badge-pill badge-success ">免费</span>
+        <c:forEach items="${courseTopicList.list}" var="topic">
+            <div class="col mb-3">
+                <a href="#" target="_blank">
+                    <div class="card select-shadow">
+                        <img src="${topic.coverUrl}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <p class="card-text">${topic.title}</p>
+                            <p class="card-text">${topic.views}人学习</p>
+                            <c:choose>
+                                <c:when test="${topic.vipFlag == 1}">
+                                    <span class="badge badge-pill badge-success ">免费</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="badge badge-pill badge-danger ">会员</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
-        <div class="col mb-3">
-            <a href="#" target="_blank">
-                <div class="card select-shadow">
-                    <img src="/static/imgs/card-item.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">Springboot</p>
-                        <p class="card-text">1000人学习</p>
-                        <span class="badge badge-pill badge-success ">免费</span>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col mb-3">
-            <a href="#" target="_blank">
-                <div class="card select-shadow">
-                    <img src="/static/imgs/card-item.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">Springboot</p>
-                        <p class="card-text">1000人学习</p>
-                        <span class="badge badge-pill badge-success ">免费</span>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col mb-3">
-            <a href="#" target="_blank">
-                <div class="card select-shadow">
-                    <img src="/static/imgs/card-item.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">Springboot</p>
-                        <p class="card-text">1000人学习</p>
-                        <span class="badge badge-pill badge-success ">免费</span>
-                    </div>
-                </div>
-            </a>
-        </div>
+                </a>
+            </div>
+        </c:forEach>
     </div>
 </div>
 <br>

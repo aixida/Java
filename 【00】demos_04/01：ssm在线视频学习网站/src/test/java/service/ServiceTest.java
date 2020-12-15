@@ -1,5 +1,8 @@
 package service;
 
+import com.github.pagehelper.PageInfo;
+import com.zgh.onlinevideo.domain.CourseTopic;
+import com.zgh.onlinevideo.service.CourseTopicService;
 import com.zgh.onlinevideo.service.UserService;
 import com.zgh.onlinevideo.service.impl.MailSenderService;
 import org.junit.Test;
@@ -36,6 +39,21 @@ public class ServiceTest {
         mailSenderService.send();
         System.out.println("send mail succeed");
 
+    }
+
+    @Autowired
+    CourseTopicService courseTopicService;
+
+
+    @Test
+    public void t3() {
+
+        PageInfo<CourseTopic> list = courseTopicService.getIndexCourseTopic(3);
+
+        System.out.println(list.getPageSize());
+        System.out.println(list.getSize());
+
+        System.out.println(list.getList().size());
     }
 
 
