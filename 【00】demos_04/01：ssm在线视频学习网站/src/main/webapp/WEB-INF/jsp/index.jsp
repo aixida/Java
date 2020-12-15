@@ -23,23 +23,22 @@
     <%--轮播图--%>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <%--轮播下划线--%>
-        <ol class="carousel-indicators">
-            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-        </ol>
+            <ol class="carousel-indicators">
+                <c:forEach items="${bannerList}" var="banner" varStatus="idx" begin="0">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="${idx.index}"
+                        <c:if test="${idx.index == 0}">class="active"</c:if> > </li>
+                </c:forEach>
+            </ol>
         <%--轮播的内容--%>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="/static/imgs/index_banner.jpg" class="d-block w-100 rounded" alt="...">
+            <div class="carousel-inner">
+                <c:forEach items="${bannerList}" var="banner" varStatus="idx" begin="0">
+                    <div class="carousel-item <c:if test="${idx.index == 0}"> active</c:if> ">
+                        <a href="${banner.bannerUrl}" target="_blank">
+                            <img src="${banner.bannerImgUrl}" class="d-block w-100 rounded" alt="...">
+                        </a>
+                    </div>
+                </c:forEach>
             </div>
-            <div class="carousel-item">
-                <img src="/static/imgs/index_banner.jpg" class="d-block w-100 rounded" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="/static/imgs/index_banner.jpg" class="d-block w-100 rounded" alt="...">
-            </div>
-        </div>
         <%--左箭头--%>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -87,7 +86,7 @@
 
     <%--最新常用框架类型--%>
     <div class="border border-top-0 border-left-0  border-right-0  border-secondary">
-        <a href="#" class="float-right">更多 ></a>
+        <a href="/course_list/type/3" class="float-right">更多 ></a>
         <h4 class="text-center">常用框架</h4>
     </div>
 

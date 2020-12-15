@@ -22,7 +22,6 @@ public class CourseTopicServiceImpl implements CourseTopicService {
     @Override
     public PageInfo<CourseTopic> getIndexCourseTopic(int typeId) {
 
-        PageHelper.startPage(1, 4);
         HashMap<String, Object> map = new HashMap<>();
         // 类型ID
         map.put("courseTypeId", typeId);
