@@ -77,8 +77,8 @@ public class PageController {
     public String courseListPage(Model model) {
         model.addAttribute("focusIndex", 2);
 
-        PageHelper.startPage(1, 6);
-        PageInfo<CourseTopic> newsetTopicList = courseTopicService.getIndexNewestTopic(6);
+        PageHelper.startPage(1, 16);
+        PageInfo<CourseTopic> newsetTopicList = courseTopicService.getIndexNewestTopic(16);
         model.addAttribute("topicList", newsetTopicList);
         return "course_list";
     }
