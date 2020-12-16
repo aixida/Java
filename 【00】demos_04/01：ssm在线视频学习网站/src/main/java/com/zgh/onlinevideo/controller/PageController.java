@@ -4,8 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zgh.onlinevideo.domain.Banner;
 import com.zgh.onlinevideo.domain.CourseTopic;
+import com.zgh.onlinevideo.domain.CourseType;
 import com.zgh.onlinevideo.service.BannerService;
 import com.zgh.onlinevideo.service.CourseTopicService;
+import com.zgh.onlinevideo.service.CourseTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,9 @@ public class PageController {
 
     @Autowired
     BannerService bannerService;
+
+    @Autowired
+    CourseTypeService courseTypeService;
 
     // 首页
     @RequestMapping("/")
@@ -79,9 +84,14 @@ public class PageController {
         model.addAttribute("focusIndex", 2); //头页面聚焦
         model.addAttribute("courseTypeId", 0);//全部课程 无论类型
 
+        // 课程主题(全部) 排列显示
         PageHelper.startPage(1, 4);
         PageInfo<CourseTopic> newsetTopicList = courseTopicService.getIndexNewestTopic();
         model.addAttribute("topicList", newsetTopicList);
+
+        // 课程分类 导航栏
+        List<CourseType> courseTypeList = courseTypeService.getCourseTypeAll();
+        model.addAttribute("courseTypeList", courseTypeList);
 
         return "course_list";
     }
@@ -96,6 +106,11 @@ public class PageController {
             pageNum = 1;
         }
 
+        // 课程分类 导航栏
+        List<CourseType> courseTypeList = courseTypeService.getCourseTypeAll();
+        model.addAttribute("courseTypeList", courseTypeList);
+
+        // 课程主题(按照分类) 排列显示
         PageHelper.startPage(pageNum, 4);
         PageInfo<CourseTopic> courseTopicList = null;
         if (courseTypeId == 0) {

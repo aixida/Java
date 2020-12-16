@@ -22,17 +22,17 @@
 <%--首页内容区域--%>
 <div class="container">
 
-    <%-- 工具导航--%>
+    <%-- 导航--%>
     <ul class="nav nav-pills">
         <li class="nav-item">
-            <a class="nav-link active" href="#">全部</a>
+            <a class="nav-link  ${ courseTypeId == 0? "active" :""}" href="/course_list">全部</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">在线文档</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">极客文档</a>
-        </li>
+        <c:forEach items="${courseTypeList}" var="type">
+            <li class="nav-item">
+                <a class="nav-link ${ type.id == courseTypeId ? "active" :""} "
+                   href="/course_list/type/${type.id}">${type.name}</a>
+            </li>
+        </c:forEach>
     </ul>
 
     <%-- 每一行最多四个课程专题 --%>
