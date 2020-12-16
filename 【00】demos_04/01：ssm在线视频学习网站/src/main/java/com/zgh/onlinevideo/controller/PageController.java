@@ -2,12 +2,8 @@ package com.zgh.onlinevideo.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.zgh.onlinevideo.domain.Banner;
-import com.zgh.onlinevideo.domain.CourseTopic;
-import com.zgh.onlinevideo.domain.CourseType;
-import com.zgh.onlinevideo.service.BannerService;
-import com.zgh.onlinevideo.service.CourseTopicService;
-import com.zgh.onlinevideo.service.CourseTypeService;
+import com.zgh.onlinevideo.domain.*;
+import com.zgh.onlinevideo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +23,12 @@ public class PageController {
 
     @Autowired
     CourseTypeService courseTypeService;
+
+    @Autowired
+    ToolItemService toolItemService;
+
+    @Autowired
+    ToolTypeService toolTypeService;
 
     // 首页
     @RequestMapping("/")
@@ -57,27 +59,6 @@ public class PageController {
         return "index";
     }
 
-    // 工具
-    @RequestMapping("/tools")
-    public String toolsPage(Model model) {
-        model.addAttribute("focusIndex", 5);
-        return "tools";
-    }
-
-    // vip
-    @RequestMapping("/vip")
-    public String vipPage(Model model) {
-        model.addAttribute("focusIndex", 3);
-        return "vip";
-    }
-
-    // 直播
-    @RequestMapping("/live")
-    public String livePage(Model model) {
-        model.addAttribute("focusIndex", 4);
-        return "redirect:https://www.bilibili.com/";
-    }
-
     // 课程列表
     @RequestMapping("/course_list")
     public String courseListPage(Model model) {
@@ -100,6 +81,7 @@ public class PageController {
     @RequestMapping("/course_list/type/{courseTypeId}")
     public String courseListPage(@PathVariable Integer courseTypeId, Integer pageNum, Model model) {
 
+        model.addAttribute("focusIndex", 2);
         model.addAttribute("courseTypeId", courseTypeId);//课程某一分类
 
         if (pageNum == null || pageNum <= 1) {
@@ -124,6 +106,66 @@ public class PageController {
         model.addAttribute("topicList", courseTopicList);
 
         return "course_list";
+    }
+
+    // vip
+    @RequestMapping("/vip")
+    public String vipPage(Model model) {
+        model.addAttribute("focusIndex", 3);
+        return "vip";
+    }
+
+    // 直播
+    @RequestMapping("/live")
+    public String livePage(Model model) {
+        model.addAttribute("focusIndex", 4);
+        return "redirect:https://www.bilibili.com/";
+    }
+
+    // 工具
+    @RequestMapping("/tool")
+    public String toolPage(Model model) {
+        model.addAttribute("focusIndex", 5);
+        model.addAttribute("toolTypeId", 0);
+        // 最新
+        // 设置分页 第几页，显示N个
+        PageHelper.startPage(1, 8);
+        PageInfo<ToolItem> toolList = toolItemService.getToolItemAll();
+        model.addAttribute("toolList", toolList);
+
+        List<ToolType> toolTypeList = toolTypeService.getToolTypeAll();
+        model.addAttribute("toolTypeList", toolTypeList);
+
+        return "tool";
+    }
+
+    //工具 显示所有分类
+    @RequestMapping(value = "/tool/type/{toolTypeId}")
+    public String toolList(@PathVariable Integer toolTypeId, Model model, Integer pageNum) {
+        model.addAttribute("focusIndex", 5);
+        model.addAttribute("toolTypeId", toolTypeId);
+
+        if (pageNum == null || pageNum <= 1) {
+            pageNum = 1;
+        }
+
+        List<ToolType> toolTypeList = toolTypeService.getToolTypeAll();
+        model.addAttribute("toolTypeList", toolTypeList);
+
+        PageHelper.startPage(pageNum, 8);
+
+        PageInfo<ToolItem> toolList = null;
+        if (toolTypeId == 0) {
+            // 最新
+            toolList = toolItemService.getToolItemAll();
+        } else {
+            // 对应类型
+            toolList = toolItemService.getToolItem(toolTypeId);
+        }
+
+        model.addAttribute("toolList", toolList);
+
+        return "tool";
     }
 
     @RequestMapping("/course_video")

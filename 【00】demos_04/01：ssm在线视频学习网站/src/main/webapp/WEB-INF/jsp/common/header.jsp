@@ -29,7 +29,7 @@
                     <a class="nav-link" href="https://www.bilibili.com/">直播</a>
                 </li>
                 <li class="nav-item ${focusIndex == 5 ? "active" : ""} ">
-                    <a class="nav-link" href="/tools">工具</a>
+                    <a class="nav-link" href="/tool">工具</a>
                 </li>
 
             </ul>
