@@ -48,7 +48,7 @@ public class CourseTopicServiceImpl implements CourseTopicService {
         List<CourseTopic> list = courseTopicDao.findCourseTopicByCondition(map);
 
         // TODO 2
-        // TODO 3 MYBATIS 配置文件拦截器
+        // TODO 3 MYBATIS 配置文件拦截器(PageInfo)
         PageInfo<CourseTopic> pageInfo = new PageInfo<>(list, 4);
 
         return pageInfo;
@@ -72,6 +72,21 @@ public class CourseTopicServiceImpl implements CourseTopicService {
         if (flag != 1) {
             throw new PageException("观看次数增加行为发生错误");
         }
+    }
+
+    @Override
+    public PageInfo<CourseTopic> searchTopicByTitle(String title) {
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put("title", title);
+        map.put("flag", 1);
+
+        List<CourseTopic> list = courseTopicDao.findCourseTopicByCondition(map);
+        PageInfo<CourseTopic> pageInfo = new PageInfo<>(list, 4);
+
+        return pageInfo;
+
     }
 
 }

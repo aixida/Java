@@ -15,4 +15,7 @@ public interface CourseTopicService {
 
     // 课程专题浏览数+1
     void viewsAdd(int courseTopicId, int views);
+
+    // 搜索课程专题
+    PageInfo<CourseTopic> searchTopicByTitle(String title);
 }
