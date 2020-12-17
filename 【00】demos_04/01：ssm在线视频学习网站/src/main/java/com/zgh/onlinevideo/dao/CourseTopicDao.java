@@ -13,4 +13,8 @@ public interface CourseTopicDao {
 
     List<CourseTopic> findCourseTopicByCondition(HashMap<String, Object> map);
 
+    List<CourseTopic> findCourseTopicByIds(List<Integer> ids);
+
+    int updateCourseTopic(HashMap<String, Object> map);
+
 }

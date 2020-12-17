@@ -58,7 +58,7 @@ public class UserController {
 
         User dbUser = userService.login(user);
         if (dbUser != null) {
-            session.setAttribute(Constants.LOGIN_USER, user);
+            session.setAttribute(Constants.LOGIN_USER, dbUser);
         }
 
         // TODO 上面是账号密码的判断
@@ -67,7 +67,7 @@ public class UserController {
         if ("1".equals(autoLogin)) {
             // 1 生成cookie返回给客户端凭证
             // 2 服务器端保存token对应loginToken数据 application
-            LoginToken loginToken = VideoUtil.generateLoginToken(request, user);
+            LoginToken loginToken = VideoUtil.generateLoginToken(request, dbUser);
             Cookie cookie = new Cookie("autoToken", loginToken.generateToken());
 
             // 设置COOKIE保存属性

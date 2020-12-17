@@ -61,7 +61,7 @@
     <div class="row row-cols-1 row-cols-md-4 mt-2">
         <c:forEach items="${newsetTopicList.list}" var="topic">
             <div class="col mb-3">
-                <a href="#" target="_blank">
+                <a href="/topic/${topic.id}" target="_blank">
                     <div class="card select-shadow">
                         <img src="${topic.coverUrl}" class="card-img-top" alt="...">
                         <div class="card-body">
@@ -93,7 +93,7 @@
     <div class="row row-cols-1 row-cols-md-4 mt-2">
         <c:forEach items="${courseTopicList.list}" var="topic">
             <div class="col mb-3">
-                <a href="#" target="_blank">
+                <a href="/topic/${topic.id}" target="_blank">
                     <div class="card select-shadow">
                         <img src="${topic.coverUrl}" class="card-img-top" alt="...">
                         <div class="card-body">

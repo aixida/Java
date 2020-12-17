@@ -21,10 +21,11 @@ public class VideoExceptionResolver implements HandlerExceptionResolver {
         mv.setViewName("error");
 
         if (e instanceof UserException) {
-            mv.addObject("message", e.getMessage());
-        } else {
-            mv.addObject("message", e);
+            mv.addObject("flag", "用户逻辑错误");
+        } else if (e instanceof PageException) {
+            mv.addObject("flag", "页面逻辑错误");
         }
+        mv.addObject("message", e.getMessage());
 
         return mv;
 

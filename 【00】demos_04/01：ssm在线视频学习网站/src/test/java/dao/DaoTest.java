@@ -1,5 +1,6 @@
 package dao;
 
+import cn.hutool.core.util.RandomUtil;
 import com.zgh.onlinevideo.dao.*;
 import com.zgh.onlinevideo.domain.*;
 import org.junit.Test;
@@ -7,8 +8,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import sun.plugin.dom.core.CoreConstants;
 
 import java.util.Date;
 
@@ -67,11 +66,20 @@ public class DaoTest {
 
     @Test
     public void t4() {
-        CourseVideo courseVideo = new CourseVideo();
-        courseVideo.setCreateTime(new Date());
-        courseVideo.setName("video");
-        int code = courseVideoDao.insertCourseVideo(courseVideo);
-        System.out.println(code);
+
+        for (int i = 1; i <= 400; i++) {
+            CourseVideo courseVideo = new CourseVideo();
+
+            courseVideo.setCreateTime(new Date());
+            courseVideo.setName("SSM" + i);
+            courseVideo.setFreeFlag(RandomUtil.randomInt(1,3));
+            courseVideo.setCourseTopicId(RandomUtil.randomInt(1,16));
+            courseVideo.setFlag(1);
+            courseVideo.setVideoUrl1("https://www.bilibili.com/video/BV144411U76Z");
+
+            int code = courseVideoDao.insertCourseVideo(courseVideo);
+            System.out.println(code);
+        }
     }
 
     @Autowired

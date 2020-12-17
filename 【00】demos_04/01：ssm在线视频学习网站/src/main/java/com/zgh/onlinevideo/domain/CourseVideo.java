@@ -23,8 +23,8 @@ public class CourseVideo implements java.io.Serializable {
     /** freeFlag */
     private Integer freeFlag;
 
-    /** courseTypeId */
-    private Integer courseTypeId;
+    /** courseTopicId */
+    private Integer courseTopicId;
 
     /** flag */
     private Integer flag;
@@ -101,17 +101,17 @@ public class CourseVideo implements java.io.Serializable {
      * 
      * @return courseTypeId
      */
-    public Integer getCourseTypeId() {
-        return this.courseTypeId;
+    public Integer getCourseTopicId() {
+        return this.courseTopicId;
     }
 
     /**
      * 设置courseTypeId
      * 
-     * @param courseTypeId
+     * @param courseTopicId
      */
-    public void setCourseTypeId(Integer courseTypeId) {
-        this.courseTypeId = courseTypeId;
+    public void setCourseTopicId(Integer courseTopicId) {
+        this.courseTopicId = courseTopicId;
     }
 
     /**

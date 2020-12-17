@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head>
@@ -24,18 +25,21 @@
 <div class="container">
 
     <%--视频--%>
-    <div class="card">
-        <div class="embed-responsive embed-responsive-16by9">
-            <iframe src="//player.bilibili.com/player.html?aid=53893527&bvid=BV1E4411W735&cid=94275556&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+        <div class="card">
+            <div class="embed-responsive embed-responsive-16by9">
+                <%-- 第一进入？ 选集进入？--%>
+                <iframe src="${video.videoUrl1}"
+                        scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true">
+                </iframe>
+            </div>
         </div>
-    </div>
 
     <%--视频相关--%>
     <div class="row mt-2">
         <div class="col-md-9">
-            <span class="font-weight">浏览次数：<b class="text-primary">1069次</b></span>
-            <span class="font-weight ml-3">课时数：<b class="text-primary">19</b></span>
-            <span class="text-weight ml-3">类别：<b class="text-success">免费</b></span>
+            <span class="font-weight">浏览次数：<b class="text-primary">${courseTopic.views}次</b></span>
+            <span class="font-weight ml-3">课时数：<b class="text-primary">${courseVideoList.size()}</b></span>
+            <span class="text-weight ml-3">类别：<b class="text-success">${courseTopic.vipFlag == 1 ? "免费":"会员"}</b></span>
 
             <i class="fa fa-share-alt text-secondary ml-3">
                 &nbsp;&nbsp;
@@ -48,7 +52,7 @@
         </div>
 
         <div class="col-md-3">
-            <a class="btn btn-info text-white" href="#">资料下载</a>
+            <a class="btn btn-info text-white" href="${courseTopic.coursewareUrl}">资料下载</a>
             <a class="btn btn-info text-white ml-2" target="_blank">在线咨询</a>
         </div>
     </div>
@@ -74,38 +78,28 @@
                 <div class="tab-content" id="nav-tabContent">
                     <%--课程介绍（导航栏）--%>
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        Vue3.0（正式版） + TS 仿知乎专栏企业级项目
-                        慕课网首发，Vue3.0企业级项目实战。热门技术双剑合璧，Vue3.0 配合 TypeScript ，使用新版Vuex 和 Vue-Router
-                        全家桶完成前后端分离复杂实战项目。一系列由易到难通用组件开发，让你学会一个基本的组件库的开发思路和技巧。接入真实后端API，告别 mock 数据，并提供Swagger
-                        在线调试查询。抓住前后端分离开发痛点 - 权限管理，路由控制，全局Store 结构设计，前端缓存实现等。
+                        ${courseTopic.intro}
                     </div>
                     <%--课程目录（导航栏）--%>
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <a href="#" class="list-group-item list-group-item-action list-group-item-light border-0">
-                            <i class="fa fa-play-circle-o">
-                                &nbsp;&nbsp;第1讲
-                                <span class="ml-3">1.武汉学院-IDEA-IntelliJ IDEA的介绍和优势</span>
-                                <span class="ml-1 badge badge-pill badge-success  pt-1">免费</span>
-                            </i>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action list-group-item-light border-0">
-                            <i class="fa fa-play-circle-o">
-                                &nbsp;&nbsp;第1讲
-                                <span class="ml-3">1.武汉学院-IDEA-IntelliJ IDEA的介绍和优势</span>
-                                <span class="ml-1 badge badge-pill badge-success  pt-1">免费</span>
-                            </i>
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action list-group-item-light border-0">
-                            <i class="fa fa-play-circle-o">
-                                &nbsp;&nbsp;第1讲
-                                <span class="ml-3">1.武汉学院-IDEA-IntelliJ IDEA的介绍和优势</span>
-                                <span class="ml-1 badge badge-pill badge-success  pt-1">免费</span>
-                            </i>
-                        </a>
+                        <c:forEach items="${courseVideoList}" var="video" varStatus="idx">
+                            <a href="/topic/${courseTopicId}/${video.id}"
+                               class="${(userVipFlag == 2 or video.freeFlag == 1)? "" :"disabled"} list-group-item list-group-item-action list-group-item-light border-0">
+                                <i class="fa fa-play-circle-o">&nbsp;&nbsp;第${idx.index}讲
+                                    <span class="ml-3">${video.name}</span>
+                                    <c:choose>
+                                        <c:when test="${video.freeFlag == 1}">
+                                            <span class="ml-1 badge badge-pill badge-success  pt-1">免费</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="ml-1 badge badge-pill badge-danger  pt-1"> 会员</span>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </i>
+                            </a>
+                        </c:forEach>
                     </div>
-
                 </div>
-
             </div>
         </div>
 

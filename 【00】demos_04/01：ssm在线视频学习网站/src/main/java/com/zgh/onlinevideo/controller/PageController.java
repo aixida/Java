@@ -122,7 +122,7 @@ public class PageController {
         return "redirect:https://www.bilibili.com/";
     }
 
-    // 工具
+    // 工具列表
     @RequestMapping("/tool")
     public String toolPage(Model model) {
         model.addAttribute("focusIndex", 5);
@@ -139,9 +139,9 @@ public class PageController {
         return "tool";
     }
 
-    //工具 显示所有分类
+    //工具列表 显示所有分类
     @RequestMapping(value = "/tool/type/{toolTypeId}")
-    public String toolList(@PathVariable Integer toolTypeId, Model model, Integer pageNum) {
+    public String toolPage(@PathVariable Integer toolTypeId, Model model, Integer pageNum) {
         model.addAttribute("focusIndex", 5);
         model.addAttribute("toolTypeId", toolTypeId);
 

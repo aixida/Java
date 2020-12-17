@@ -10,4 +10,9 @@ public interface CourseTopicService {
 
     // 最新的那些课程主题
     PageInfo<CourseTopic> getIndexNewestTopic();
+
+    CourseTopic getCourseTopic(int topicId);
+
+    // 课程专题浏览数+1
+    void viewsAdd(int courseTopicId, int views);
 }

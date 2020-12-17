@@ -1,6 +1,7 @@
 package com.zgh.onlinevideo.service.impl;
 
 
+import com.github.pagehelper.PageException;
 import com.github.pagehelper.PageInfo;
 import com.zgh.onlinevideo.dao.CourseTopicDao;
 import com.zgh.onlinevideo.domain.CourseTopic;
@@ -8,6 +9,7 @@ import com.zgh.onlinevideo.service.CourseTopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -52,4 +54,24 @@ public class CourseTopicServiceImpl implements CourseTopicService {
         return pageInfo;
 
     }
+
+    @Override
+    public CourseTopic getCourseTopic(int topicId) {
+        List<Integer> ids = new ArrayList<>();
+        ids.add(topicId);
+        List<CourseTopic> list = courseTopicDao.findCourseTopicByIds(ids);
+        return list.get(0);
+    }
+
+    @Override
+    public void viewsAdd(int courseTopicId, int views) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("id", courseTopicId);
+        map.put("views", views);
+        int flag = courseTopicDao.updateCourseTopic(map);
+        if (flag != 1) {
+            throw new PageException("观看次数增加行为发生错误");
+        }
+    }
+
 }

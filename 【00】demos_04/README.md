@@ -76,7 +76,7 @@ CREATE TABLE `ssm4`.`course_video` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
   `free_flag` TINYINT NULL,
-  `course_type_id` INT NULL,
+  `course_topic_id` INT NULL,
   `flag` TINYINT NULL,
   `create_time` DATETIME NULL,
   `video_url1` VARCHAR(255) NULL,

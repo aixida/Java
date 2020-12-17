@@ -25,7 +25,7 @@
     <%-- 导航--%>
     <ul class="nav nav-pills">
         <li class="nav-item">
-            <a class="nav-link  ${ courseTypeId == 0? "active" :""}" href="/course_list">全部</a>
+            <a class="nav-link  ${ courseTypeId == 1? "active" :""}" href="/course_list">全部</a>
         </li>
         <c:forEach items="${courseTypeList}" var="type">
             <li class="nav-item">
@@ -45,14 +45,14 @@
             <div class="row row-cols-1 row-cols-md-4 mt-2">
         </c:if>
         <div class="col mb-3">
-            <a href="#" target="_blank">
+            <a href="/topic/${topic.id}" target="_blank">
                 <div class="card select-shadow">
                     <img src="${topic.coverUrl}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <p class="card-text">${topic.title}</p>
                         <p class="card-text">${topic.views}人学习</p>
                         <c:choose>
-                            <c:when test="${topic.vipFlag == 0}">
+                            <c:when test="${topic.vipFlag == 1}">
                                 <span class="badge badge-pill badge-success ">免费</span>
                             </c:when>
                             <c:otherwise>
