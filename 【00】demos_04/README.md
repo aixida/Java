@@ -25,7 +25,7 @@
 
 4. 用户表 user
 
-   id、用户名 name、密码 passsword、电话 number、email、会员状态 vip_flag、注册时间  create_time
+   id、用户名 name、密码 passsword、电话 number、email、会员状态 vip_flag、注册时间  create_time、状态 flag
 
 5. 工具类型 tool_type
 
@@ -33,11 +33,13 @@
 
 6. 工具表 tool_item
 
-   id、名称 name、地址URL tool_url、封面图片 cover_url、**类型ID** tool_type_id
+   id、名称 name、地址URL tool_url、封面图片 cover_url、**类型ID** tool_type_id、状态 flag
 
 7. 横幅图片 banner
 
    id、横幅图片URL banner_img_url、状态 flag、类型 type、创建时间 create_time、目标地址 banner_url
+   
+8. 补充：每个表都有`flag`字段，默认为1，删除为0（这就是假的删除了）
 
 ```mysql
 # 数据库
@@ -47,7 +49,7 @@ CREATE SCHEMA `ssm4` DEFAULT CHARACTER SET utf8 ;
 CREATE TABLE `ssm4`.`course_type` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
-  `flag` TINYINT NULL,
+  `flag` TINYINT NULL DEFAULT 1,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
@@ -61,7 +63,7 @@ CREATE TABLE `ssm4`.`course_topic` (
   `intro` VARCHAR(255) NULL,
   `intro_url` VARCHAR(255) NULL,
   `views` INT NULL,
-  `flag` TINYINT NULL,
+  `flag` TINYINT NULL DEFAULT 1,
   `course_type_id` INT NULL,
   `create_time` DATETIME NULL,
   `vip_flag` TINYINT NULL,
@@ -77,7 +79,7 @@ CREATE TABLE `ssm4`.`course_video` (
   `name` VARCHAR(255) NULL,
   `free_flag` TINYINT NULL,
   `course_topic_id` INT NULL,
-  `flag` TINYINT NULL,
+  `flag` TINYINT NULL DEFAULT 1,
   `create_time` DATETIME NULL,
   `video_url1` VARCHAR(255) NULL,
   `video_url2` VARCHAR(255) NULL,
@@ -95,6 +97,7 @@ CREATE TABLE `ssm4`.`user` (
   `email` VARCHAR(255) NULL,
   `vip_flag` TINYINT NULL,
   `create_time` DATETIME NULL,
+  `flag` TINYINT NULL DEFAULT 1
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
@@ -104,7 +107,7 @@ COLLATE = utf8_bin;
 CREATE TABLE `ssm4`.`tool_type` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
-  `flag` TINYINT NULL,
+  `flag` TINYINT NULL DEFAULT 1,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
@@ -117,6 +120,7 @@ CREATE TABLE `ssm4`.`tool_item` (
   `tool_url` VARCHAR(255) NULL,
   `cover_url` VARCHAR(255) NULL,
   `tool_type_id` INT NULL,
+  `flag` TINYINT NULL DEFAULT 1,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
@@ -126,7 +130,7 @@ COLLATE = utf8_bin;
 CREATE TABLE `ssm4`.`banner` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `banner_img_url` VARCHAR(255) NULL,
-  `flag` TINYINT NULL,
+  `flag` TINYINT NULL DEFAULT 1,
   `type` INT NULL COMMENT '广告图分类，区分展示页面',
   `create_time` DATETIME NULL,
   `banner_url` VARCHAR(255) NULL,
