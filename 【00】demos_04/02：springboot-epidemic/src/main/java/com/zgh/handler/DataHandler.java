@@ -2,13 +2,62 @@ package com.zgh.handler;
 
 import com.google.gson.Gson;
 import com.zgh.bean.DataBean;
+import com.zgh.service.DataService;
 import com.zgh.util.HttpConnUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class DataHandler {
+
+    @Autowired
+    private DataService service;
+
+    /**
+     * @PostConstruct
+     * 修饰的方法 会在服务器启动时执行一次 且只执行一次
+     *
+     * 数据初始化
+     */
+    @PostConstruct
+    public void saveData() {
+
+        System.out.println("初始化数据的存储");
+
+        // 1.爬取疫情数据
+        List<DataBean> dataBeans = getData();
+
+        // 2.清空表中数据
+        service.remove(null);
+
+        // 3.数据存储
+        service.saveBatch(dataBeans);
+
+    }
+
+    private static final SimpleDateFormat dateformet = new SimpleDateFormat("HH:mm:ss");
+
+    /**
+     * @Scheduled
+     * 支持 cron 表达式
+     *
+     * 定时更新数据 每十分钟更新一次
+     */
+    @Scheduled(cron = "0 0/10 * * * ?")
+    public void updateData() {
+        System.out.println("更新数据存储, 当前时间 " + dateformet.format(new Date()));
+        List<DataBean> dataBeans = getData();
+        service.remove(null);
+        service.saveBatch(dataBeans);
+    }
 
     // 新型冠状病毒肺炎 - 疫情实时追踪 from 腾讯新闻
     // 文件格式: JSON
@@ -42,7 +91,7 @@ public class DataHandler {
             double dead = (double) totalMap.get("dead");
             double heal = (double) totalMap.get("heal");
 
-            DataBean dataBean = new DataBean(name, (int) nowConfirm, (int) confirm, (int) dead, (int) heal);
+            DataBean dataBean = new DataBean(null, name, (int) nowConfirm, (int) confirm, (int) dead, (int) heal);
             result.add(dataBean);
 
         }

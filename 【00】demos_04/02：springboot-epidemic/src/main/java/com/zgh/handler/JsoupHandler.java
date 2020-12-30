@@ -45,7 +45,7 @@ public class JsoupHandler {
             double dead = (double) map.get("deadCount");
             double heal = (double) map.get("curedCount");
 
-            DataBean dataBean = new DataBean(name, (int) nowConfirm, (int) confirm, (int) dead, (int) heal);
+            DataBean dataBean = new DataBean(null, name, (int) nowConfirm, (int) confirm, (int) dead, (int) heal);
             result.add(dataBean);
         }
 

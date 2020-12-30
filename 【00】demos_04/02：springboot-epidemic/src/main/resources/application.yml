@@ -1,0 +1,7 @@
+# 设置 MySQL 数据源
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/epidemic?serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver

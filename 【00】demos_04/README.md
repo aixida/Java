@@ -1,15 +1,16 @@
-# 环境
+# 通用环境
 
 - 编程语言：Java 1.8
-- IDE：intelliJ IDEA 2020.2
+- IDE：intelliJ IDEA
 - 数据库：MySQL 8.0
-- Web容器：Tomcat 9.0.37
-- ssm：Spring + SpringMVC + Mybatis 
 - 版本管理工具：Maven 3.6.3
 
-  # 01：ssm在线视频学习网站 - 模拟
+# 01：ssm在线视频学习网站 - 模拟
 
-### 一、数据库
+- Web容器：Tomcat 9.0.37
+- ssm：Spring + SpringMVC + Mybatis 
+
+### 一 : 数据库
 
 1. 课程类型 course_type
 
@@ -189,3 +190,103 @@ COLLATE = utf8_bin;
      - 验证URL是否合法（时间是否超时，是否是服务器生成，是否有篡改）
      - 跳转修改密码页面
      - 输入密码，提交密码修改用户密码
+
+# 02：springboot-epidemic - 模拟
+
+## 一、数据库
+
+id、地区名 name、现有确诊人数 now_confirm、累计确诊人数 confirm、死亡人数 dead、治愈人数 heal
+
+```mysql
+CREATE SCHEMA `epidemic` DEFAULT CHARACTER SET utf8 ;
+
+CREATE TABLE `epidemic`.`illness` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NULL,
+  `now_confirm` INT NULL,
+  `confirm` INT NULL,
+  `dead` INT NULL,
+  `heal` INT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+```
+
+## 二、爬虫
+
+> 搜索引擎做的事儿，链接人和内容
+
+爬虫： 网页爬取 -- 网页去重 -- 网页解析  -- 内容保存（倒排索引）
+
+- 通用型爬虫——非定向数据 （搜索引擎使用）
+- 垂直型爬虫——定向数据（本项目使用）
+
+**爬取数据 新型冠状病毒肺炎 - 疫情实时追踪**
+
+1. 爬取对象：腾讯新闻 https://news.qq.com/zt2020/page/feiyan.htm#/
+   1. 疫情数据的请求地址 https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5
+   2. 数据格式 JSON
+2. 爬取对象：丁香医生 https://ncov.dxy.cn/ncovh5/view/pneumonia
+   1. 疫情数据的请求地址 https://ncov.dxy.cn/ncovh5/view/pneumonia
+   2. 数据格式 HTML
+
+## 三、爬取数据并存储
+
+**持久层框架使用 mybats-plus**
+
+1. pom.xml 引入依赖
+2. apllication.yml 数据库配置(url driver-class username password)
+3. mapper接口 `extends BaseMapper<DataBean>`
+4. 主程序入口增加注解 `@MapperScan("com.zgh.mapper")`
+5. service 
+   1. 接口`extends IService<DataBean>`
+   2. 子类实现 `extends ServiceImpl<DataMapper, DataBean>`
+6. bean 
+   1. 序列化 `implements Serializable`
+   2. 使用 lombok `@@Data @AllArgsConstructor @NoArgsConstructor`
+   3. 对应数据库中具体的表 `@TableName("illness")`
+
+**初始化数据**
+
+1. 定义一个类 > 爬取疫情数据 > 每一份数据都封装到 bean 中 > 全部 bean 存储在集合中
+
+2. 让其在服务器启动时执行 将数据存储入数据库中 方法上加上`@PostConstruct` 
+
+   服务器启动流程：服务器加载 Servlet > Servlet 执行构造函数 > PostConstruct >   init > service > destroy > PreDestroy > 服务器卸载 Servlet
+
+**定时更新数据**
+
+1. 主程序入口增加注解 `@EnableScheduling`
+2. 在更新方法中设置定时时效 `@Scheduled(cron = "0 0/10 * * * ?")` 每十分钟执行一次
+
+cron 表达式（有七个字段：秒 分 时 日 月 周 年）
+
+| 字段 |   范围    |
+| :--: | :-------: |
+|  秒  |   0-59    |
+| 分钟 |   0-59    |
+| 小时 |   0-23    |
+| 日期 |   1-31    |
+| 月份 |   1-12    |
+| 星期 |    1-7    |
+| 年份 | 2013-3000 |
+
+字符：`*`任意  `-`区间  `,`枚举  `/`步长  `L`最后   `W`工作日
+
+ `@Scheduled`
+
+1）cron 表达式
+
+`@Scheduled(cron = "0 0/10 * * * ?")` 每十分钟执行一次
+
+2）固定频率任务
+
+ `@Scheduled(fixedRate = 10000)` 每10s执行一次
+
+从上一次方法执行开始的时间算起，如果上一次方法阻塞住了，下一次并不会执行，但是在阻塞这段时间内累计应该执行的次数，当不再阻塞时，一下子把这些全部执行掉，而后再按照固定速率继续执行
+
+3）固定间隔任务
+
+ `@Scheduled(fixedDelay = 10000)` 每10s执行一次
+
+以上一次方法执行完开始算起，如果上一次方法执行阻塞住了，那么直到上一次执行完，并间隔给定的时间后，执行下一次
