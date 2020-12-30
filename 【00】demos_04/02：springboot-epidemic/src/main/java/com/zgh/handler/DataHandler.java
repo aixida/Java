@@ -16,29 +16,6 @@ public class DataHandler {
 
     public static List<DataBean> getData() {
 
-        // 从文本中读取 数据
-        // StringBuilder builder = new StringBuilder();
-        // FileReader reader = null;
-        // try {
-        //     reader = new FileReader("tmp.json");
-        //     char[] cBuf = new char[1024];
-        //
-        //     int offset = 0;
-        //     while ((offset = reader.read(cBuf)) > 0) {
-        //         builder.append(new String(cBuf, 0, offset));
-        //     }
-        // } catch (IOException e){
-        //     e.printStackTrace();
-        // } finally {
-        //     try {
-        //         if (reader != null) {
-        //             reader.close();
-        //         }
-        //     } catch (IOException e) {
-        //         e.printStackTrace();
-        //     }
-        // }
-
         String str = HttpConnUtil.doGet(urlStr);
 
         Gson gson = new Gson();
