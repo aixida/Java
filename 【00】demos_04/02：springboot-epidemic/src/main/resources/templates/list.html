@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>epidemic</title>
+
+    <link rel="stylesheet" th:href="@{/bootstrap.css}">
+
+</head>
+<body>
+
+    <h2>epidemic</h2>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>地区</th>
+                <th>现有确诊</th>
+                <th>累计确诊</th>
+                <th>治愈</th>
+                <th>死亡</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="data:${dataList}">
+                <td th:text="${data.name}"></td>
+                <td th:text="${data.nowConfirm}"></td>
+                <td th:text="${data.confirm}"></td>
+                <td th:text="${data.heal}"></td>
+                <td th:text="${data.dead}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>
