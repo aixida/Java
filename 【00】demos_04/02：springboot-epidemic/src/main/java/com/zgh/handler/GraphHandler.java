@@ -3,7 +3,7 @@ package com.zgh.handler;
 import com.google.gson.Gson;
 import com.zgh.bean.GraphBean;
 import com.zgh.service.GraphService;
-import com.zgh.util.HttpConnUtil;
+import com.zgh.util.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -49,7 +49,7 @@ public class GraphHandler {
 
     public static List<GraphBean> getData() {
 
-        String str = HttpConnUtil.doGet(urlStr);
+        String str = HttpClientUtil.doGet(urlStr);
 
         Gson gson = new Gson();
         Map map = gson.fromJson(str, Map.class);
@@ -67,7 +67,7 @@ public class GraphHandler {
             double dead = (double) tmp.get("dead");
             double heal = (double) tmp.get("heal");
 
-            GraphBean graphBean = new GraphBean(date, (int) confirm, (int) heal, (int) dead);
+            GraphBean graphBean = new GraphBean(null, date, (int) confirm, (int) heal, (int) dead);
             result.add(graphBean);
 
         }

@@ -1,10 +1,10 @@
 package com.zgh.util;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Java 实现 http 请求
@@ -69,5 +69,89 @@ public class HttpConnUtil {
         return result.toString();
     }
 
+    public String doPost(String urlStr, Map parameterMap) throws Exception {
+
+        StringBuffer parameterBuffer = new StringBuffer();
+        if (parameterMap != null) {
+            Iterator iterator = parameterMap.keySet().iterator();
+            while (iterator.hasNext()) {
+                String key = (String) iterator.next();
+                String value = "";
+                if (parameterMap.get(key) != null) {
+                    value = (String) parameterMap.get(key);
+                }
+
+                parameterBuffer.append(key).append("=").append(value);
+                if (iterator.hasNext()) {
+                    parameterBuffer.append("&");
+                }
+            }
+        }
+
+        System.out.println("POST parameter : " + parameterBuffer.toString());
+
+        URL url = new URL(urlStr);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setDoOutput(true);
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Accept-Charset", "utf-8");
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        connection.setRequestProperty("Content-Length",
+                String.valueOf(parameterBuffer.length()));
+
+        OutputStream outputStream = null;
+        OutputStreamWriter outputStreamWriter = null;
+        InputStream inputStream = null;
+        InputStreamReader inputStreamReader = null;
+        BufferedReader reader = null;
+
+        StringBuffer resultBuffer = new StringBuffer();
+
+        try {
+            outputStream = connection.getOutputStream();
+            outputStreamWriter = new OutputStreamWriter(outputStream);
+
+            outputStreamWriter.write(parameterBuffer.toString());
+            outputStreamWriter.flush();
+
+            connection.connect();
+
+            if (connection.getResponseCode() != 200) {
+                throw new Exception("HTTP Request is not success, " +
+                        "Response code is " + connection.getResponseCode());
+            }
+
+            inputStream = connection.getInputStream();
+            inputStreamReader = new InputStreamReader(inputStream);
+            reader = new BufferedReader(inputStreamReader);
+
+            String tempLine = null;
+            while ((tempLine = reader.readLine()) != null) {
+                resultBuffer.append(tempLine);
+            }
+
+        } finally {
+
+            if (outputStreamWriter != null) {
+                outputStreamWriter.close();
+            }
+            if (outputStream != null) {
+                outputStream.close();
+            }
+            if (reader != null) {
+                reader.close();
+            }
+            if (inputStreamReader != null) {
+                inputStreamReader.close();
+            }
+            if (inputStream != null) {
+                inputStream.close();
+            }
+
+        }
+
+        return resultBuffer.toString();
+    }
 
 }

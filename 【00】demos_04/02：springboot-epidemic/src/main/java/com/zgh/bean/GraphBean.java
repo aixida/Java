@@ -13,6 +13,8 @@ import java.io.Serializable;
 @TableName("graph")
 public class GraphBean implements Serializable {
 
+    private Long id;
+
     private String date;
 
     private int confirm;

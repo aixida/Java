@@ -76,6 +76,13 @@
             <version>3.2.0</version>
         </dependency>
 
+<!--    http 请求-->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+
     </dependencies>
 
     <build>
