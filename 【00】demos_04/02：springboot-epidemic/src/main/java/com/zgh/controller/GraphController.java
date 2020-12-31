@@ -1,0 +1,49 @@
+package com.zgh.controller;
+
+import com.google.gson.Gson;
+import com.zgh.bean.GraphBean;
+import com.zgh.service.GraphService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Controller
+public class GraphController {
+
+    @Autowired
+    GraphService graphService;
+
+    @GetMapping("/graph")
+    public String graph(Model model) {
+
+        List<GraphBean> graphList = graphService.list(); // mybatis-plus 查询全表数据
+
+        ArrayList<String> dateList = new ArrayList<>();
+        ArrayList<Integer> confirmList = new ArrayList<>();
+        ArrayList<Integer> healList = new ArrayList<>();
+        ArrayList<Integer> deadList = new ArrayList<>();
+
+        for (int i = 0; i < graphList.size(); i++) {
+
+            GraphBean bean = graphList.get(i);
+            dateList.add(bean.getDate());
+            confirmList.add(bean.getConfirm());
+            healList.add(bean.getHeal());
+            deadList.add(bean.getDead());
+
+        }
+
+        model.addAttribute("dateList", new Gson().toJson(dateList));
+        model.addAttribute("confirmList", new Gson().toJson(confirmList));
+        model.addAttribute("healList", new Gson().toJson(healList));
+        model.addAttribute("deadList", new Gson().toJson(deadList));
+
+        return "graph";
+
+    }
+
+}

@@ -30,7 +30,7 @@ public class DataHandler {
     @PostConstruct
     public void saveData() {
 
-        System.out.println("初始化数据的存储");
+        System.out.println("初始化数据的存储 - 表格");
 
         // 1.爬取疫情数据
         List<DataBean> dataBeans = getData();
@@ -53,7 +53,7 @@ public class DataHandler {
      */
     @Scheduled(cron = "0 0/10 * * * ?")
     public void updateData() {
-        System.out.println("更新数据存储, 当前时间 " + dateformet.format(new Date()));
+        System.out.println("更新数据存储 - 表格, 当前时间 " + dateformet.format(new Date()));
         List<DataBean> dataBeans = getData();
         service.remove(null);
         service.saveBatch(dataBeans);

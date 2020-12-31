@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>epidemic</title>
+
+    <script type="text/javascript" src="echarts/echarts.min.js"></script>
+</head>
+<body>
+
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="width: 900px;height:600px;"></div>
+
+<!-- 要接收服务端的数据  并且使用thymeleaf -->
+<script th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    var dateStr = [[${dateList}]];
+    var confirmStr = [[${confirmList}]];
+    var healStr = [[${healList}]];
+    var deadStr = [[${deadList}]];
+
+    option = {
+        title: {
+            text: '全国累计确诊/治愈/死亡趋势'
+        },
+        legend: {
+            data:['累计确诊','累计治愈','累计死亡']
+        },
+        // 坐标系的x轴数据
+        xAxis: {
+            data: JSON.parse(dateStr)
+        },
+        // 坐标系的y轴数据类型
+        yAxis: {
+            type: 'value'
+        },
+        // 坐标系的y轴数据
+        series: [{
+            name: '累计确诊',
+            data: JSON.parse(confirmStr),
+            type: 'line'
+        },{
+            name: '累计治愈',
+            data: JSON.parse(healStr),
+            type: 'line'
+        },{
+            name: '累计死亡',
+            data: JSON.parse(deadStr),
+            type: 'line'
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+</body>
+</html>
