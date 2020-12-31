@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:data="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>epidemic</title>
+    <title th:text="#{list.title}">epidemic</title>
 
     <link rel="stylesheet" th:href="@{/bootstrap.css}">
 
 </head>
 <body>
 
-    <h2>epidemic</h2>
+    <h2 th:text="#{list.h2}">epidemic</h2>
 
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>地区</th>
-                <th>现有确诊</th>
-                <th>累计确诊</th>
-                <th>治愈</th>
-                <th>死亡</th>
+                <th><p th:text="#{list.table.name1}">地区</p></th>
+                <th><p th:text="#{list.table.name2}">现有确诊</p></th>
+                <th><p th:text="#{list.table.name3}">累计确诊</p></th>
+                <th><p th:text="#{list.table.name4}">治愈</p></th>
+                <th><p th:text="#{list.table.name5}">死亡</p></th>
             </tr>
         </thead>
         <tbody>

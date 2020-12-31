@@ -5,3 +5,7 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+# 设置国际化
+  messages:
+    basename: i18n.list
