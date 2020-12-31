@@ -61,6 +61,8 @@ public class DataHandler {
 
     // 新型冠状病毒肺炎 - 疫情实时追踪 from 腾讯新闻
     // 文件格式: JSON
+    // 爬取内容: 中国各省份的 现有确诊人数 now_confirm、累计确诊人数 confirm、死亡人数 dead、治愈人数 heal
+    // 前端展示: 表格
     public static String urlStr = "https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5";
 
     public static List<DataBean> getData() {

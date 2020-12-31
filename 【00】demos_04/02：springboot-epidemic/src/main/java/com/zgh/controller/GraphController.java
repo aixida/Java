@@ -1,7 +1,9 @@
 package com.zgh.controller;
 
 import com.google.gson.Gson;
+import com.zgh.bean.GraphBarBean;
 import com.zgh.bean.GraphBean;
+import com.zgh.handler.GraphHandler;
 import com.zgh.service.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -44,6 +47,27 @@ public class GraphController {
 
         return "graph";
 
+    }
+
+    @GetMapping("/graphBar")
+    public String graphBar(Model model) {
+
+        List<GraphBarBean> lists = GraphHandler.getImportData();
+        Collections.sort(lists);
+
+        ArrayList<String> nameList = new ArrayList<>();
+        ArrayList<Integer> fromAbroadList = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            GraphBarBean bean = lists.get(i);
+            nameList.add(bean.getName());
+            fromAbroadList.add(bean.getFromAbroad());
+        }
+
+        model.addAttribute("nameList", new Gson().toJson(nameList));
+        model.addAttribute("fromAbroadList", new Gson().toJson(fromAbroadList));
+
+        return "graphBar";
     }
 
 }

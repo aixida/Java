@@ -1,6 +1,7 @@
 package com.zgh.handler;
 
 import com.google.gson.Gson;
+import com.zgh.bean.GraphBarBean;
 import com.zgh.bean.GraphBean;
 import com.zgh.service.GraphService;
 import com.zgh.util.HttpClientUtil;
@@ -45,6 +46,8 @@ public class GraphHandler {
 
     // 新型冠状病毒肺炎 - 疫情实时追踪 from 腾讯新闻
     // 文件格式: JSON
+    // 爬取内容: 自疫情爆发以来国内每日 累计确诊人数 confirm、死亡人数 dead、治愈人数 heal
+    // 前端展示: 折线图
     public static String urlStr = "https://api.inews.qq.com/newsqa/v1/query/inner/publish/modules/list?modules=chinaDayList,chinaDayAddList,cityStatis,nowConfirmStatis,provinceCompare";
 
     public static List<GraphBean> getData() {
@@ -76,5 +79,49 @@ public class GraphHandler {
 
     }
 
+    // 新型冠状病毒肺炎 - 疫情实时追踪 from 腾讯新闻
+    // 文件格式: JSON
+    // 爬取内容: 省市境外输入
+    // 前端展示: 柱状图
+    // 注意: 这部分内容就不经过数据库了呀
+    public static String urlStr2 = "https://view.inews.qq.com/g2/getOnsInfo?name=disease_h5";
+
+    public static List<GraphBarBean> getImportData() {
+
+        String str = HttpClientUtil.doGet(urlStr2);
+
+        Gson gson = new Gson();
+        Map map = gson.fromJson(str, Map.class);
+
+        String dataStr = (String) map.get("data");
+        Map data = gson.fromJson(dataStr, Map.class);
+
+        ArrayList areaList = (ArrayList) data.get("areaTree");
+        Map dataMap = (Map) areaList.get(0);
+        ArrayList childrenList = (ArrayList) dataMap.get("children");
+
+        ArrayList<GraphBarBean> result = new ArrayList<>();
+        for (int i = 0; i < childrenList.size(); i++) {
+
+            Map temp = (Map) childrenList.get(i);
+
+            String name = (String) temp.get("name");
+
+            ArrayList children = (ArrayList) temp.get("children");
+            for (int j = 0; j < children.size(); j++) {
+                Map importMap = (Map) children.get(j);
+                if ("境外输入".equals(importMap.get("name"))){
+                    Map importTotalMap = (Map) importMap.get("total");
+                    double confirm = (double) importTotalMap.get("confirm");
+
+                    GraphBarBean bean = new GraphBarBean(name, (int) confirm);
+                    result.add(bean);
+                }
+             }
+        }
+
+        return result;
+
+    }
 
 }

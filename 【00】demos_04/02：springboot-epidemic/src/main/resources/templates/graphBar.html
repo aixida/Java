@@ -11,29 +11,24 @@
 <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 <div id="main" style="width: 900px;height:600px;"></div>
 
-<!-- 要接收服务端的数据  并且使用thymeleaf -->
+<!--要接收服务端的数据  并且使用thymeleaf-->
 <script th:inline="javascript">
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'));
 
-    var dateStr = [[${dateList}]];
-    var confirmStr = [[${confirmList}]];
-    var healStr = [[${healList}]];
-    var deadStr = [[${deadList}]];
+    var nameStr = [[${nameList}]];
+    var fromAbroadStr = [[${fromAbroadList}]];
 
     option = {
         title: {
-            text: '全国累计确诊/治愈/死亡趋势'
-        },
-        legend: {
-            data:['累计确诊','累计治愈','累计死亡']
+            text: '境外输入省市TOP10'
         },
         tooltip: {
             trigger: 'axis'
         },
         // 坐标系的x轴数据
         xAxis: {
-            data: JSON.parse(dateStr)
+            data: JSON.parse(nameStr)
         },
         // 坐标系的y轴数据类型
         yAxis: {
@@ -41,17 +36,10 @@
         },
         // 坐标系的y轴数据
         series: [{
-            name: '累计确诊',
-            data: JSON.parse(confirmStr),
-            type: 'line'
-        },{
-            name: '累计治愈',
-            data: JSON.parse(healStr),
-            type: 'line'
-        },{
-            name: '累计死亡',
-            data: JSON.parse(deadStr),
-            type: 'line'
+            name: '境外输入',
+            data: JSON.parse(fromAbroadStr),
+            type: 'bar',
+            barWidth: '60%'
         }]
     };
 
