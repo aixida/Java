@@ -193,13 +193,21 @@ COLLATE = utf8_bin;
 
 # 02：springboot-epidemic - 模拟
 
+在数据可视化方面，涉及到 表格、折线图、柱状图、中国地图
+
+前三者都需要分别设计一个bean，但只设计了前两者的数据库，第三个我偷懒了...
+
 ## 一、数据库
+
+```mysql
+CREATE SCHEMA `epidemic` DEFAULT CHARACTER SET utf8 ;
+```
+
+**表格**
 
 id、地区名 name、现有确诊人数 now_confirm、累计确诊人数 confirm、死亡人数 dead、治愈人数 heal
 
 ```mysql
-CREATE SCHEMA `epidemic` DEFAULT CHARACTER SET utf8 ;
-
 CREATE TABLE `epidemic`.`illness` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
@@ -210,6 +218,19 @@ CREATE TABLE `epidemic`.`illness` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+```
+
+**折线图**
+
+```mysql
+CREATE TABLE `epidemic`.`graph` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `date` varchar(45) COLLATE utf8_estonian_ci DEFAULT NULL,
+  `confirm` int DEFAULT NULL,
+  `heal` int DEFAULT NULL,
+  `dead` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1344578936000938121 DEFAULT CHARSET=utf8 COLLATE=utf8_estonian_ci
 ```
 
 ## 二、爬虫
@@ -290,3 +311,15 @@ cron 表达式（有七个字段：秒 分 时 日 月 周 年）
  `@Scheduled(fixedDelay = 10000)` 每10s执行一次
 
 以上一次方法执行完开始算起，如果上一次方法执行阻塞住了，那么直到上一次执行完，并间隔给定的时间后，执行下一次
+
+## 四、数据可视化
+
+**表格** 展示国内各省疫情情况 现有确诊人数 now_confirm、累计确诊人数 confirm、死亡人数 dead、治愈人数 heal
+
+使用 **echarts** 实现数据可视化
+
+- **折线图** 自疫情爆发以来国内每日 累计确诊人数 confirm、死亡人数 dead、治愈人数 heal
+
+- **柱状图** 省市境外输入TOP10
+
+- **中国地图** 现有确诊 + 累计确诊

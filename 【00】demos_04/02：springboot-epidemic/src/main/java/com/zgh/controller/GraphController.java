@@ -1,9 +1,12 @@
 package com.zgh.controller;
 
 import com.google.gson.Gson;
+import com.zgh.bean.DataBean;
 import com.zgh.bean.GraphBarBean;
 import com.zgh.bean.GraphBean;
+import com.zgh.bean.MapBean;
 import com.zgh.handler.GraphHandler;
+import com.zgh.service.DataService;
 import com.zgh.service.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,9 @@ public class GraphController {
 
     @Autowired
     GraphService graphService;
+
+    @Autowired
+    DataService dataService;
 
     @GetMapping("/graph")
     public String graph(Model model) {
@@ -68,6 +74,34 @@ public class GraphController {
         model.addAttribute("fromAbroadList", new Gson().toJson(fromAbroadList));
 
         return "graphBar";
+    }
+
+    // 展示国内疫情地图
+    @GetMapping("/map")
+    public String map(Model model) {
+
+        List<DataBean> dataList = dataService.list(); // mybatis-plus 查询全表数据
+
+        List<MapBean> confirmList = new ArrayList<>();
+        List<MapBean> nowConfirmList = new ArrayList<>();
+
+        for (int i = 0; i < dataList.size(); i++) {
+
+            DataBean data = dataList.get(i);
+
+            MapBean bean1 = new MapBean(data.getName(), data.getConfirm());
+            confirmList.add(bean1);
+
+            MapBean bean2 = new MapBean(data.getName(), data.getNowConfirm());
+            nowConfirmList.add(bean2);
+
+        }
+
+        model.addAttribute("confirmList", new Gson().toJson(confirmList));
+        model.addAttribute("nowConfirmList", new Gson().toJson(nowConfirmList));
+
+        return "map";
+
     }
 
 }
