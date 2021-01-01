@@ -344,4 +344,19 @@ cron 表达式（有七个字段：秒 分 时 日 月 周 年）
 
 使用电子邮件协议 SMTP = Simple Mail Transfer Protocol 简单邮件传输协议
 
-## 七、多页面合并
+## 七、cookie 与 session
+
+- cookie 在客户端，session 在服务端
+- cookie不安全，可以模拟，session相对安全，往往保存在缓存中
+- cookie有不可跨域名的特性，有大小限制，最大 4k
+
+**分布式 session**
+
+同一个服务  部署到多台机器   机器A   机器B   机器C ...
+
+当登录请求分发到机器A后，如何让 session 在机器B和机器C中也生效
+
+1. 多个机器处理session时，使用统一的存储  **redis**
+2. 当用户第一次请求，访问了机器A，后面所有的请求都访问机器A —— 粘性session
+   缺点  会导致负载不均衡，因为根据ip绑定，可能造成单个机器负载过重
+3. session复制，当任一机器的 session 发生变化，广播给其他所有节点，以保证同步
