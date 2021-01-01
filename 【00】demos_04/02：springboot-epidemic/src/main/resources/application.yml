@@ -9,3 +9,12 @@ spring:
 # 设置国际化
   messages:
     basename: i18n.list
+
+# 发送邮件
+  mail:
+    host: smtp.qq.com
+    username: 847818218@qq.com
+    password: tbolyqdizctwbaij
+    propertie.mail.smtp.ssl.enable: true
+
+

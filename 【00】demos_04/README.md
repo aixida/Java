@@ -323,3 +323,25 @@ cron 表达式（有七个字段：秒 分 时 日 月 周 年）
 - **柱状图** 省市境外输入TOP10
 
 - **中国地图** 现有确诊 + 累计确诊
+
+## 五、国际化
+
+**切换多语种**
+
+- list.properties 声明 key 和 value，默认显示的数据（注意编码格式）
+
+- list_zh_CN.properties 和 list_en_US.properties，分别对应中文与英文（美国）
+
+  ![image-20210101122150218](images/image-20210101122150218.png)
+
+- application.yml，增加 `spring.messages.basename=i18n.list`（list代表默认使用的文件名）
+
+- 浏览器鉴别语言的原理是，根据 http 请求中 Accept-Language 参数的不同，然后进行语言切换处理
+
+## 六、邮件发送
+
+![image-20201119211503524](images/image-20201119211503524.png)
+
+使用电子邮件协议 SMTP = Simple Mail Transfer Protocol 简单邮件传输协议
+
+## 七、多页面合并
